@@ -1,0 +1,32 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.diamondskybox.foreverfixes.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "com.diamondskybox.foreverfixes.ForeverFixesMixinPlugin",
+  "mixins": [
+    "bettercombat.MixinWeaponAttributesFallback",
+    "worldgen.MixinChunkGeneratorDecoration",
+    "worldgen.MixinStepFeatureData",
+    "cosmonautics.MixinSubLevelTemplate",
+    "cosmonautics.MixinSubLevelWarper",
+    "cosmonautics.MixinSpaceTransitionHandler",
+    "cosmonautics.MixinConnectionBlockEntityAccessor",
+    "gyro.MixinGyroscopeBlockEntity",
+    "sable.MixinServerLevelPlot"
+  ],
+  "client": [
+    "mobends.MixinArmorModelApiCompat",
+    "mobends.MixinBipedMutator",
+    "mobends.MixinMcaCompat",
+    "waveycapes.MixinPlayerDelegate",
+    "waveycapes.MixinCustomCapeRenderLayer",
+    "waveycapes.MixinCustomCapeRenderer",
+    "vanilla.MixinGameRenderer",
+    "sodium.MixinOcclusionCuller",
+    "travelerstitles.MixinTitleRenderManager"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
