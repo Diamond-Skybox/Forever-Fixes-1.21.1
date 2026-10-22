@@ -10,6 +10,10 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Wavey Capes + Mo' Bends: no double tilt while crouching; the cape lies along the back in creative flight.
 - Mo' Bends + MCA: players keep their MCA body.
 - Punchy + MCA: first-person arms show the MCA look instead of the Minecraft skin.
+- MCA: female gender physics + RPG-series armor (Armor Model API): the breasts show the armor's own texture instead of
+  purple.
+- Better Inventory: other mods' inventory buttons (Spell Atlas, Field Guide, Spice of Life food book, Doggy Talents dog
+  inventories) sit in its compat cells; Spell Atlas's inventory panel and NTGL's chassis tabs show on its screen too.
 - Sable: Ragdolls + Mo' Bends / MCA: a ragdolled player's normal body is no longer drawn next to the ragdoll, and ragdolls of
   MCA players show only the MCA look (no second head in the Minecraft skin); with Wavey Capes the ragdoll has only the Wavey cape.
 - Tall worlds (JJThunder): the far clip plane is raised so mountain tops stay visible.
@@ -17,6 +21,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 
 **Gameplay**
 - Better Combat: no server crash at startup from items without attribute modifiers.
+- OpenComputers: optionally (`loot.removeOpenComputersChestLoot` in `config/foreverfixes-common.toml`) no loot disks or
+  components in vanilla chests; its own structures keep their loot.
 - Traveler's Titles: dimension titles also show when arriving above the build height, and Create: Cosmonautics' deep space and
   Moon have names.
 
@@ -44,6 +50,8 @@ The mixins compile against jars of the patched mods, which are not part of this 
 - `sable-classes-2.0.6.jar`: only the `dev/ryanhcode/**` classes from Sable 2.0.6;
 - `sable-player-ragdoll-classes-0.7.5.jar`: only the `dev/**` classes from Sable: Ragdolls 0.7.5;
 - `scalablelux-classes-0.3.0-alpha.0.8.jar`: only the `ca/spottedleaf/starlight/**` classes from ScalableLux.
+- the mod jars of Armor Model API 1.1.0, MCA: female gender physics 0.1.6, Better Inventory 1.5.0, Field Guide 1.22.1,
+  Spice of Life: Onion 1.5.7, Spell Atlas 1.88.0, Doggy Talents Next 1.19.1 and NTGL 3.2.0.
 
 ## License
 

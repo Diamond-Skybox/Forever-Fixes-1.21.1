@@ -13,7 +13,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** Compatibility fixes between mods of the 1.21.1 pack. No content, no commands, a server tick listener (ShipReseat) and a client render listener (RagdollSourceHider); each fix only applies when its target mod is installed. */
+/** Compatibility fixes between mods of the 1.21.1 pack. No content, no commands; a server tick listener (ShipReseat), a loot table listener (LootFixes) and client listeners (RagdollSourceHider, InventoryBridge); each fix only applies when its target mod is installed. */
 @Mod(ForeverFixes.MOD_ID)
 public final class ForeverFixes
 {
@@ -23,7 +23,12 @@ public final class ForeverFixes
 	public ForeverFixes(IEventBus modBus, ModContainer container)
 	{
 		container.registerConfig(ModConfig.Type.CLIENT, ForeverFixesConfig.SPEC);
+		container.registerConfig(ModConfig.Type.COMMON, ForeverFixesCommonConfig.SPEC);
 		NeoForge.EVENT_BUS.addListener(ShipReseat::onServerTick);
+		if (ModList.get().isLoaded("opencomputers"))
+		{
+			NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, LootFixes::onLootTableLoad);
+		}
 		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("sable_player_ragdoll"))
 		{
 			NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, RagdollSourceHider::onRenderPlayer);
