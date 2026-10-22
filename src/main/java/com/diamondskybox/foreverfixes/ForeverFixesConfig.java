@@ -92,11 +92,11 @@ public final class ForeverFixesConfig
 			.define("mca.rpgBreastArmor", true);
 
 	public static final ModConfigSpec.BooleanValue BI_MOD_BUTTONS = B
-			.comment("Better Inventory: other mods' vanilla-inventory buttons in its compat cells (beside the character; four cells, its own first).")
+			.comment("Better Inventory: other mods' vanilla-inventory buttons, stacked in the gutter between the character and the item grid.")
 			.define("betterinventory.modButtons", true);
 
 	public static final ModConfigSpec.ConfigValue<List<? extends String>> BI_MOD_BUTTON_ORDER = B
-			.comment("Mods whose inventory button gets a compat cell, in order, while cells are free: spell_atlas, fieldguide, solonion, doggytalents.")
+			.comment("Mods whose inventory button is shown there, top to bottom: spell_atlas, fieldguide, solonion, doggytalents.")
 			.defineListAllowEmpty("betterinventory.modButtonOrder", List.of("spell_atlas", "fieldguide", "solonion", "doggytalents"), () -> "", o -> o instanceof String);
 
 	public static final ModConfigSpec.BooleanValue BI_MOD_PANELS = B

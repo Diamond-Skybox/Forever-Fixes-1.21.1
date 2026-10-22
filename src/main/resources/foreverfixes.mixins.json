@@ -30,7 +30,6 @@
     "ragdollcape.MixinRagdollPartRendererCape",
     "punchy.MixinPunchyArmRenderer",
     "genderarmor.MixinGenderLayer",
-    "betterinventory.MixinCompatButtons",
     "vanilla.AccessorAbstractContainerScreen"
   ],
   "injectors": {

@@ -16,7 +16,7 @@ import net.neoforged.neoforge.common.NeoForge;
  * Inventory-screen elements of other mods that are drawn on the vanilla inventory screen itself, brought to Better Inventory's
  * screen, which replaces it: Spell Atlas's inventory panel and NTGL's chassis tabs. Spell Atlas places its panel from the
  * inventory screen's panel geometry, so it gets a stand-in vanilla inventory screen (never opened or initialised) that carries
- * Better Inventory's geometry. The inventory buttons go into Better Inventory's compat cells instead ({@link InventoryButtons}).
+ * Better Inventory's geometry. The inventory buttons go into Better Inventory's gutter ({@link InventoryButtons}).
  */
 public final class InventoryBridge
 {
@@ -36,6 +36,7 @@ public final class InventoryBridge
 	{
 		spellAtlas = ModList.get().isLoaded("spell_atlas");
 		chassis = ModList.get().isLoaded("ntgl");
+		NeoForge.EVENT_BUS.addListener(InventoryBridge::onInit);
 		if (spellAtlas || chassis)
 		{
 			NeoForge.EVENT_BUS.addListener(InventoryBridge::onBackground);
@@ -46,7 +47,20 @@ public final class InventoryBridge
 
 	private static boolean betterInventory(Screen screen)
 	{
-		return screen != null && SCREEN.equals(screen.getClass().getName()) && ForeverFixesConfig.enabled(ForeverFixesConfig.BI_MOD_PANELS);
+		return betterInventoryScreen(screen) && ForeverFixesConfig.enabled(ForeverFixesConfig.BI_MOD_PANELS);
+	}
+
+	private static void onInit(ScreenEvent.Init.Post event)
+	{
+		if (betterInventoryScreen(event.getScreen()))
+		{
+			InventoryButtons.addTo(event, (AbstractContainerScreen<?>) event.getScreen());
+		}
+	}
+
+	private static boolean betterInventoryScreen(Screen screen)
+	{
+		return screen != null && SCREEN.equals(screen.getClass().getName());
 	}
 
 	private static void onBackground(ContainerScreenEvent.Render.Background event)
