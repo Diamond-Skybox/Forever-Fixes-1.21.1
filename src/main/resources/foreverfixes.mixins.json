@@ -13,7 +13,8 @@
     "cosmonautics.MixinSpaceTransitionHandler",
     "cosmonautics.MixinConnectionBlockEntityAccessor",
     "gyro.MixinGyroscopeBlockEntity",
-    "sable.MixinServerLevelPlot"
+    "sable.MixinServerLevelPlot",
+    "scalablelux.MixinStarLightEngine"
   ],
   "client": [
     "mobends.MixinArmorModelApiCompat",
@@ -24,7 +25,10 @@
     "waveycapes.MixinCustomCapeRenderer",
     "vanilla.MixinGameRenderer",
     "sodium.MixinOcclusionCuller",
-    "travelerstitles.MixinTitleRenderManager"
+    "travelerstitles.MixinTitleRenderManager",
+    "ragdoll.MixinRagdollPartRenderer",
+    "ragdollcape.MixinRagdollPartRendererCape",
+    "punchy.MixinPunchyArmRenderer"
   ],
   "injectors": {
     "defaultRequire": 1

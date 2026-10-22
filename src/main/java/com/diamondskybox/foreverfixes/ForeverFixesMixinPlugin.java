@@ -18,15 +18,19 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 	private static final Logger LOGGER = LoggerFactory.getLogger("ForeverFixes");
 	private static final String PACKAGE = "com.diamondskybox.foreverfixes.mixin.";
 	/** mixin sub-package -> mods that must be present */
-	private static final Map<String, List<String>> REQUIRED = Map.of(
-			"mobends", List.of("mobends"),
-			"waveycapes", List.of("waveycapes", "mobends"),
-			"sodium", List.of("sodium"),
-			"bettercombat", List.of("bettercombat"),
-			"travelerstitles", List.of("travelerstitles"),
-			"cosmonautics", List.of("dimensional_sable"),
-			"gyro", List.of("gyro"),
-			"sable", List.of("sable"));
+	private static final Map<String, List<String>> REQUIRED = Map.ofEntries(
+			Map.entry("mobends", List.of("mobends")),
+			Map.entry("waveycapes", List.of("waveycapes", "mobends")),
+			Map.entry("sodium", List.of("sodium")),
+			Map.entry("bettercombat", List.of("bettercombat")),
+			Map.entry("travelerstitles", List.of("travelerstitles")),
+			Map.entry("cosmonautics", List.of("dimensional_sable")),
+			Map.entry("gyro", List.of("gyro")),
+			Map.entry("sable", List.of("sable")),
+			Map.entry("ragdoll", List.of("sable_player_ragdoll", "mca")),
+			Map.entry("ragdollcape", List.of("sable_player_ragdoll", "waveycapes")),
+			Map.entry("punchy", List.of("punchy", "mca")),
+			Map.entry("scalablelux", List.of("scalablelux")));
 
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName)

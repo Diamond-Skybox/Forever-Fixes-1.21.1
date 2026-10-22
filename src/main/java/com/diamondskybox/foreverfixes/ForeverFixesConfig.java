@@ -66,6 +66,25 @@ public final class ForeverFixesConfig
 					"arrival. The checks now use the player's position clamped into the build height.")
 			.define("travelerstitles.titlesAboveBuildHeight", true);
 
+	public static final ModConfigSpec.BooleanValue RAGDOLL_HIDE_SOURCE = B
+			.comment("Sable: Ragdolls: do not draw a ragdolled player's normal body.",
+					"The ragdoll mod hides the player it turned into a ragdoll by making them invisible, but Mo' Bends (with MCA) draws",
+					"players on its own path and showed the normal body next to the ragdoll. Players riding a ragdoll seat are skipped.")
+			.define("ragdoll.hideRagdolledPlayer", true);
+
+	public static final ModConfigSpec.BooleanValue RAGDOLL_MCA_SKIN = B
+			.comment("Sable: Ragdolls + MCA: draw a ragdoll of a player MCA draws as a villager in the MCA look only.",
+					"The ragdoll draws each part in the Minecraft skin and then MCA's layers on top, so the head showed twice.")
+			.define("ragdoll.mcaLookOnly", true);
+
+	public static final ModConfigSpec.BooleanValue RAGDOLL_WAVEY_CAPE = B
+			.comment("Sable: Ragdolls + Wavey Capes: leave the ragdoll's cape to Wavey Capes instead of also drawing a stiff one.")
+			.define("ragdoll.waveyCapeOnly", true);
+
+	public static final ModConfigSpec.BooleanValue PUNCHY_MCA_ARMS = B
+			.comment("Punchy + MCA: draw MCA's arms in first person instead of Punchy's Minecraft-skin arms, for players MCA draws.")
+			.define("mca.punchyMcaArms", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	private ForeverFixesConfig()
