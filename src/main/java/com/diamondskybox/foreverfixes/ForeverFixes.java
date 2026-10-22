@@ -1,5 +1,6 @@
 package com.diamondskybox.foreverfixes;
 
+import com.diamondskybox.foreverfixes.invbridge.InventoryBridge;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
@@ -26,6 +27,10 @@ public final class ForeverFixes
 		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("sable_player_ragdoll"))
 		{
 			NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, RagdollSourceHider::onRenderPlayer);
+		}
+		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("betterinventory"))
+		{
+			InventoryBridge.register();
 		}
 		LOGGER.info("Forever Fixes loaded");
 	}

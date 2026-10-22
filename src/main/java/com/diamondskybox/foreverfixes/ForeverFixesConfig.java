@@ -2,6 +2,8 @@ package com.diamondskybox.foreverfixes;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 
+import java.util.List;
+
 /** config/foreverfixes-client.toml */
 public final class ForeverFixesConfig
 {
@@ -88,6 +90,18 @@ public final class ForeverFixesConfig
 	public static final ModConfigSpec.BooleanValue RPG_BREAST_ARMOR = B
 			.comment("MCA: female gender physics + Armor Model API: RPG-series chest armor on the breasts uses its own texture instead of the missing-texture purple.")
 			.define("mca.rpgBreastArmor", true);
+
+	public static final ModConfigSpec.BooleanValue BI_MOD_BUTTONS = B
+			.comment("Better Inventory: other mods' vanilla-inventory buttons in its compat cells (beside the character; four cells, its own first).")
+			.define("betterinventory.modButtons", true);
+
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> BI_MOD_BUTTON_ORDER = B
+			.comment("Mods whose inventory button gets a compat cell, in order, while cells are free: spell_atlas, fieldguide, solonion, doggytalents.")
+			.defineListAllowEmpty("betterinventory.modButtonOrder", List.of("spell_atlas", "fieldguide", "solonion", "doggytalents"), () -> "", o -> o instanceof String);
+
+	public static final ModConfigSpec.BooleanValue BI_MOD_PANELS = B
+			.comment("Better Inventory: Spell Atlas's inventory panel and NTGL's chassis tabs, which are drawn on the vanilla inventory screen, also on Better Inventory's.")
+			.define("betterinventory.modPanels", true);
 
 	public static final ModConfigSpec SPEC = B.build();
 
