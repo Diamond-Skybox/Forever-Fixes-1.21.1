@@ -31,6 +31,7 @@
     "ragdollcape.MixinRagdollPartRendererCape",
     "punchy.MixinPunchyArmRenderer",
     "genderarmor.MixinGenderLayer",
+    "rocketnautics.MixinSkyHandler",
     "vanilla.AccessorAbstractContainerScreen"
   ],
   "injectors": {

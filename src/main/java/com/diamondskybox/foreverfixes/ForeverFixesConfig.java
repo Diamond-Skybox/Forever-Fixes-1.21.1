@@ -91,6 +91,11 @@ public final class ForeverFixesConfig
 			.comment("MCA: female gender physics + Armor Model API: RPG-series chest armor on the breasts uses its own texture instead of the missing-texture purple.")
 			.define("mca.rpgBreastArmor", true);
 
+	public static final ModConfigSpec.BooleanValue NO_HIGH_ALTITUDE_SILENCE = B
+			.comment("Create: Cosmonautics: keep game sounds between Y 1000 and 2000 (it mutes everything there except its high wind,",
+					"which in the tall JJThunder overworld means the mountain tops).")
+			.define("cosmonautics.noHighAltitudeSilence", true);
+
 	public static final ModConfigSpec.BooleanValue BI_MOD_BUTTONS = B
 			.comment("Better Inventory: other mods' vanilla-inventory buttons, stacked in the gutter between the character and the item grid.")
 			.define("betterinventory.modButtons", true);

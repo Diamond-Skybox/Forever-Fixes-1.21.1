@@ -31,6 +31,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Ships keep their blocks, machine data, passengers and seats when moving between dimensions of different height, including
   2096-block-tall worlds (also fixes Cosmonautics issue #116).
 - Players stay seated through the atmosphere transition, even under full thrust.
+- Game sounds keep playing between Y 1000 and 2000 (Cosmonautics muted them there, which in the tall JJThunder overworld
+  silenced the mountain tops).
 - Ship links to sub-levels that were not moved no longer crash the server.
 - Gyroscope Stabilizers only damp rotation in deep space instead of spinning the ship.
 - Ships saved with the ship library load intact in dimensions with a different bottom.
