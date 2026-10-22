@@ -21,6 +21,7 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 
 **Gameplay**
 - Better Combat: no server crash at startup from items without attribute modifiers.
+- T.O Magic 'n Extras 4.4.0.1: no crash at startup ("Adding duplicate value" for its loot modifier codec).
 - OpenComputers: optionally (`loot.removeOpenComputersChestLoot` in `config/foreverfixes-common.toml`) no loot disks or
   components in vanilla chests; its own structures keep their loot.
 - Traveler's Titles: dimension titles also show when arriving above the build height, and Create: Cosmonautics' deep space and

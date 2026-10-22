@@ -14,7 +14,8 @@
     "cosmonautics.MixinConnectionBlockEntityAccessor",
     "gyro.MixinGyroscopeBlockEntity",
     "sable.MixinServerLevelPlot",
-    "scalablelux.MixinStarLightEngine"
+    "scalablelux.MixinStarLightEngine",
+    "traveloptics.MixinTOLootModifiers"
   ],
   "client": [
     "mobends.MixinArmorModelApiCompat",
