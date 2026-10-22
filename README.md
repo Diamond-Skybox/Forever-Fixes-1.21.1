@@ -1,6 +1,6 @@
 # Forever Fixes (1.21.1)
 
-Compatibility fixes for the Eternal modpack (NeoForge 1.21.1). No content. Install on both client and server. Each fix only
+Compatibility fixes for the ForeverWorld modpack (NeoForge 1.21.1). No content. Install on both client and server. Each fix only
 applies when the mods it patches are installed; the client-side fixes can be switched off in `config/foreverfixes-client.toml`.
 
 ## Fixes
