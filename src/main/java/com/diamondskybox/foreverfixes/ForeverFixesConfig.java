@@ -85,6 +85,10 @@ public final class ForeverFixesConfig
 			.comment("Punchy + MCA: draw MCA's arms in first person instead of Punchy's Minecraft-skin arms, for players MCA draws.")
 			.define("mca.punchyMcaArms", true);
 
+	public static final ModConfigSpec.BooleanValue RPG_BREAST_ARMOR = B
+			.comment("MCA: female gender physics + Armor Model API: RPG-series chest armor on the breasts uses its own texture instead of the missing-texture purple.")
+			.define("mca.rpgBreastArmor", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	private ForeverFixesConfig()

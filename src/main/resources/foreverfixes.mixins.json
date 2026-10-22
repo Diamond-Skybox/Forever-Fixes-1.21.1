@@ -28,7 +28,8 @@
     "travelerstitles.MixinTitleRenderManager",
     "ragdoll.MixinRagdollPartRenderer",
     "ragdollcape.MixinRagdollPartRendererCape",
-    "punchy.MixinPunchyArmRenderer"
+    "punchy.MixinPunchyArmRenderer",
+    "genderarmor.MixinGenderLayer"
   ],
   "injectors": {
     "defaultRequire": 1
