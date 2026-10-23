@@ -34,7 +34,8 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			Map.entry("genderarmor", List.of("mcabp", "armor_model_api")),
 			Map.entry("traveloptics", List.of("traveloptics")),
 			Map.entry("databank", List.of("databank")),
-			Map.entry("scalablelux", List.of("scalablelux")));
+			Map.entry("scalablelux", List.of("scalablelux")),
+			Map.entry("astralenchdesc", List.of("astralsorcery", "enchdesc")));
 
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName)

@@ -19,6 +19,7 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Tall worlds (JJThunder): the far clip plane is raised so mountain tops stay visible.
 - Sodium: terrain more than one render distance above or below the camera no longer disappears.
 - Databank 1.3.2: no "Main: …, Backup: …" debug line in the log every frame a post-processing shader runs.
+- Astral Sorcery + Enchantment Descriptions: enchanted items and books show the enchantment descriptions again.
 
 **Gameplay**
 - Better Combat: no server crash at startup from items without attribute modifiers.

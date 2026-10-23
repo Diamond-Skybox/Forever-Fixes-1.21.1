@@ -108,6 +108,11 @@ public final class ForeverFixesConfig
 			.comment("Better Inventory: Spell Atlas's inventory panel and NTGL's chassis tabs, which are drawn on the vanilla inventory screen, also on Better Inventory's.")
 			.define("betterinventory.modPanels", true);
 
+	public static final ModConfigSpec.BooleanValue ASTRAL_ENCHANTMENT_DESCRIPTIONS = B
+			.comment("Astral Sorcery + Enchantment Descriptions: keep the enchantment descriptions in tooltips (Astral's copy of the",
+					"enchantment list it adds its constellation enchantments to dropped them).")
+			.define("astralsorcery.enchantmentDescriptions", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	private ForeverFixesConfig()

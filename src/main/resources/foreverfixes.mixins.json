@@ -33,6 +33,7 @@
     "genderarmor.MixinGenderLayer",
     "rocketnautics.MixinSkyHandler",
     "databank.MixinPostShaderInstance",
+    "astralenchdesc.MixinEnchantmentModifierHelper",
     "vanilla.AccessorAbstractContainerScreen"
   ],
   "injectors": {
