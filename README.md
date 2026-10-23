@@ -18,6 +18,7 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   MCA players show only the MCA look (no second head in the Minecraft skin); with Wavey Capes the ragdoll has only the Wavey cape.
 - Tall worlds (JJThunder): the far clip plane is raised so mountain tops stay visible.
 - Sodium: terrain more than one render distance above or below the camera no longer disappears.
+- Databank 1.3.2: no "Main: …, Backup: …" debug line in the log every frame a post-processing shader runs.
 
 **Gameplay**
 - Better Combat: no server crash at startup from items without attribute modifiers.

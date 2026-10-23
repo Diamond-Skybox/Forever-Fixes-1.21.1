@@ -33,6 +33,7 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			Map.entry("punchy", List.of("punchy", "mca")),
 			Map.entry("genderarmor", List.of("mcabp", "armor_model_api")),
 			Map.entry("traveloptics", List.of("traveloptics")),
+			Map.entry("databank", List.of("databank")),
 			Map.entry("scalablelux", List.of("scalablelux")));
 
 	@Override

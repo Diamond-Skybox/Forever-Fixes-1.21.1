@@ -32,6 +32,7 @@
     "punchy.MixinPunchyArmRenderer",
     "genderarmor.MixinGenderLayer",
     "rocketnautics.MixinSkyHandler",
+    "databank.MixinPostShaderInstance",
     "vanilla.AccessorAbstractContainerScreen"
   ],
   "injectors": {
