@@ -35,6 +35,8 @@
     "rocketnautics.MixinSkyHandler",
     "databank.MixinPostShaderInstance",
     "astralenchdesc.MixinEnchantmentModifierHelper",
+    "stockmarketah.MixinStockMarketScreen",
+    "stockmarketah.MixinMarketShellScreen",
     "vanilla.AccessorAbstractContainerScreen"
   ],
   "injectors": {

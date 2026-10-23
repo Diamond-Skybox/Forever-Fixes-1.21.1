@@ -20,6 +20,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Sodium: terrain more than one render distance above or below the camera no longer disappears.
 - Databank 1.3.2: no "Main: …, Backup: …" debug line in the log every frame a post-processing shader runs.
 - Astral Sorcery + Enchantment Descriptions: enchanted items and books show the enchantment descriptions again.
+- Create: Stock Market + Create: Auction House: the Stock Market screen has an Auction House tab; closing the Auction House
+  opened from it goes back to Stock Market.
 
 **Gameplay**
 - Better Combat: no server crash at startup from items without attribute modifiers.

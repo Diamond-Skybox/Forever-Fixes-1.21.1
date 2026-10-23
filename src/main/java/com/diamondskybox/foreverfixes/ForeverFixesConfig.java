@@ -113,6 +113,11 @@ public final class ForeverFixesConfig
 					"enchantment list it adds its constellation enchantments to dropped them).")
 			.define("astralsorcery.enchantmentDescriptions", true);
 
+	public static final ModConfigSpec.BooleanValue STOCKMARKET_AUCTION_HOUSE_TAB = B
+			.comment("Create: Stock Market + Create: Auction House: an Auction House tab on the Stock Market screen, after Top Sellers;",
+					"closing the Auction House opened from it goes back to Stock Market.")
+			.define("stockmarket.auctionHouseTab", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	private ForeverFixesConfig()
