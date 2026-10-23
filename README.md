@@ -24,6 +24,9 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 **Gameplay**
 - Better Combat: no server crash at startup from items without attribute modifiers.
 - T.O Magic 'n Extras 4.4.0.1: no crash at startup ("Adding duplicate value" for its loot modifier codec).
+- Dungeons and Taverns: its internal boss-marker enchantments ("Illegal enchantment", "LOOT TABLE ERROR - REPORT TO MOD/DATAPACK
+  AUTHOR", "I AM ERROR") no longer come out of loot that enchants books randomly, and are removed from items players carry
+  (list in `enchantments.blocked`, `config/foreverfixes-common.toml`).
 - OpenComputers: optionally (`loot.removeOpenComputersChestLoot` in `config/foreverfixes-common.toml`) no loot disks or
   components in vanilla chests; its own structures keep their loot.
 - Traveler's Titles: dimension titles also show when arriving above the build height, and Create: Cosmonautics' deep space and

@@ -15,7 +15,8 @@
     "gyro.MixinGyroscopeBlockEntity",
     "sable.MixinServerLevelPlot",
     "scalablelux.MixinStarLightEngine",
-    "traveloptics.MixinTOLootModifiers"
+    "traveloptics.MixinTOLootModifiers",
+    "vanilla.MixinEnchantRandomlyFunction"
   ],
   "client": [
     "mobends.MixinArmorModelApiCompat",
