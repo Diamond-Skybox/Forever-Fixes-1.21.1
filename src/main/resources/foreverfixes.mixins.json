@@ -37,6 +37,7 @@
     "astralenchdesc.MixinEnchantmentModifierHelper",
     "stockmarketah.MixinStockMarketScreen",
     "stockmarketah.MixinMarketShellScreen",
+    "waystonesuiplus.MixinWaystonesPlusScreen",
     "vanilla.AccessorAbstractContainerScreen"
   ],
   "injectors": {
