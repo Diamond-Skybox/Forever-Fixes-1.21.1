@@ -13,15 +13,16 @@ import java.util.function.Supplier;
 /**
  * Other mods' inventory buttons on Better Inventory's screen. Those mods add their button to the vanilla inventory screen only,
  * which Better Inventory replaces. Better Inventory 2 has no cells for other mods' buttons any more, so they are stacked down the
- * empty gutter between the character and the item grid (x 82..106 of its panel, below its top tab row), in the order of
- * {@code betterinventory.modButtonOrder}, for each listed mod that is installed and has its own inventory button switched on.
+ * gutter between the character and the item grid (x 82..106 of its panel), below the four gear rows its gear tab puts there
+ * (backpack, armor pack, tool belt, quiver: y 20..116), in the order of {@code betterinventory.modButtonOrder}, for each listed mod
+ * that is installed and has its own inventory button switched on. Five fit above the bottom of the panel (y 216).
  */
 final class InventoryButtons
 {
 	private static final int GUTTER_X = 85;
-	private static final int FIRST_Y = 22;
+	private static final int FIRST_Y = 118;
 	private static final int PITCH = 20;
-	private static final int MAX_BUTTONS = 9;
+	private static final int MAX_BUTTONS = 5;
 
 	private InventoryButtons()
 	{

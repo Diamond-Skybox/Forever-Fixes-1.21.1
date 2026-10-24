@@ -13,7 +13,7 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - MCA: female gender physics + RPG-series armor (Armor Model API): the breasts show the armor's own texture instead of
   purple.
 - Better Inventory: other mods' inventory buttons (Spell Atlas, Field Guide, Spice of Life food book, Doggy Talents dog
-  inventories) sit in its gutter; Spell Atlas's inventory panel and NTGL's chassis tabs show on its screen too.
+  inventories) sit in its gutter, below the gear tab's slots; Spell Atlas's inventory panel and NTGL's chassis tabs show on its screen too.
 - Sable: Ragdolls + Mo' Bends / MCA: a ragdolled player's normal body is no longer drawn next to the ragdoll, and ragdolls of
   MCA players show only the MCA look (no second head in the Minecraft skin); with Wavey Capes the ragdoll has only the Wavey cape.
 - Tall worlds (JJThunder): the far clip plane is raised so mountain tops stay visible.
