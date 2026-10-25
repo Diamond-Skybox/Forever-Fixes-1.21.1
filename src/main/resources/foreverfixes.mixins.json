@@ -17,7 +17,8 @@
     "scalablelux.MixinStarLightEngine",
     "traveloptics.MixinTOLootModifiers",
     "vanilla.MixinEnchantRandomlyFunction",
-    "vanilla.MixinEnchantWithLevelsFunction"
+    "vanilla.MixinEnchantWithLevelsFunction",
+    "technonw.MixinInternalMethodsImpl"
   ],
   "client": [
     "mobends.MixinArmorModelApiCompat",
