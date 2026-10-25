@@ -24,6 +24,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   opened from it goes back to Stock Market.
 
 **Gameplay**
+- No server crash ("ConcurrentModificationException" in DimensionDataStorage.save, then a hang) when mods add saved data from
+  world-generation threads during an autosave, e.g. Immersive Petroleum's reservoir regions during a pregen.
 - Better Combat: no server crash at startup from items without attribute modifiers.
 - T.O Magic 'n Extras 4.4.0.1: no crash at startup ("Adding duplicate value" for its loot modifier codec).
 - Dungeons and Taverns: its internal boss-marker enchantments ("Illegal enchantment", "LOOT TABLE ERROR - REPORT TO MOD/DATAPACK

@@ -18,7 +18,8 @@
     "traveloptics.MixinTOLootModifiers",
     "vanilla.MixinEnchantRandomlyFunction",
     "vanilla.MixinEnchantWithLevelsFunction",
-    "technonw.MixinInternalMethodsImpl"
+    "technonw.MixinInternalMethodsImpl",
+    "vanilla.MixinDimensionDataStorage"
   ],
   "client": [
     "mobends.MixinArmorModelApiCompat",
