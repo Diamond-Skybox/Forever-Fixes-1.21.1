@@ -29,6 +29,9 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Dungeons and Taverns: its internal boss-marker enchantments ("Illegal enchantment", "LOOT TABLE ERROR - REPORT TO MOD/DATAPACK
   AUTHOR", "I AM ERROR") no longer come out of loot that enchants books randomly, and are removed from items players carry
   (list in `enchantments.blocked`, `config/foreverfixes-common.toml`).
+- Loot no longer gives blank enchanted books: when enchant_with_levels cannot fit any of its enchantments (Dungeons and Taverns'
+  desert ruin and nether keep books), one is picked from the same list; blank books players carry become plain books
+  (`enchantments.fixBlankBooks`).
 - OpenComputers: optionally (`loot.removeOpenComputersChestLoot` in `config/foreverfixes-common.toml`) no loot disks or
   components in vanilla chests; its own structures keep their loot.
 - Waystones UI Plus 1.6.0 + Waystones 21.1.46: no crash when editing a waystone from the UI Plus screen.

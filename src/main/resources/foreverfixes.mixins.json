@@ -16,7 +16,8 @@
     "sable.MixinServerLevelPlot",
     "scalablelux.MixinStarLightEngine",
     "traveloptics.MixinTOLootModifiers",
-    "vanilla.MixinEnchantRandomlyFunction"
+    "vanilla.MixinEnchantRandomlyFunction",
+    "vanilla.MixinEnchantWithLevelsFunction"
   ],
   "client": [
     "mobends.MixinArmorModelApiCompat",

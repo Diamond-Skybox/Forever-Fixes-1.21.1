@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * Enchantments listed in enchantments.blocked (foreverfixes-common.toml). Loot functions that enchant from the whole registry
  * (enchant_randomly without "options", which on a book allows every enchantment) skip them (MixinEnchantRandomlyFunction), and
  * every two seconds they are taken off the items in each player's inventory; an enchanted book left without enchantments
- * becomes a plain book.
+ * becomes a plain book. The same scan turns blank enchanted books (enchantments.fixBlankBooks) into plain books.
  */
 public final class BlockedEnchantments
 {
@@ -54,7 +54,12 @@ public final class BlockedEnchantments
 
 	public static void onPlayerTick(PlayerTickEvent.Post event)
 	{
-		if (!(event.getEntity() instanceof ServerPlayer player) || player.tickCount % SCAN_INTERVAL != 0 || ids().isEmpty())
+		if (!(event.getEntity() instanceof ServerPlayer player) || player.tickCount % SCAN_INTERVAL != 0)
+		{
+			return;
+		}
+		final boolean fixBlankBooks = ForeverFixesCommonConfig.SPEC.isLoaded() && ForeverFixesCommonConfig.FIX_BLANK_BOOKS.get();
+		if (ids().isEmpty() && !fixBlankBooks)
 		{
 			return;
 		}
@@ -63,6 +68,12 @@ public final class BlockedEnchantments
 		{
 			final ItemStack stack = inventory.getItem(slot);
 			final ItemEnchantments enchantments = EnchantmentHelper.getEnchantmentsForCrafting(stack);
+			if (enchantments.isEmpty() && fixBlankBooks && stack.is(Items.ENCHANTED_BOOK))
+			{
+				inventory.setItem(slot, stack.transmuteCopy(Items.BOOK, stack.getCount()));
+				ForeverFixes.LOGGER.info("Turned {} blank enchanted book(s) in {}'s inventory into plain books", stack.getCount(), player.getGameProfile().getName());
+				continue;
+			}
 			if (enchantments.isEmpty() || enchantments.keySet().stream().noneMatch(BlockedEnchantments::isBlocked))
 			{
 				continue;

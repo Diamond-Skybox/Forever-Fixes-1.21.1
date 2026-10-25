@@ -24,6 +24,11 @@ public final class ForeverFixesCommonConfig
 					List.of("nova_structures:boss_behaviour", "nova_structures:shulker_boss", "nova_structures:shulker_miniboss"), () -> "",
 					o -> o instanceof String s && ResourceLocation.tryParse(s) != null);
 
+	public static final ModConfigSpec.BooleanValue FIX_BLANK_BOOKS = B
+			.comment("Loot that would be an enchanted book without enchantments (enchant_with_levels whose options cannot fit the rolled",
+					"level) gets one enchantment from those options instead, and blank enchanted books in players' inventories become plain books.")
+			.define("enchantments.fixBlankBooks", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	private ForeverFixesCommonConfig()
