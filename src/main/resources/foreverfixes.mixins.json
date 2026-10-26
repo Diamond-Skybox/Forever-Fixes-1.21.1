@@ -19,6 +19,8 @@
     "vanilla.MixinEnchantRandomlyFunction",
     "vanilla.MixinEnchantWithLevelsFunction",
     "technonw.MixinInternalMethodsImpl",
+    "technonw.MixinBankCardDeduct",
+    "auctionhouse.MixinNumismaticsSpurAdapter",
     "technonw.MixinBankCardPaymentService",
     "vanilla.MixinDimensionDataStorage"
   ],

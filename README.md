@@ -38,6 +38,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   components in vanilla chests; its own structures keep their loot.
 - Create Numismatified Waystones + Waystones 21.1.46: teleports actually take the coin fare (the server used Waystones' free
   default, so the same coins paid for every trip).
+- Create: Auction House 3.2.1 + Create: Numismatics 1.1.0: spending works again (savings deposits, minigame bets, purchases
+  failed on the server: Numismatics changed how money is taken from an account). Same fix for Numismatified Waystones' card payments.
 - Create Numismatified Waystones: a bound bank card works on the waystone screen (its balance was read on the client, where
   Numismatics has no bank: 0 spurs and an error in the log on every screen update).
 - Waystones UI Plus 1.6.0 + Waystones 21.1.46: no crash when editing a waystone from the UI Plus screen.
