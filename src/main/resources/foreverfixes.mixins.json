@@ -21,6 +21,9 @@
     "technonw.MixinInternalMethodsImpl",
     "technonw.MixinBankCardDeduct",
     "auctionhouse.MixinNumismaticsSpurAdapter",
+    "waystones.MixinDimensionDenyInternalMethodsImpl",
+    "waystones.MixinDimensionDenyWaystonesAPI",
+    "vanilla.MixinServerPlayerTeleport",
     "technonw.MixinBankCardPaymentService",
     "vanilla.MixinDimensionDataStorage"
   ],

@@ -34,6 +34,11 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Loot no longer gives blank enchanted books: when enchant_with_levels cannot fit any of its enchantments (Dungeons and Taverns'
   desert ruin and nether keep books), one is picked from the same list; blank books players carry become plain books
   (`enchantments.fixBlankBooks`).
+- Trades: villager / wandering trader offers selling items listed in `trades.removedResults` are removed (default: AE2's Fluix
+  Researcher selling charged certus quartz).
+- Dimensions and planets are reached by Tempad, stargate, rocket or their own way in: waystones, Tombstone, FTB Essentials
+  commands, recall and portal spells and similar teleports cannot move players into another dimension (`teleports.*`;
+  same-dimension use unchanged).
 - OpenComputers: optionally (`loot.removeOpenComputersChestLoot` in `config/foreverfixes-common.toml`) no loot disks or
   components in vanilla chests; its own structures keep their loot.
 - Create Numismatified Waystones + Waystones 21.1.46: teleports actually take the coin fare (the server used Waystones' free

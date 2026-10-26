@@ -7,5 +7,7 @@
   "foreverfixes.betterinventory.fieldguide": "Field Guide",
   "foreverfixes.betterinventory.solonion": "Food Book",
   "foreverfixes.betterinventory.doggytalents": "Dog Inventories",
-  "foreverfixes.stockmarket.tab_auction_house": "Auction House"
+  "foreverfixes.stockmarket.tab_auction_house": "Auction House",
+  "foreverfixes.teleport.cross_dimension_refused": "That kind of teleport cannot cross into another dimension.",
+  "foreverfixes.teleport.waystone_cross_dimension": "Waystones cannot warp to another dimension"
 }
