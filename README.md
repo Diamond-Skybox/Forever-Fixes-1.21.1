@@ -38,6 +38,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   components in vanilla chests; its own structures keep their loot.
 - Create Numismatified Waystones + Waystones 21.1.46: teleports actually take the coin fare (the server used Waystones' free
   default, so the same coins paid for every trip).
+- Create Numismatified Waystones: a bound bank card works on the waystone screen (its balance was read on the client, where
+  Numismatics has no bank: 0 spurs and an error in the log on every screen update).
 - Waystones UI Plus 1.6.0 + Waystones 21.1.46: no crash when editing a waystone from the UI Plus screen.
 - Traveler's Titles: dimension titles also show when arriving above the build height, and Create: Cosmonautics' deep space and
   Moon have names.

@@ -19,6 +19,7 @@
     "vanilla.MixinEnchantRandomlyFunction",
     "vanilla.MixinEnchantWithLevelsFunction",
     "technonw.MixinInternalMethodsImpl",
+    "technonw.MixinBankCardPaymentService",
     "vanilla.MixinDimensionDataStorage"
   ],
   "client": [
