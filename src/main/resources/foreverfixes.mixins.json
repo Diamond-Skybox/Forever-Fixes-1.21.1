@@ -40,6 +40,8 @@
     "ragdoll.MixinRagdollPartRenderer",
     "ragdollcape.MixinRagdollPartRendererCape",
     "punchy.MixinPunchyArmRenderer",
+    "paraglidermobends.MixinParagliderCompat",
+    "paragliderpunchy.MixinPunchyConfigParaglider",
     "genderarmor.MixinGenderLayer",
     "rocketnautics.MixinSkyHandler",
     "databank.MixinPostShaderInstance",

@@ -87,6 +87,16 @@ public final class ForeverFixesConfig
 			.comment("Punchy + MCA: draw MCA's arms in first person instead of Punchy's Minecraft-skin arms, for players MCA draws.")
 			.define("mca.punchyMcaArms", true);
 
+	public static final ModConfigSpec.BooleanValue MOBENDS_PARAGLIDER_POSE = B
+			.comment("Mo' Bends + Paraglider 21.1: play Mo' Bends' paragliding pose (glider held above the head) while gliding.",
+					"Mo' Bends looks for a Paraglider class that 21.1 no longer has, so the pose never played.")
+			.define("paraglider.moBendsGlidePose", true);
+
+	public static final ModConfigSpec.BooleanValue PUNCHY_PARAGLIDER_OVERHEAD = B
+			.comment("Punchy + Paraglider: in first person, leave the open paraglider to vanilla rendering so it sits above the head",
+					"as Paraglider places it, instead of in Punchy's hand position.")
+			.define("paraglider.punchyGlideOverhead", true);
+
 	public static final ModConfigSpec.BooleanValue RPG_BREAST_ARMOR = B
 			.comment("MCA: female gender physics + Armor Model API: RPG-series chest armor on the breasts uses its own texture instead of the missing-texture purple.")
 			.define("mca.rpgBreastArmor", true);
