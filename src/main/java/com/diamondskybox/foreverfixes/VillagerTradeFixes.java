@@ -8,6 +8,7 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 import net.neoforged.neoforge.event.village.WandererTradesEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,7 +31,8 @@ public final class VillagerTradeFixes
 		{
 			return;
 		}
-		event.getTrades().forEach((level, listings) -> strip(listings, removed, event.getType().toString() + " level " + level));
+		// some mods hand NeoForge unmodifiable lists; those are swapped for a filtered copy instead of edited in place
+		event.getTrades().replaceAll((level, listings) -> strip(listings, removed, event.getType().toString() + " level " + level));
 	}
 
 	public static void onWandererTrades(WandererTradesEvent event)
@@ -38,30 +40,60 @@ public final class VillagerTradeFixes
 		final Set<ResourceLocation> removed = removed();
 		if (!removed.isEmpty())
 		{
-			strip(event.getGenericTrades(), removed, "wandering trader");
-			strip(event.getRareTrades(), removed, "wandering trader (rare)");
+			stripInPlace(event.getGenericTrades(), removed, "wandering trader");
+			stripInPlace(event.getRareTrades(), removed, "wandering trader (rare)");
 		}
 	}
 
-	private static void strip(List<ItemListing> listings, Set<ResourceLocation> removed, String where)
+	/** The listings without the removed trades: the same list when nothing matches, otherwise a new mutable list. */
+	private static List<ItemListing> strip(List<ItemListing> listings, Set<ResourceLocation> removed, String where)
 	{
 		final RandomSource random = RandomSource.create(0L);
-		listings.removeIf(listing -> {
+		final List<ItemListing> kept = new ArrayList<>(listings.size());
+		for (ItemListing listing : listings)
+		{
+			if (!isRemoved(listing, removed, random, where))
+			{
+				kept.add(listing);
+			}
+		}
+		return kept.size() == listings.size() ? listings : kept;
+	}
+
+	/** The wandering trader event's lists cannot be replaced, so they are edited; an unmodifiable one is left as it is. */
+	private static void stripInPlace(List<ItemListing> listings, Set<ResourceLocation> removed, String where)
+	{
+		final List<ItemListing> kept = strip(listings, removed, where);
+		if (kept != listings)
+		{
 			try
 			{
-				final MerchantOffer offer = listing.getOffer(null, random);
-				if (offer != null && removed.contains(BuiltInRegistries.ITEM.getKey(offer.getResult().getItem())))
-				{
-					ForeverFixes.LOGGER.info("Removed the {} trade for {}", where, BuiltInRegistries.ITEM.getKey(offer.getResult().getItem()));
-					return true;
-				}
+				listings.clear();
+				listings.addAll(kept);
 			}
-			catch (RuntimeException ignored)
+			catch (UnsupportedOperationException e)
 			{
-				// a listing that needs a real trader to build its offer is left alone
+				ForeverFixes.LOGGER.warn("Could not remove {} trades: the list is unmodifiable", where);
 			}
-			return false;
-		});
+		}
+	}
+
+	private static boolean isRemoved(ItemListing listing, Set<ResourceLocation> removed, RandomSource random, String where)
+	{
+		try
+		{
+			final MerchantOffer offer = listing.getOffer(null, random);
+			if (offer != null && removed.contains(BuiltInRegistries.ITEM.getKey(offer.getResult().getItem())))
+			{
+				ForeverFixes.LOGGER.info("Removed the {} trade for {}", where, BuiltInRegistries.ITEM.getKey(offer.getResult().getItem()));
+				return true;
+			}
+		}
+		catch (RuntimeException ignored)
+		{
+			// a listing that needs a real trader to build its offer is left alone
+		}
+		return false;
 	}
 
 	private static Set<ResourceLocation> removed()
