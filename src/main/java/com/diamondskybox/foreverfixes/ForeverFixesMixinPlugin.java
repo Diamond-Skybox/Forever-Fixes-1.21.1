@@ -46,6 +46,8 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			Map.entry("simulatedcoasters", List.of("simulatedcoasters", "sable")),
 			Map.entry("ntgl", List.of("ntgl")),
 			Map.entry("hexerei", List.of("hexerei")),
+			Map.entry("skeletonsrising", List.of("skeletons_rising")),
+			Map.entry("createnuclear", List.of("createnuclear")),
 			Map.entry("waystones", List.of("waystones")));
 
 	@Override

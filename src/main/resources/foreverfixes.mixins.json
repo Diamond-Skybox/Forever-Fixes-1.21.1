@@ -25,7 +25,9 @@
     "waystones.MixinDimensionDenyWaystonesAPI",
     "vanilla.MixinServerPlayerTeleport",
     "technonw.MixinBankCardPaymentService",
-    "vanilla.MixinDimensionDataStorage"
+    "vanilla.MixinDimensionDataStorage",
+    "skeletonsrising.MixinTheFamilyReunionDemandsProcedure",
+    "createnuclear.MixinRadiationCapability"
   ],
   "client": [
     "mobends.MixinArmorModelApiCompat",

@@ -60,7 +60,24 @@ public final class ForeverFixesCommonConfig
 					"it.hurts.shatterbyte.reliquified_ars_nouveau.items.StaffOfTheSpectralWalkerItem", "hellfirepvp.astralsorcery.",
 					"com.klikli_dev.occultism.common.block.EntityWormholeBlock"), () -> "", o -> o instanceof String);
 
+	public static final ModConfigSpec.BooleanValue SKELETONS_RISING_PLAYERS_ONLY = B
+			.comment("Skeletons Rising: check for 'The Family Reunion' advancement on players' ticks only.",
+					"Its procedure ran on every entity's tick (client and server), each time searching a 16-block box for decayed",
+					"skeletons and then for players; only players can earn the advancement.")
+			.define("performance.skeletonsRisingPlayersOnly", true);
+
+	public static final ModConfigSpec.BooleanValue NUCLEAR_SKIP_ABSENT_EFFECT_REMOVAL = B
+			.comment("Create: Nuclear: remove the radiation effect only from entities that have it.",
+					"Its radiation tick removed it from every living entity every tick, firing a NeoForge effect-removed event each time.")
+			.define("performance.nuclearSkipAbsentEffectRemoval", true);
+
 	public static final ModConfigSpec SPEC = B.build();
+
+	/** Read from tick code, which can run before the config file is loaded; default to enabled then. */
+	public static boolean enabled(ModConfigSpec.BooleanValue value)
+	{
+		return !SPEC.isLoaded() || value.get();
+	}
 
 	private ForeverFixesCommonConfig()
 	{

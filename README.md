@@ -34,6 +34,9 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 **Gameplay**
 - No server crash ("ConcurrentModificationException" in DimensionDataStorage.save, then a hang) when mods add saved data from
   world-generation threads during an autosave, e.g. Immersive Petroleum's reservoir regions during a pregen.
+- Skeletons Rising: its "The Family Reunion" advancement check runs on players' ticks only, instead of searching the area
+  around every entity every tick.
+- Create: Nuclear: the radiation tick no longer removes the radiation effect from every entity that does not have it.
 - Better Combat: no server crash at startup from items without attribute modifiers.
 - T.O Magic 'n Extras 4.4.0.1: no crash at startup ("Adding duplicate value" for its loot modifier codec).
 - Dungeons and Taverns: its internal boss-marker enchantments ("Illegal enchantment", "LOOT TABLE ERROR - REPORT TO MOD/DATAPACK

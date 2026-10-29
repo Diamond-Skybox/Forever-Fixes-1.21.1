@@ -7,3 +7,5 @@ build.log
 .idea/
 *.iml
 .vscode/
+bin/
+.eclipse/
