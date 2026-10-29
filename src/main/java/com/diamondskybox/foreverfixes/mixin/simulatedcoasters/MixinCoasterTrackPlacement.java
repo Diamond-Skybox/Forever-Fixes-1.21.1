@@ -19,9 +19,17 @@ public abstract class MixinCoasterTrackPlacement
 	@Unique
 	private static boolean foreverfixes$cleared;
 
-	@Inject(method = {"drawCurvePreviewInner", "drawOutlineRailLine", "line", "showAnchorBlockOutline", "showTargetBlockOutline"},
-			remap = false, require = 5, at = @At("HEAD"))
-	private static void foreverfixes$outlineDrawn(CallbackInfo ci)
+	/** Every outline the class draws goes through these two calls (6 call sites, in 5 methods; line() is overloaded). */
+	@Inject(method = "*", remap = false, require = 1,
+			at = @At(value = "INVOKE", remap = false, target = "Lnet/createmod/catnip/outliner/Outliner;showLine(Ljava/lang/Object;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/Vec3;)Lnet/createmod/catnip/outliner/Outline$OutlineParams;"))
+	private static void foreverfixes$lineDrawn(CallbackInfo ci)
+	{
+		foreverfixes$cleared = false;
+	}
+
+	@Inject(method = "*", remap = false, require = 1,
+			at = @At(value = "INVOKE", remap = false, target = "Lnet/createmod/catnip/outliner/Outliner;showAABB(Ljava/lang/Object;Lnet/minecraft/world/phys/AABB;)Lnet/createmod/catnip/outliner/Outline$OutlineParams;"))
+	private static void foreverfixes$boxDrawn(CallbackInfo ci)
 	{
 		foreverfixes$cleared = false;
 	}
