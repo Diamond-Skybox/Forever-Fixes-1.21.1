@@ -106,6 +106,26 @@ public final class ForeverFixesConfig
 					"which in the tall JJThunder overworld means the mountain tops).")
 			.define("cosmonautics.noHighAltitudeSilence", true);
 
+	public static final ModConfigSpec.BooleanValue RAISE_SPACE_EFFECTS = B
+			.comment("Create: Cosmonautics: in dimensions taller than Y 1000, start its edge-of-space effects (planet drawn beneath, space",
+					"fog and black sky, daylight stars, high wind, altitude render distance) at spaceEffectsStartY instead of Y 1000,",
+					"which in the tall JJThunder overworld is mountain terrain. The fade-ins keep their length (planet: 500 blocks).")
+			.define("cosmonautics.raiseSpaceEffects", true);
+
+	public static final ModConfigSpec.DoubleValue SPACE_EFFECTS_START_Y = B
+			.comment("Y where those effects start in dimensions taller than Y 1000; 0 = the dimension's build top (Y 2032 in JJThunder).")
+			.defineInRange("cosmonautics.spaceEffectsStartY", 0D, 0D, 19000D);
+
+	public static final ModConfigSpec.BooleanValue THROTTLE_STAR_TEXTURE = B
+			.comment("Create: Cosmonautics: rebuild the sun's animated plasma texture every starTextureIntervalTicks instead of every tick.",
+					"Each rebuild runs warped fractal noise for every pixel on the render thread, at any altitude in any dimension that",
+					"shows the universe sky (the overworld too); every tick it took about a quarter of render-thread time.")
+			.define("cosmonautics.throttleStarTexture", true);
+
+	public static final ModConfigSpec.DoubleValue STAR_TEXTURE_INTERVAL = B
+			.comment("Game ticks between rebuilds (20 = once per second); 0 = build it once and never animate.")
+			.defineInRange("cosmonautics.starTextureIntervalTicks", 20D, 0D, 1200D);
+
 	public static final ModConfigSpec.BooleanValue BI_MOD_BUTTONS = B
 			.comment("Better Inventory: other mods' vanilla-inventory buttons, stacked in the gutter between the character and the item grid.")
 			.define("betterinventory.modButtons", true);

@@ -59,6 +59,11 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Players stay seated through the atmosphere transition, even under full thrust.
 - Game sounds keep playing between Y 1000 and 2000 (Cosmonautics muted them there, which in the tall JJThunder overworld
   silenced the mountain tops).
+- In dimensions taller than Y 1000 the planet drawn beneath, space fog, daylight stars and the altitude render distance start
+  at the dimension's build top instead of Y 1000 (mountain terrain in JJThunder); `cosmonautics.spaceEffectsStartY` sets
+  another height.
+- The sun's animated plasma texture is rebuilt once per second instead of every tick (it took about a quarter of the render
+  thread's time anywhere the universe sky shows, the overworld included); `cosmonautics.starTextureIntervalTicks`.
 - Ship links to sub-levels that were not moved no longer crash the server.
 - Gyroscope Stabilizers only damp rotation in deep space instead of spinning the ship.
 - Ships saved with the ship library load intact in dimensions with a different bottom.
