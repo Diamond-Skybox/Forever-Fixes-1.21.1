@@ -20,6 +20,11 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   MCA players show only the MCA look (no second head in the Minecraft skin); with Wavey Capes the ragdoll has only the Wavey cape.
 - Tall worlds (JJThunder): the far clip plane is raised so mountain tops stay visible.
 - Sodium: terrain more than one render distance above or below the camera no longer disappears.
+- Simulated Coasters: no second flush of the world buffer every frame when there are no coasters to draw (with Iris it
+  re-sorted everything buffered so far), and the track placement previews are cleared once instead of every tick.
+- NTGL: weapon animations only tick while the weapon is drawn; every gun ever seen (in hands, inventories, recipe viewers)
+  kept ticking for the rest of the session.
+- Hexerei: book page ids are parsed once instead of every tick for every page of every book.
 - Databank 1.3.2: no "Main: …, Backup: …" debug line in the log every frame a post-processing shader runs.
 - Astral Sorcery + Enchantment Descriptions: enchanted items and books show the enchantment descriptions again.
 - Create: Stock Market + Create: Auction House: the Stock Market screen has an Auction House tab; closing the Auction House
@@ -85,7 +90,8 @@ The mixins compile against jars of the patched mods, which are not part of this 
 - `sable-player-ragdoll-classes-0.7.5.jar`: only the `dev/**` classes from Sable: Ragdolls 0.7.5;
 - `scalablelux-classes-0.3.0-alpha.0.8.jar`: only the `ca/spottedleaf/starlight/**` classes from ScalableLux.
 - the mod jars of Armor Model API 1.1.0, MCA: female gender physics 0.1.6, Better Inventory 2.0.1, Field Guide 1.22.2,
-  Spice of Life: Onion 1.5.7, Spell Atlas 1.88.22, Doggy Talents Next 1.19.1 and NTGL 3.2.0.
+  Spice of Life: Onion 1.5.7, Spell Atlas 1.88.22, Doggy Talents Next 1.19.1, NTGL 3.2.0, Simulated Coasters 0.1.5 and
+  Hexerei 0.5.0.3.
 
 ## License
 

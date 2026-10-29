@@ -42,6 +42,9 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			Map.entry("waystonesuiplus", List.of("waystonesuiplus", "waystones")),
 			Map.entry("technonw", List.of("technonw", "waystones", "numismatics")),
 			Map.entry("auctionhouse", List.of("create_auction_house", "numismatics")),
+			Map.entry("simulatedcoasters", List.of("simulatedcoasters", "sable")),
+			Map.entry("ntgl", List.of("ntgl")),
+			Map.entry("hexerei", List.of("hexerei")),
 			Map.entry("waystones", List.of("waystones")));
 
 	@Override

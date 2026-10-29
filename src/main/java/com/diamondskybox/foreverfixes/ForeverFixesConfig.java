@@ -126,6 +126,32 @@ public final class ForeverFixesConfig
 			.comment("Game ticks between rebuilds (20 = once per second); 0 = build it once and never animate.")
 			.defineInRange("cosmonautics.starTextureIntervalTicks", 20D, 0D, 1200D);
 
+	public static final ModConfigSpec.BooleanValue COASTERS_SKIP_IDLE_FLUSH = B
+			.comment("Simulated Coasters: skip its end-of-pass buffer flush when there are no carts, chain lifts or balloon tethers to draw.",
+					"It flushed the shared world buffer every frame after block entities; with Iris that sorted and drew everything buffered",
+					"so far a second time per frame, even with no coasters anywhere.")
+			.define("simulatedcoasters.skipIdleBatchFlush", true);
+
+	public static final ModConfigSpec.BooleanValue COASTERS_SKIP_REPEATED_CLEAR = B
+			.comment("Simulated Coasters: clear the track placement preview outlines once, not every tick.",
+					"Without a coaster track in hand it removed 4099 outline keys every client tick, although nothing had been drawn since.")
+			.define("simulatedcoasters.skipRepeatedOutlineClear", true);
+
+	public static final ModConfigSpec.BooleanValue NTGL_TICK_DRAWN_ONLY = B
+			.comment("NTGL: tick a weapon's animations only while it is being drawn.",
+					"NTGL keeps one animator per entity and view (hand, back, inventory, recipe viewer...) for every weapon ever drawn and ticks",
+					"all of them for the rest of the session; animators not drawn for animatorIdleSeconds are skipped until drawn again.")
+			.define("ntgl.tickOnlyDrawnAnimators", true);
+
+	public static final ModConfigSpec.DoubleValue NTGL_IDLE_SECONDS = B
+			.comment("Seconds without being drawn after which a weapon animator stops ticking.")
+			.defineInRange("ntgl.animatorIdleSeconds", 5D, 1D, 600D);
+
+	public static final ModConfigSpec.BooleanValue HEXEREI_CACHE_PAGE_IDS = B
+			.comment("Hexerei: parse book page ids once instead of every client tick.",
+					"Its book paint tick walks every page of every book 20 times a second and parsed each page's id from text each time.")
+			.define("hexerei.cachePageIds", true);
+
 	public static final ModConfigSpec.BooleanValue BI_MOD_BUTTONS = B
 			.comment("Better Inventory: other mods' vanilla-inventory buttons, stacked in the gutter between the character and the item grid.")
 			.define("betterinventory.modButtons", true);
