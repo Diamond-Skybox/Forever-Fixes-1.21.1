@@ -97,6 +97,11 @@ public final class ForeverFixesConfig
 					"as Paraglider places it, instead of in Punchy's hand position.")
 			.define("paraglider.punchyGlideOverhead", true);
 
+	public static final ModConfigSpec.BooleanValue PUNCHY_SKIP_MISSING_SLEEVES = B
+			.comment("Punchy: no first-person armor sleeve for chest armor without a vanilla armor-layer texture.",
+					"Armor that draws its own model (RPG series through Armor Model API) has none, and Punchy drew a black sleeve.")
+			.define("punchy.skipMissingArmorSleeves", true);
+
 	public static final ModConfigSpec.BooleanValue RPG_BREAST_ARMOR = B
 			.comment("MCA: female gender physics + Armor Model API: RPG-series chest armor on the breasts uses its own texture instead of the missing-texture purple.")
 			.define("mca.rpgBreastArmor", true);

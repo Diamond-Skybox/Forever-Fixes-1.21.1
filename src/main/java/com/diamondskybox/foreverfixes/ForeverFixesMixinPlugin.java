@@ -32,6 +32,7 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			Map.entry("ragdollcape", List.of("sable_player_ragdoll", "waveycapes")),
 			Map.entry("punchy", List.of("punchy", "mca")),
 			Map.entry("paraglidermobends", List.of("paraglider", "mobends")),
+			Map.entry("punchyarmor", List.of("punchy")),
 			Map.entry("paragliderpunchy", List.of("paraglider", "punchy")),
 			Map.entry("genderarmor", List.of("mcabp", "armor_model_api")),
 			Map.entry("traveloptics", List.of("traveloptics")),

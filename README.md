@@ -12,6 +12,7 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Punchy + MCA: first-person arms show the MCA look instead of the Minecraft skin.
 - Paraglider + Mo' Bends / Punchy: the open paraglider is held above the head while gliding, in third person (Mo' Bends'
   gliding pose plays again) and in first person (Punchy no longer pulls it down into the hand).
+- Punchy: armor that draws its own model (RPG series, e.g. Crusader) gets no black sleeve on the first-person arms.
 - MCA: female gender physics + RPG-series armor (Armor Model API): the breasts show the armor's own texture instead of
   purple.
 - Better Inventory: other mods' inventory buttons (Spell Atlas, Field Guide, Spice of Life food book, Doggy Talents dog

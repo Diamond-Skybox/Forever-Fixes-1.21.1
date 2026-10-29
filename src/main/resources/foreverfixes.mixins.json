@@ -40,6 +40,7 @@
     "ragdoll.MixinRagdollPartRenderer",
     "ragdollcape.MixinRagdollPartRendererCape",
     "punchy.MixinPunchyArmRenderer",
+    "punchyarmor.MixinPunchyArmArmor",
     "paraglidermobends.MixinParagliderCompat",
     "paragliderpunchy.MixinPunchyConfigParaglider",
     "genderarmor.MixinGenderLayer",
