@@ -29,6 +29,7 @@
     "technonw.MixinBankCardPaymentService",
     "vanilla.MixinDimensionDataStorage",
     "skeletonsrising.MixinTheFamilyReunionDemandsProcedure",
+    "skeletonsrising.MixinSoulTerrorOnEntityTickUpdateProcedure",
     "createnuclear.MixinRadiationCapability"
   ],
   "client": [

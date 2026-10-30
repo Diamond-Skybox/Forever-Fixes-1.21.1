@@ -36,6 +36,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   world-generation threads during an autosave, e.g. Immersive Petroleum's reservoir regions during a pregen.
 - Skeletons Rising: its "The Family Reunion" advancement check runs on players' ticks only, instead of searching the area
   around every entity every tick.
+- Skeletons Rising: no server crash ("Ticking entity", SoulTerrorOnEntityTickUpdateProcedure) when a Soul Terror's dash comes up
+  with no player within range; it skips that dash instead.
 - Create: Nuclear: the radiation tick no longer removes the radiation effect from every entity that does not have it.
 - Items that rewrite their own data every tick (Relics' Clot of Time) no longer re-check every unfinished "has item" advancement
   each tick: a slot whose item only changed its data reports it at most once a second (`performance.throttleDataOnlySlotChanges`).
