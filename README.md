@@ -21,6 +21,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   MCA players show only the MCA look (no second head in the Minecraft skin); with Wavey Capes the ragdoll has only the Wavey cape.
 - Tall worlds (JJThunder): the far clip plane is raised so mountain tops stay visible.
 - Sodium: terrain more than one render distance above or below the camera no longer disappears.
+- Sable + Flywheel (Create): ships' and the world's Flywheel lighting updates no longer build a Java stream for every
+  neighbouring section of every light change (the render thread waited on it for close to a third of each frame).
 - Simulated Coasters: no second flush of the world buffer every frame when there are no coasters to draw (with Iris it
   re-sorted everything buffered so far), and the track placement previews are cleared once instead of every tick.
 - NTGL: weapon animations only tick while the weapon is drawn; every gun ever seen (in hands, inventories, recipe viewers)

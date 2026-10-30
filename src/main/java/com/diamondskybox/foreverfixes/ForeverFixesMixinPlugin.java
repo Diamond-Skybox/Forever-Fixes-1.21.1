@@ -28,6 +28,7 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			Map.entry("rocketnautics", List.of("rocketnautics")),
 			Map.entry("gyro", List.of("gyro")),
 			Map.entry("sable", List.of("sable")),
+			Map.entry("sableflywheel", List.of("sable", "flywheel")),
 			Map.entry("ragdoll", List.of("sable_player_ragdoll", "mca")),
 			Map.entry("ragdollcape", List.of("sable_player_ragdoll", "waveycapes")),
 			Map.entry("punchy", List.of("punchy", "mca")),

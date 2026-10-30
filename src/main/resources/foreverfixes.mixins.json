@@ -33,6 +33,7 @@
     "createnuclear.MixinRadiationCapability"
   ],
   "client": [
+    "sableflywheel.MixinSableFlywheelLightStorage",
     "mobends.MixinArmorModelApiCompat",
     "mobends.MixinBipedMutator",
     "mobends.MixinMcaCompat",
