@@ -71,6 +71,17 @@ public final class ForeverFixesCommonConfig
 					"Its radiation tick removed it from every living entity every tick, firing a NeoForge effect-removed event each time.")
 			.define("performance.nuclearSkipAbsentEffectRemoval", true);
 
+	public static final ModConfigSpec.BooleanValue THROTTLE_DATA_ONLY_SLOT_CHANGES = B
+			.comment("Player inventory slots whose item only changed its data (same item, same count) report the change to advancements",
+					"at most once a second instead of every tick. Items that rewrite their data every tick (Relics' Clot of Time) otherwise",
+					"re-check every unfinished \"has item\" advancement each tick. The latest stack is still checked within a second.")
+			.define("performance.throttleDataOnlySlotChanges", true);
+
+	public static final ModConfigSpec.BooleanValue EDIT_ENCHANTING_RESET_REPAIR_COST = B
+			.comment("Edit Enchanting: removing enchantments at the disenchantment table recalculates the item's anvil prior-work penalty",
+					"from the enchantments left, like the grindstone (none left: no penalty). It is never raised.")
+			.define("enchantments.editEnchantingResetRepairCost", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	/** Read from tick code, which can run before the config file is loaded; default to enabled then. */

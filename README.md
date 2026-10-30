@@ -37,6 +37,10 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Skeletons Rising: its "The Family Reunion" advancement check runs on players' ticks only, instead of searching the area
   around every entity every tick.
 - Create: Nuclear: the radiation tick no longer removes the radiation effect from every entity that does not have it.
+- Items that rewrite their own data every tick (Relics' Clot of Time) no longer re-check every unfinished "has item" advancement
+  each tick: a slot whose item only changed its data reports it at most once a second (`performance.throttleDataOnlySlotChanges`).
+- Edit Enchanting: removing enchantments at the disenchantment table also lowers the item's anvil prior-work penalty, like the
+  grindstone, so disenchanted items are no longer "Too Expensive" (`enchantments.editEnchantingResetRepairCost`).
 - Better Combat: no server crash at startup from items without attribute modifiers.
 - T.O Magic 'n Extras 4.4.0.1: no crash at startup ("Adding duplicate value" for its loot modifier codec).
 - Dungeons and Taverns: its internal boss-marker enchantments ("Illegal enchantment", "LOOT TABLE ERROR - REPORT TO MOD/DATAPACK

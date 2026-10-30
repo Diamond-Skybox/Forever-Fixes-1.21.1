@@ -18,6 +18,8 @@
     "traveloptics.MixinTOLootModifiers",
     "vanilla.MixinEnchantRandomlyFunction",
     "vanilla.MixinEnchantWithLevelsFunction",
+    "vanilla.MixinAbstractContainerMenuSlotListeners",
+    "editenchanting.MixinEnchantedBookLogic",
     "technonw.MixinInternalMethodsImpl",
     "technonw.MixinBankCardDeduct",
     "auctionhouse.MixinNumismaticsSpurAdapter",
