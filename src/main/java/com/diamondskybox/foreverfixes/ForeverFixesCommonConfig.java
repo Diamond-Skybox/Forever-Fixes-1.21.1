@@ -94,6 +94,17 @@ public final class ForeverFixesCommonConfig
 					"from the enchantments left, like the grindstone (none left: no penalty). It is never raised.")
 			.define("enchantments.editEnchantingResetRepairCost", true);
 
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> FLOATING_STRUCTURES = B
+			.comment("Structures that float in the air (sky islands, airships): when one is placed, the terrain under its whole footprint is",
+					"checked and the structure is raised until it clears the ground by worldgen.floatingStructures.clearance blocks; one that",
+					"cannot fit under the build limit is not placed. Structure ids, or \"namespace:*\" for all of a mod's structures.")
+			.defineListAllowEmpty("worldgen.floatingStructures.ids", List.of("create_sky_village:*", "skyvillages:*", "shellbound_for_airship:*"),
+					() -> "", o -> o instanceof String s && !s.isBlank());
+
+	public static final ModConfigSpec.IntValue FLOATING_STRUCTURES_CLEARANCE = B
+			.comment("Fewest blocks of air between a floating structure's lowest block and the terrain (or water surface) below it.")
+			.defineInRange("worldgen.floatingStructures.clearance", 8, 0, 256);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	/** Read from tick code, which can run before the config file is loaded; default to enabled then. */

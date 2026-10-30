@@ -92,6 +92,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 
 **World generation**
 - Chunks no longer fail to generate ("Biome decoration: Index … out of bounds") when mods add features in conflicting orders.
+- Sky islands and airships (Create Sky Village, Sky Villages, ShellBound for AirShip) no longer generate inside mountains: the
+  terrain under the whole structure is checked and it is raised until it clears the ground (`worldgen.floatingStructures.*`).
 
 ## Building
 

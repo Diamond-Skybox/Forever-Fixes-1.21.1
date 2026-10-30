@@ -8,6 +8,7 @@
     "bettercombat.MixinWeaponAttributesFallback",
     "worldgen.MixinChunkGeneratorDecoration",
     "worldgen.MixinStepFeatureData",
+    "worldgen.MixinStructureFloatingClearance",
     "cosmonautics.MixinSubLevelTemplate",
     "cosmonautics.MixinSubLevelWarper",
     "cosmonautics.MixinSpaceTransitionHandler",
