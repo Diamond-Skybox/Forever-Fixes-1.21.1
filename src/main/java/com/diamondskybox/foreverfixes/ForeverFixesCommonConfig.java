@@ -15,6 +15,18 @@ public final class ForeverFixesCommonConfig
 					"chests. Its own structures' chests keep their loot.")
 			.define("loot.removeOpenComputersChestLoot", false);
 
+	public static final ModConfigSpec.ConfigValue<String> CHEST_COINS_ITEM = B
+			.comment("Item added to every chest loot table (structure chests, barrels, chest carts; with Lootr, to each player's roll).")
+			.define("loot.chestCoins.item", "numismatics:spur");
+
+	public static final ModConfigSpec.IntValue CHEST_COINS_MIN = B
+			.comment("Fewest of that item per chest.")
+			.defineInRange("loot.chestCoins.min", 1, 1, 64);
+
+	public static final ModConfigSpec.IntValue CHEST_COINS_MAX = B
+			.comment("Most of that item per chest; 0 turns the extra coins off.")
+			.defineInRange("loot.chestCoins.max", 5, 0, 64);
+
 	public static final ModConfigSpec.ConfigValue<List<? extends String>> BLOCKED_ENCHANTMENTS = B
 			.comment("Enchantments that never come out of random loot enchanting and are removed from items in players' inventories.",
 					"Default: Dungeons and Taverns' internal boss markers (named \"Illegal enchantment\", \"LOOT TABLE ERROR - REPORT TO",

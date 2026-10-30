@@ -49,6 +49,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Loot no longer gives blank enchanted books: when enchant_with_levels cannot fit any of its enchantments (Dungeons and Taverns'
   desert ruin and nether keep books), one is picked from the same list; blank books players carry become plain books
   (`enchantments.fixBlankBooks`).
+- Every chest loot table (structure chests, barrels, chest carts; with Lootr, each player's roll) also holds 1-5 Numismatics spurs
+  (`loot.chestCoins.*`; max 0 turns it off).
 - Trades: villager / wandering trader offers selling items listed in `trades.removedResults` are removed (default: AE2's Fluix
   Researcher selling charged certus quartz).
 - Dimensions and planets are reached by Tempad, stargate, rocket or their own way in: waystones, Tombstone, FTB Essentials

@@ -13,7 +13,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** Compatibility fixes between mods of the 1.21.1 pack. No content, no commands; a server tick listener (ShipReseat), a player tick listener (BlockedEnchantments), trade listeners (VillagerTradeFixes), a loot table listener (LootFixes) and client listeners (RagdollSourceHider, InventoryBridge); each fix only applies when its target mod is installed. */
+/** Compatibility fixes between mods of the 1.21.1 pack. No content, no commands; a server tick listener (ShipReseat), a player tick listener (BlockedEnchantments), trade listeners (VillagerTradeFixes), loot table listeners (ChestCoins, LootFixes) and client listeners (RagdollSourceHider, InventoryBridge); each fix only applies when its target mod is installed. */
 @Mod(ForeverFixes.MOD_ID)
 public final class ForeverFixes
 {
@@ -28,6 +28,7 @@ public final class ForeverFixes
 		NeoForge.EVENT_BUS.addListener(BlockedEnchantments::onPlayerTick);
 		NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, VillagerTradeFixes::onVillagerTrades);
 		NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, VillagerTradeFixes::onWandererTrades);
+		NeoForge.EVENT_BUS.addListener(EventPriority.LOW, ChestCoins::onLootTableLoad);
 		if (ModList.get().isLoaded("opencomputers"))
 		{
 			NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, LootFixes::onLootTableLoad);
