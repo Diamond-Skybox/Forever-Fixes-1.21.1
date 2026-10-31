@@ -2,6 +2,8 @@ package com.diamondskybox.foreverfixes;
 
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.LoadingModList;
+import net.neoforged.fml.loading.moddiscovery.ModFileInfo;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.objectweb.asm.tree.ClassNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +54,10 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			Map.entry("editenchanting", List.of("editenchanting")),
 			Map.entry("waystones", List.of("waystones")));
 
+	/** mixin (path below the mixin package) -> mod id and the first version of that mod that fixed the problem itself */
+	private static final Map<String, Map.Entry<String, String>> FIXED_IN = Map.of(
+			"mobends.MixinArmorModelApiCompat", Map.entry("mobends", "6.0.0"));
+
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
 	{
@@ -66,7 +72,27 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 				return false;
 			}
 		}
+		final Map.Entry<String, String> fixedIn = FIXED_IN.get(rest);
+		if (fixedIn != null && !isModOlderThan(fixedIn.getKey(), fixedIn.getValue()))
+		{
+			LOGGER.info("Skipping {} ({} {} and newer fix this themselves)", mixinClassName, fixedIn.getKey(), fixedIn.getValue());
+			return false;
+		}
 		return true;
+	}
+
+	/** true when the mod is installed in a version below {@code version}; unknown versions count as not older */
+	private static boolean isModOlderThan(String modId, String version)
+	{
+		try
+		{
+			final ModFileInfo file = FMLLoader.getLoadingModList().getModFileById(modId);
+			return file != null && file.getMods().get(0).getVersion().compareTo(new DefaultArtifactVersion(version)) < 0;
+		}
+		catch (Throwable t)
+		{
+			return false;
+		}
 	}
 
 	private static boolean isModPresent(String modId)

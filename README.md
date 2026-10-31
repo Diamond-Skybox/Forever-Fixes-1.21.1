@@ -6,7 +6,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 ## Fixes
 
 **Rendering and animation**
-- Mo' Bends + Armor Model API: RPG-series armor (Paladins, Wizards, Archers, Rogues, Armory) no longer loses its textures.
+- Mo' Bends + Armor Model API: RPG-series armor (Paladins, Wizards, Archers, Rogues, Armory) no longer loses its textures
+  (Mo' Bends before 6.0; 6.0 fixed it itself).
 - Wavey Capes + Mo' Bends: no double tilt while crouching; the cape lies along the back in creative flight.
 - Mo' Bends + MCA: players keep their MCA body.
 - Punchy + MCA: first-person arms show the MCA look instead of the Minecraft skin.
@@ -101,7 +102,7 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 `./gradlew build` (Java 21) → `build/libs/foreverfixes-<version>.jar`.
 
 The mixins compile against jars of the patched mods, which are not part of this repository. Put these in `libs/`:
-- `mobends-1.21.1-5.6.3-neoforge.jar` and `waveycapes-neoforge-1.11.2-mc1.21.1.jar`;
+- `mobends-1.21.1-6.0.1-neoforge.jar`, `punchy-3.0a-neoforge-1.21.1.jar` and `waveycapes-neoforge-1.11.2-mc1.21.1.jar`;
 - `dimensional-sable-classes-1.0.5.jar`: only the `dev/egg/**` classes from Create: Cosmonautics 26.08.307;
 - `sable-classes-2.0.6.jar`: only the `dev/ryanhcode/**` classes from Sable 2.0.6;
 - `sable-player-ragdoll-classes-0.7.5.jar`: only the `dev/**` classes from Sable: Ragdolls 0.7.5;

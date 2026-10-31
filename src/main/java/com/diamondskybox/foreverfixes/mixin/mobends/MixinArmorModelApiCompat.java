@@ -29,6 +29,9 @@ import java.util.function.Function;
  * the compat stays off, and every API-rendered armor falls back to vanilla {@code _layer_N} textures that these mods do not ship:
  * purple armor. After Mo' Bends' {@code init()} this redoes the lookups with the trim part optional, and answers
  * {@code getTrimSprite} the way the API's own {@code TrimLayer.render} does (Mo' Bends, MIT; Armor Model API, MIT; no code copied).
+ * <p>
+ * Mo' Bends 6.0 looks the trim part up separately and no longer has {@code resolveSpriteMethod}; this mixin is only applied to
+ * older versions (ForeverFixesMixinPlugin.FIXED_IN).
  */
 @Mixin(targets = "goblinbob.mobends.compat.ArmorModelApiCompat", remap = false)
 public abstract class MixinArmorModelApiCompat
