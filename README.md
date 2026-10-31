@@ -19,6 +19,7 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   inventories) sit in its gutter, below the gear tab's slots; Spell Atlas's inventory panel and NTGL's chassis tabs show on its screen too.
 - Sable: Ragdolls + Mo' Bends / MCA: a ragdolled player's normal body is no longer drawn next to the ragdoll, and ragdolls of
   MCA players show only the MCA look (no second head in the Minecraft skin); with Wavey Capes the ragdoll has only the Wavey cape.
+- Sable: Ragdoll Corpse + MCA: corpses of MCA players show the MCA look instead of the Minecraft skin.
 - Tall worlds (JJThunder): the far clip plane is raised so mountain tops stay visible.
 - Sodium: terrain more than one render distance above or below the camera no longer disappears.
 - Sable + Flywheel (Create): ships' and the world's Flywheel lighting updates no longer build a Java stream for every
