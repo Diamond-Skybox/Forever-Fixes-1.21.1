@@ -105,6 +105,29 @@ public final class ForeverFixesCommonConfig
 			.comment("Fewest blocks of air between a floating structure's lowest block and the terrain (or water surface) below it.")
 			.defineInRange("worldgen.floatingStructures.clearance", 8, 0, 256);
 
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> PRIORITY_STRUCTURES = B
+			.comment("Structures that keep their place: positions are known from the seed, so any other structure that would overlap one of these",
+					"(within worldgen.priorityStructures.radius chunks) is not placed, no matter which generates first. Earlier entries win over",
+					"later ones. Structure ids, or \"namespace:*\" for all of a mod's structures; empty turns it off. With No Structure Overlap these",
+					"are accepted by it without being tracked. Read when a world loads: changes need a restart, and only new chunks are affected.")
+			.defineListAllowEmpty("worldgen.priorityStructures.ids", List.of("cataclysm:burning_arena", "block_factorys_bosses:underworld_arena",
+					"nova_structures:nether_keep", "betterfortresses:fortress", "minecraft:fortress", "minecraft:bastion_remnant",
+					"cataclysm:soul_black_smith", "mns:mega_fortress", "bosses_of_mass_destruction:gauntlet_arena"),
+					() -> "", o -> o instanceof String s && !s.isBlank());
+
+	public static final ModConfigSpec.IntValue PRIORITY_STRUCTURES_RADIUS = B
+			.comment("How far (chunks) from a structure's edge priority structures are looked for; it must cover how far their pieces reach",
+					"from their start chunk.")
+			.defineInRange("worldgen.priorityStructures.radius", 12, 1, 32);
+
+	public static final ModConfigSpec.IntValue PRIORITY_STRUCTURES_MARGIN = B
+			.comment("Extra blocks kept free around each piece of a priority structure.")
+			.defineInRange("worldgen.priorityStructures.margin", 2, 0, 16);
+
+	public static final ModConfigSpec.BooleanValue PRIORITY_STRUCTURES_LOG = B
+			.comment("Log each structure left out for a priority structure.")
+			.define("worldgen.priorityStructures.log", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	/** Read from tick code, which can run before the config file is loaded; default to enabled then. */

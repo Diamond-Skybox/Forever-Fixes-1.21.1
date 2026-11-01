@@ -96,6 +96,9 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Chunks no longer fail to generate ("Biome decoration: Index … out of bounds") when mods add features in conflicting orders.
 - Sky islands and airships (Create Sky Village, Sky Villages, ShellBound for AirShip) no longer generate inside mountains: the
   terrain under the whole structure is checked and it is raised until it clears the ground (`worldgen.floatingStructures.*`).
+- Priority structures keep their place: fortresses, bastions and Nether boss arenas (list in `worldgen.priorityStructures.ids`) are
+  worked out from the seed before anything else is placed near them, so smaller structures that would overlap them are left out,
+  whichever chunk generates first. Works alongside No Structure Overlap, which then keeps the other structures apart.
 
 ## Building
 

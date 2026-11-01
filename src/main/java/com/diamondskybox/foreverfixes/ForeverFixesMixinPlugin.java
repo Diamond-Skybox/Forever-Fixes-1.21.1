@@ -52,7 +52,8 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			Map.entry("skeletonsrising", List.of("skeletons_rising")),
 			Map.entry("createnuclear", List.of("createnuclear")),
 			Map.entry("editenchanting", List.of("editenchanting")),
-			Map.entry("waystones", List.of("waystones")));
+			Map.entry("waystones", List.of("waystones")),
+			Map.entry("nostructureoverlap", List.of("nostructureoverlap")));
 
 	/** mixin (path below the mixin package) -> mod id and the first version of that mod that fixed the problem itself */
 	private static final Map<String, Map.Entry<String, String>> FIXED_IN = Map.of(
