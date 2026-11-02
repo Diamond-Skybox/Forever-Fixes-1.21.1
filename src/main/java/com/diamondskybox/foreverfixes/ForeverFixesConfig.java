@@ -83,6 +83,11 @@ public final class ForeverFixesConfig
 			.comment("Sable: Ragdolls + Wavey Capes: leave the ragdoll's cape to Wavey Capes instead of also drawing a stiff one.")
 			.define("ragdoll.waveyCapeOnly", true);
 
+	public static final ModConfigSpec.BooleanValue RAGDOLL_MCA_BREASTS = B
+			.comment("Sable: Ragdoll Corpse + MCA: female gender physics: give corpses of MCA players their breasts.",
+					"The corpse is drawn on a stand-in doll, and the gender mod only looks up MCA bodies for players and villagers.")
+			.define("ragdoll.mcaCorpseBreasts", true);
+
 	public static final ModConfigSpec.BooleanValue PUNCHY_MCA_ARMS = B
 			.comment("Punchy + MCA: draw MCA's arms in first person instead of Punchy's Minecraft-skin arms, for players MCA draws.")
 			.define("mca.punchyMcaArms", true);

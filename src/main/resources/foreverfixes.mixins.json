@@ -49,6 +49,8 @@
     "travelerstitles.MixinTitleRenderManager",
     "ragdoll.MixinRagdollPartRenderer",
     "ragdollcape.MixinRagdollPartRendererCape",
+    "ragdollgender.MixinEntityConfigCorpse",
+    "ragdollgender.MixinGenderLayerCorpse",
     "punchy.MixinPunchyArmRenderer",
     "punchyarmor.MixinPunchyArmArmor",
     "paraglidermobends.MixinParagliderCompat",
