@@ -98,8 +98,22 @@ public final class ForeverFixesCommonConfig
 			.comment("Structures that float in the air (sky islands, airships): when one is placed, the terrain under its whole footprint is",
 					"checked and the structure is raised until it clears the ground by worldgen.floatingStructures.clearance blocks; one that",
 					"cannot fit under the build limit is not placed. Structure ids, or \"namespace:*\" for all of a mod's structures.")
-			.defineListAllowEmpty("worldgen.floatingStructures.ids", List.of("create_sky_village:*", "skyvillages:*", "shellbound_for_airship:*"),
+			.defineListAllowEmpty("worldgen.floatingStructures.ids", List.of("create_sky_village:*", "skyvillages:*", "shellbound_for_airship:*",
+					"mss:*", "mvs:floating_islands", "mvs:large_floating_island", "castle_in_the_sky:*", "delighto_flight:cloud_island",
+					"envelope:collapsed_mail_hub", "create_structures_arise:createminiskyvillage", "create_structures_arise:pillagersteampunkairship",
+					"cr_aero_structures:airship", "cr_aero_structures:airballoon", "cr_aero_structures:pillager_airship",
+					"cr_aero_structures:pillager_airballoon"),
 					() -> "", o -> o instanceof String s && !s.isBlank());
+
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> FLOATING_STRUCTURE_BANDS = B
+			.comment("Height bands for floating structures that place themselves in code and ignore a datapack's start_height (Create:",
+					"Aeronautics Structures puts its airships and balloons a fixed distance above the ground): \"id=min..max\", or",
+					"\"namespace:*=min..max\". The structure's lowest block is moved to a height in the band, the same for a chunk on every",
+					"seed-identical world, then the clearance below still applies. Only structures in worldgen.floatingStructures.ids.")
+			.defineListAllowEmpty("worldgen.floatingStructures.heightBands", List.of("cr_aero_structures:airship=140..1800",
+					"cr_aero_structures:airballoon=140..1800", "cr_aero_structures:pillager_airship=140..1800",
+					"cr_aero_structures:pillager_airballoon=140..1800"),
+					() -> "", o -> o instanceof String s && s.matches("[a-z0-9_.-]+:[a-z0-9_./*-]+=-?\\d+\\.\\.-?\\d+"));
 
 	public static final ModConfigSpec.IntValue FLOATING_STRUCTURES_CLEARANCE = B
 			.comment("Fewest blocks of air between a floating structure's lowest block and the terrain (or water surface) below it.")

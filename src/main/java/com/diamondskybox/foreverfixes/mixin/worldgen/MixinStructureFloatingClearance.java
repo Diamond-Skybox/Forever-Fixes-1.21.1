@@ -11,7 +11,9 @@ import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.RandomState;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
@@ -27,7 +29,8 @@ import java.util.List;
  * 2096-block JJThunder overworld mountains reach any height they can roll: they were placed half inside mountainsides. For the
  * structures in worldgen.floatingStructures.ids the terrain under the whole footprint is sampled when the start is built, and all
  * pieces are raised together until the lowest block clears the highest ground (or water surface) by the configured clearance. A
- * structure that would then reach past the build limit is not placed.
+ * structure that would then reach past the build limit is not placed. Structures with a height band (worldgen.floatingStructures.
+ * heightBands, for those that place themselves in code and ignore a datapack's start_height) are first moved into the band.
  */
 @Mixin(value = Structure.class, remap = false)
 public abstract class MixinStructureFloatingClearance
@@ -39,9 +42,18 @@ public abstract class MixinStructureFloatingClearance
 			RegistryAccess registryAccess, ChunkGenerator generator, BiomeSource biomeSource, RandomState randomState,
 			StructureTemplateManager templateManager, long seed, ChunkPos chunkPos, int references, LevelHeightAccessor level)
 	{
-		if (!builder.isEmpty() && ForeverFixesCommonConfig.SPEC.isLoaded()
-				&& foreverfixes$isFloating(registryAccess.registryOrThrow(Registries.STRUCTURE).getKey((Structure) (Object) this)))
+		final ResourceLocation id = registryAccess.registryOrThrow(Registries.STRUCTURE).getKey((Structure) (Object) this);
+		if (!builder.isEmpty() && ForeverFixesCommonConfig.SPEC.isLoaded() && foreverfixes$isFloating(id))
 		{
+			final int[] band = foreverfixes$band(id);
+			if (band != null)
+			{
+				final BoundingBox placed = builder.getBoundingBox();
+				final WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));
+				random.setLargeFeatureSeed(seed, chunkPos.x, chunkPos.z);
+				final int top = Math.max(band[0], band[1] - placed.getYSpan());
+				builder.offsetPiecesVertically(band[0] + random.nextInt(top - band[0] + 1) - placed.minY());
+			}
 			final BoundingBox box = builder.getBoundingBox();
 			final int ground = foreverfixes$highestGround(box, generator, level, randomState);
 			final int lift = ground + ForeverFixesCommonConfig.FLOATING_STRUCTURES_CLEARANCE.get() - box.minY();
@@ -73,6 +85,26 @@ public abstract class MixinStructureFloatingClearance
 			}
 		}
 		return false;
+	}
+
+	/** the structure's height band {min, max} from worldgen.floatingStructures.heightBands, or null */
+	private static int[] foreverfixes$band(ResourceLocation id)
+	{
+		final String full = id.toString();
+		final String anyOfMod = id.getNamespace() + ":*";
+		for (String entry : ForeverFixesCommonConfig.FLOATING_STRUCTURE_BANDS.get())
+		{
+			final int eq = entry.indexOf('=');
+			final String key = entry.substring(0, eq);
+			if (key.equals(full) || key.equals(anyOfMod))
+			{
+				final String[] range = entry.substring(eq + 1).split("\\.\\.");
+				final int a = Integer.parseInt(range[0]);
+				final int b = Integer.parseInt(range[1]);
+				return new int[] { Math.min(a, b), Math.max(a, b) };
+			}
+		}
+		return null;
 	}
 
 	/** highest first free block (terrain or water surface) on a grid over the box's footprint, edges included */
