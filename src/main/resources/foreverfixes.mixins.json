@@ -51,6 +51,7 @@
     "ragdollcape.MixinRagdollPartRendererCape",
     "ragdollgender.MixinEntityConfigCorpse",
     "ragdollgender.MixinGenderLayerCorpse",
+    "mcawerewolf.MixinMcaClientWerewolf",
     "punchy.MixinPunchyArmRenderer",
     "punchyarmor.MixinPunchyArmArmor",
     "paraglidermobends.MixinParagliderCompat",

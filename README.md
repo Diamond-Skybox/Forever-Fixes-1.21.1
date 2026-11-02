@@ -22,6 +22,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   MCA players show only the MCA look (no second head in the Minecraft skin); with Wavey Capes the ragdoll has only the Wavey cape.
 - Sable: Ragdoll Corpse + MCA: corpses of MCA players show the MCA look instead of the Minecraft skin, and with MCA: female
   gender physics they keep their breasts.
+- Werewolves + MCA: a player in a transformed werewolf form shows the werewolf model instead of nothing; the MCA look returns in
+  human form.
 - Tall worlds (JJThunder): the far clip plane is raised so mountain tops stay visible.
 - Sodium: terrain more than one render distance above or below the camera no longer disappears.
 - Sable + Flywheel (Create): ships' and the world's Flywheel lighting updates no longer build a Java stream for every

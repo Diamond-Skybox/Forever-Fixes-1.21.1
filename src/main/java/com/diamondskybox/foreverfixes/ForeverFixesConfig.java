@@ -92,6 +92,11 @@ public final class ForeverFixesConfig
 			.comment("Punchy + MCA: draw MCA's arms in first person instead of Punchy's Minecraft-skin arms, for players MCA draws.")
 			.define("mca.punchyMcaArms", true);
 
+	public static final ModConfigSpec.BooleanValue MCA_WEREWOLF_FORM = B
+			.comment("Werewolves + MCA: show the werewolf model of a player in a transformed werewolf form instead of nothing.",
+					"MCA hides the vanilla model of the players it draws, which also hid the werewolf model. The MCA look is back in human form.")
+			.define("mca.werewolfForm", true);
+
 	public static final ModConfigSpec.BooleanValue MOBENDS_PARAGLIDER_POSE = B
 			.comment("Mo' Bends + Paraglider 21.1: play Mo' Bends' paragliding pose (glider held above the head) while gliding.",
 					"Mo' Bends looks for a Paraglider class that 21.1 no longer has, so the pose never played.")
