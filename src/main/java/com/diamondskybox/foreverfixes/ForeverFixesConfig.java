@@ -97,6 +97,11 @@ public final class ForeverFixesConfig
 					"MCA hides the vanilla model of the players it draws, which also hid the werewolf model. The MCA look is back in human form.")
 			.define("mca.werewolfForm", true);
 
+	public static final ModConfigSpec.BooleanValue BSC_GLASS_FLUSH = B
+			.comment("Better Simple Clouds: draw entities, chests and beacon beams before it copies the depth for clouds seen through glass.",
+					"They were still batched at that point, so clouds and storm fog were drawn over them wherever glass was behind them.")
+			.define("bettersimpleclouds.flushBeforeGlass", true);
+
 	public static final ModConfigSpec.BooleanValue MOBENDS_PARAGLIDER_POSE = B
 			.comment("Mo' Bends + Paraglider 21.1: play Mo' Bends' paragliding pose (glider held above the head) while gliding.",
 					"Mo' Bends looks for a Paraglider class that 21.1 no longer has, so the pose never played.")

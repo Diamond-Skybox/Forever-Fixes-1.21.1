@@ -24,6 +24,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   gender physics they keep their breasts.
 - Werewolves + MCA: a player in a transformed werewolf form shows the werewolf model instead of nothing; the MCA look returns in
   human form.
+- Better Simple Clouds: clouds and storm fog seen through glass no longer cover the entities, chests and beacon beams in front of
+  or behind the glass.
 - Tall worlds (JJThunder): the far clip plane is raised so mountain tops stay visible.
 - Sodium: terrain more than one render distance above or below the camera no longer disappears.
 - Sable + Flywheel (Create): ships' and the world's Flywheel lighting updates no longer build a Java stream for every

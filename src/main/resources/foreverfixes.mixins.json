@@ -52,6 +52,7 @@
     "ragdollgender.MixinEntityConfigCorpse",
     "ragdollgender.MixinGenderLayerCorpse",
     "mcawerewolf.MixinMcaClientWerewolf",
+    "bscglass.MixinCloudGlassCapture",
     "punchy.MixinPunchyArmRenderer",
     "punchyarmor.MixinPunchyArmArmor",
     "paraglidermobends.MixinParagliderCompat",
