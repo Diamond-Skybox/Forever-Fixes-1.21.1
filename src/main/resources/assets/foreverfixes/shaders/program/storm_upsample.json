@@ -5,7 +5,8 @@
     "samplers": [
         { "name": "DiffuseSampler" },
         { "name": "DepthSampler" },
-        { "name": "GlassFilter" }
+        { "name": "GlassFilter" },
+        { "name": "CloudDepth" }
     ],
     "uniforms": [
         { "name": "ProjMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
@@ -14,6 +15,10 @@
         { "name": "InverseProjMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
         { "name": "DepthReverse", "type": "float", "count": 1, "values": [ 0.0 ] },
         { "name": "DepthRange", "type": "float", "count": 1, "values": [ 0.0 ] },
-        { "name": "GlassOn", "type": "float", "count": 1, "values": [ 0.0 ] }
+        { "name": "GlassOn", "type": "float", "count": 1, "values": [ 0.0 ] },
+        { "name": "CloudInverseProjMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+        { "name": "CloudEnabled", "type": "float", "count": 1, "values": [ 0.0 ] },
+        { "name": "CloudReverse", "type": "float", "count": 1, "values": [ 0.0 ] },
+        { "name": "CloudRange", "type": "float", "count": 1, "values": [ 0.0 ] }
     ]
 }

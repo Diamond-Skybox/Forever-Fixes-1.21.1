@@ -445,6 +445,19 @@ public final class StormFogFixes
 		effect.safeGetUniform("InverseProjMat").set(new Matrix4f().set(0, inverse.getFloatBuffer()));
 		effect.safeGetUniform("DepthReverse").set(floatUniform(fog, "MicDepthReverse"));
 		effect.safeGetUniform("DepthRange").set(floatUniform(fog, "MicDepthRange"));
+		// the second depth the march stops at: Distant Horizons' LOD terrain and the clouds, in their own projection
+		final IntSupplier cloudDepth = ((AccessorEffectInstance) fog).foreverfixes$samplers().get("MicCloudDepth");
+		final Uniform cloudInverse = fog.getUniform("MicCloudInvProj");
+		final boolean cloudOn = cloudDepth != null && cloudInverse != null && floatUniform(fog, "MicCloudEnabled") > 0.5F;
+		final int cloudTexture = cloudOn ? cloudDepth.getAsInt() : depthTexture;
+		effect.setSampler("CloudDepth", () -> cloudTexture);
+		effect.safeGetUniform("CloudEnabled").set(cloudOn ? 1.0F : 0.0F);
+		if (cloudOn)
+		{
+			effect.safeGetUniform("CloudInverseProjMat").set(new Matrix4f().set(0, cloudInverse.getFloatBuffer()));
+			effect.safeGetUniform("CloudReverse").set(floatUniform(fog, "MicCloudReverse"));
+			effect.safeGetUniform("CloudRange").set(floatUniform(fog, "MicCloudRange"));
+		}
 		// glass in front of the storm fog: Better Simple Clouds' filter, worked out once a frame against the finished frame
 		final boolean glassOn = ForeverFixesConfig.enabled(ForeverFixesConfig.BSC_STORM_FOG_GLASS) && CloudGlass.prepareFilter();
 		final int filter = glassOn ? CloudGlass.filterTexture() : 0;
