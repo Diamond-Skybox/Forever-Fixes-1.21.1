@@ -45,6 +45,7 @@
     "waveycapes.MixinCustomCapeRenderLayer",
     "waveycapes.MixinCustomCapeRenderer",
     "vanilla.MixinGameRenderer",
+    "vanilla.MixinOptionsKeybinds",
     "sodium.MixinOcclusionCuller",
     "travelerstitles.MixinTitleRenderManager",
     "ragdoll.MixinRagdollPartRenderer",

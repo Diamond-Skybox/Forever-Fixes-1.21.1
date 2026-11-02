@@ -102,6 +102,12 @@ public final class ForeverFixesConfig
 					"They were still batched at that point, so clouds and storm fog were drawn over them wherever glass was behind them.")
 			.define("bettersimpleclouds.flushBeforeGlass", true);
 
+	public static final ModConfigSpec.BooleanValue KEEP_KEYBINDS = B
+			.comment("Keep key bindings across restarts: options saves during mod loading (which wrote every mod key's default over the",
+					"player's binding) are held back until the bindings are read, and the saved bindings of keys a mod adds later (PneumaticCraft's",
+					"armor keys) stay in options.txt and are applied when the keys appear.")
+			.define("keybinds.keepSaved", true);
+
 	public static final ModConfigSpec.BooleanValue BSC_PARTICLES_NOT_GLASS = B
 			.comment("Better Simple Clouds: particles (smoke) do not count as glass. Under Fast/Fancy graphics it took the finished depth as the",
 					"glass, so every particle in front of the frame was 'glass', and the rain haze worked out what is behind it by dividing by",

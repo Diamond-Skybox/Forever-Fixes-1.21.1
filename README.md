@@ -31,6 +31,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Simple Clouds: the quarter-resolution storm fog is stretched to the screen by depth, so it stops at the edges of what is in
   front of it instead of bleeding over them in 4-pixel steps; its blur uses a copy of vanilla's, not the blur Exposure Expanded
   replaces (distant rain columns came out solid black).
+- Key bindings no longer reset after a restart: options saves during mod loading are held back until mod keys have their saved
+  bindings, and the saved bindings of keys added later (PneumaticCraft armor keys) are kept and applied when they appear.
 - Tall worlds (JJThunder): the far clip plane is raised so mountain tops stay visible.
 - Sodium: terrain more than one render distance above or below the camera no longer disappears.
 - Sable + Flywheel (Create): ships' and the world's Flywheel lighting updates no longer build a Java stream for every

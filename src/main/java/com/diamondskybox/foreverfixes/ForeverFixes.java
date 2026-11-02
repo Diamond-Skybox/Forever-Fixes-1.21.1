@@ -41,6 +41,10 @@ public final class ForeverFixes
 		{
 			InventoryBridge.register();
 		}
+		if (FMLEnvironment.dist == Dist.CLIENT)
+		{
+			NeoForge.EVENT_BUS.addListener(KeybindKeeper::onClientTick);
+		}
 		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("bettersimpleclouds") && ModList.get().isLoaded("simpleclouds"))
 		{
 			// lowest: the after-particles depths need JourneyMap's waypoint beams, which it draws at that stage too
