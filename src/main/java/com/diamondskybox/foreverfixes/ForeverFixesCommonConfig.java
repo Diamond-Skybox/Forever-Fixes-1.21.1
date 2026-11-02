@@ -94,6 +94,12 @@ public final class ForeverFixesCommonConfig
 					"from the enchantments left, like the grindstone (none left: no penalty). It is never raised.")
 			.define("enchantments.editEnchantingResetRepairCost", true);
 
+	public static final ModConfigSpec.BooleanValue IP_RESERVOIR_GENERATOR_BIOMES = B
+			.comment("Immersive Petroleum: oil reservoirs read the biome from the world's biome source while they are placed, not through the",
+					"server level. The level loads the chunk, and IP does that while holding the lock every reservoir placement waits for: with",
+					"two world generators running (a pregen and Distant Horizons for a player) the server froze.")
+			.define("worldgen.immersivePetroleumReservoirBiomes", true);
+
 	public static final ModConfigSpec.ConfigValue<List<? extends String>> FLOATING_STRUCTURES = B
 			.comment("Structures that float in the air (sky islands, airships): when one is placed, the terrain under its whole footprint is",
 					"checked and the structure is raised until it clears the ground by worldgen.floatingStructures.clearance blocks; one that",

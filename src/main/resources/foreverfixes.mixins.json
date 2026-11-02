@@ -34,7 +34,8 @@
     "vanilla.MixinDimensionDataStorage",
     "skeletonsrising.MixinTheFamilyReunionDemandsProcedure",
     "skeletonsrising.MixinSoulTerrorOnEntityTickUpdateProcedure",
-    "createnuclear.MixinRadiationCapability"
+    "createnuclear.MixinRadiationCapability",
+    "immersivepetroleum.MixinFeatureReservoir"
   ],
   "client": [
     "sableflywheel.MixinSableFlywheelLightStorage",

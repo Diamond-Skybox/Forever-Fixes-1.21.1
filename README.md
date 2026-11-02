@@ -33,6 +33,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   replaces (distant rain columns came out solid black).
 - Key bindings no longer reset after a restart: options saves during mod loading are held back until mod keys have their saved
   bindings, and the saved bindings of keys added later (PneumaticCraft armor keys) are kept and applied when they appear.
+- Immersive Petroleum: oil reservoir placement no longer freezes the server when two world generators run at once (a pregen
+  and Distant Horizons generating for a player).
 - Tall worlds (JJThunder): the far clip plane is raised so mountain tops stay visible.
 - Sodium: terrain more than one render distance above or below the camera no longer disappears.
 - Sable + Flywheel (Create): ships' and the world's Flywheel lighting updates no longer build a Java stream for every
