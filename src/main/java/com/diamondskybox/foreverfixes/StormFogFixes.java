@@ -40,7 +40,9 @@ import java.util.function.IntSupplier;
  * <li>Particles are not glass: Better Simple Clouds tells glass from what is behind it by comparing its depth snapshot from
  * before the translucent pass with the depth "with the translucent blocks in it", which under Fast/Fancy graphics is the
  * finished depth, particles included. A second snapshot after the translucent blocks and before the translucent particles
- * takes its place, and the rain haze reads it too.</li>
+ * takes its place. The storm fog and the rain haze, which marched through the particles to what is behind them and covered
+ * them, get depths with the particles at their own distance (the storm fog's still without glass, so rain shows behind
+ * windows).</li>
  * <li>Beacon glow depth: the outer glow of a beacon beam writes no depth, so the storm fog and rain haze were worked out to
  * whatever was behind the beam. The glow boxes of the frame's beams are drawn into both snapshots, depth only.</li>
  * <li>Storm blur: Simple Clouds blurs the storm fog with minecraft:shaders/post/blur.json, which other mods replace (Exposure
@@ -53,6 +55,7 @@ public final class StormFogFixes
 	private static final ResourceLocation VANILLA_BLUR = ResourceLocation.withDefaultNamespace("shaders/post/blur.json");
 	private static final ResourceLocation STORM_BLUR = ResourceLocation.fromNamespaceAndPath(ForeverFixes.MOD_ID, "shaders/post/storm_blur.json");
 	private static final String UPSAMPLE_PROGRAM = ForeverFixes.MOD_ID + ":storm_upsample";
+	private static final String DEPTH_PROGRAM = ForeverFixes.MOD_ID + ":storm_depth";
 	private static final int MAX_BEAMS = 512;
 	private static final int CHECKED_BLITS = 8;
 
@@ -64,8 +67,21 @@ public final class StormFogFixes
 	private static boolean glassReady;
 	private static boolean blitRefused;
 	private static int checkedBlits;
-	/** the rain haze pass is running: it reads the glass snapshot as the main depth */
+	/** Better Simple Clouds' snapshot from before the translucent blocks (the beacon glow drawn into it) */
+	private static RenderTarget opaque;
+	/** the storm fog's depth: the snapshot before the translucent blocks with the translucent particles in front of it */
+	private static RenderTarget fogDepth;
+	/** the rain haze's depth: the finished depth with the beacon glow */
+	private static RenderTarget hazeDepth;
+	private static boolean depthsReady;
+	private static EffectInstance depthEffect;
+	private static boolean depthEffectFailed;
+	/** the storm fog pass or the rain haze is being set up or drawn: Better Simple Clouds' depth is the fog depth */
+	private static boolean inStormFog;
+	private static boolean inRainHazeSetup;
+	/** the rain haze pass is running: it reads the haze depth as the main depth */
 	private static boolean inRainHaze;
+	private static boolean loggedBeams;
 	private static PostPass upsample;
 	private static RenderTarget upsampleIn;
 	private static RenderTarget upsampleOut;
@@ -86,12 +102,17 @@ public final class StormFogFixes
 			beams.clear();
 			captured = false;
 			glassReady = false;
+			depthsReady = false;
 		}
 		else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_TRIPWIRE_BLOCKS && captured
 				&& ForeverFixesConfig.enabled(ForeverFixesConfig.BSC_PARTICLES_NOT_GLASS) && !IrisBridge.shadersRunning()
 				&& Minecraft.getInstance().levelRenderer.getTranslucentTarget() == null)
 		{
 			snapshotGlass();
+		}
+		else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES && glassReady && opaque != null)
+		{
+			makeDepths();
 		}
 	}
 
@@ -105,10 +126,16 @@ public final class StormFogFixes
 	}
 
 	/** Better Simple Clouds copied the main depth into its snapshot */
-	public static void afterCapture(RenderTarget opaque)
+	public static void afterCapture(RenderTarget snapshot)
 	{
 		captured = true;
-		drawGlowDepth(opaque);
+		opaque = snapshot;
+		drawGlowDepth(snapshot);
+		if (!loggedBeams && !beams.isEmpty())
+		{
+			loggedBeams = true;
+			ForeverFixes.LOGGER.info("Better Simple Clouds: beacon glow drawn into the storm fog's depth ({} beam segments this frame)", beams.size());
+		}
 	}
 
 	/** the glass depth for Better Simple Clouds, or -1 to leave it its own */
@@ -117,15 +144,31 @@ public final class StormFogFixes
 		return glassReady ? glass.getDepthTextureId() : -1;
 	}
 
+	public static void setInStormFog(boolean running)
+	{
+		inStormFog = running;
+	}
+
+	public static void setInRainHazeSetup(boolean running)
+	{
+		inRainHazeSetup = running;
+	}
+
 	public static void setInRainHaze(boolean running)
 	{
 		inRainHaze = running;
 	}
 
+	/** Better Simple Clouds' depth for the storm fog and the rain haze, or -1 to leave it its own */
+	public static int fogDepthTexture()
+	{
+		return depthsReady && (inStormFog || inRainHazeSetup) ? fogDepth.getDepthTextureId() : -1;
+	}
+
 	/** the depth texture the rain haze reads in place of the main one, or -1 */
 	public static int rainHazeDepth(RenderTarget target)
 	{
-		return inRainHaze && glassReady && target == Minecraft.getInstance().getMainRenderTarget() ? glass.getDepthTextureId() : -1;
+		return inRainHaze && depthsReady && target == Minecraft.getInstance().getMainRenderTarget() ? hazeDepth.getDepthTextureId() : -1;
 	}
 
 	public static ResourceLocation stormBlurChain(ResourceLocation chain)
@@ -137,6 +180,90 @@ public final class StormFogFixes
 	{
 		closeUpsample();
 		upsampleFailed = false;
+		if (depthEffect != null)
+		{
+			depthEffect.close();
+		}
+		depthEffect = null;
+		depthEffectFailed = false;
+	}
+
+	/** the storm fog's and the rain haze's depths, from the finished depth once the translucent particles are in it */
+	private static void makeDepths()
+	{
+		final Minecraft mc = Minecraft.getInstance();
+		final RenderTarget main = mc.getMainRenderTarget();
+		if (depthEffectFailed || main == null || main.width <= 0 || main.height <= 0)
+		{
+			return;
+		}
+		if (depthEffect == null)
+		{
+			try
+			{
+				depthEffect = new EffectInstance(mc.getResourceManager(), DEPTH_PROGRAM);
+			}
+			catch (IOException | RuntimeException e)
+			{
+				depthEffectFailed = true;
+				ForeverFixes.LOGGER.error("Better Simple Clouds storm fog depth: the shader could not be loaded, particles stay behind the storm fog", e);
+				return;
+			}
+		}
+		fogDepth = sized(fogDepth, main);
+		hazeDepth = sized(hazeDepth, main);
+		final int read = GL11.glGetInteger(GL30.GL_READ_FRAMEBUFFER_BINDING);
+		final int draw = GL11.glGetInteger(GL30.GL_DRAW_FRAMEBUFFER_BINDING);
+		final int live = main.getDepthTextureId();
+		final int glassDepth = glass.getDepthTextureId();
+		final int opaqueDepth = opaque.getDepthTextureId();
+		depthEffect.setSampler("LiveDepth", () -> live);
+		depthEffect.setSampler("GlassDepth", () -> glassDepth);
+		depthEffect.setSampler("OpaqueDepth", () -> opaqueDepth);
+		depthEffect.safeGetUniform("ProjMat").set(new Matrix4f().setOrtho(0.0F, main.width, 0.0F, main.height, 0.1F, 1000.0F));
+		depthEffect.safeGetUniform("OutSize").set((float) main.width, (float) main.height);
+		RenderSystem.colorMask(false, false, false, false);
+		RenderSystem.enableDepthTest();
+		RenderSystem.depthFunc(GL11.GL_ALWAYS);
+		RenderSystem.depthMask(true);
+		writeDepth(fogDepth, 0.0F, main);
+		writeDepth(hazeDepth, 1.0F, main);
+		RenderSystem.depthFunc(GL11.GL_LEQUAL);
+		RenderSystem.colorMask(true, true, true, true);
+		GlStateManager._glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, read);
+		GlStateManager._glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, draw);
+		RenderSystem.viewport(0, 0, main.width, main.height);
+		depthsReady = true;
+	}
+
+	private static void writeDepth(RenderTarget target, float mode, RenderTarget main)
+	{
+		GlStateManager._glBindFramebuffer(GL30.GL_FRAMEBUFFER, target.frameBufferId);
+		RenderSystem.viewport(0, 0, target.width, target.height);
+		depthEffect.safeGetUniform("Mode").set(mode);
+		depthEffect.apply();
+		final BufferBuilder buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
+		buffer.addVertex(0.0F, 0.0F, 500.0F);
+		buffer.addVertex(main.width, 0.0F, 500.0F);
+		buffer.addVertex(main.width, main.height, 500.0F);
+		buffer.addVertex(0.0F, main.height, 500.0F);
+		BufferUploader.draw(buffer.buildOrThrow());
+		depthEffect.clear();
+	}
+
+	private static RenderTarget sized(RenderTarget target, RenderTarget main)
+	{
+		if (target == null)
+		{
+			final RenderTarget made = new CloudRenderTarget(main.width, main.height, Minecraft.ON_OSX, false);
+			made.setClearColor(0.0F, 0.0F, 0.0F, 0.0F);
+			return made;
+		}
+		if (target.width != main.width || target.height != main.height)
+		{
+			target.resize(main.width, main.height, Minecraft.ON_OSX);
+		}
+		return target;
 	}
 
 	private static void snapshotGlass()
@@ -270,7 +397,10 @@ public final class StormFogFixes
 		{
 			return false;
 		}
+		// the storm fog's own depth: the sampler asks Better Simple Clouds, which answers with the fog depth during the storm fog
+		inStormFog = true;
 		final int depthTexture = depth.getAsInt();
+		inStormFog = false;
 		final EffectInstance effect = upsample.getEffect();
 		effect.setSampler("DepthSampler", () -> depthTexture);
 		effect.safeGetUniform("InverseProjMat").set(new Matrix4f().set(0, inverse.getFloatBuffer()));

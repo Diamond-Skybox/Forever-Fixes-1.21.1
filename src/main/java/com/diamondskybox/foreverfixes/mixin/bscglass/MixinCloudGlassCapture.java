@@ -17,7 +17,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * be waiting in the buffer source at that point (ImmediatelyFast batches them further), so they were missing from the copy and
  * the clouds were drawn over them wherever glass was behind them. The batched geometry is drawn before the copy, and the
  * beacon beams' glow (no depth of its own) is drawn into the copy after it. Under Fast/Fancy graphics its glass depth, the
- * finished depth, is replaced by the snapshot after the translucent blocks (see {@link StormFogFixes}).
+ * finished depth, is replaced by the snapshot after the translucent blocks, and the storm fog and rain haze get the copy with
+ * the translucent particles in front of it (see {@link StormFogFixes}).
  */
 @Mixin(targets = "dev.bettersimpleclouds.immersion.CloudGlass", remap = false)
 public abstract class MixinCloudGlassCapture
@@ -38,6 +39,16 @@ public abstract class MixinCloudGlassCapture
 	private static void foreverfixes$afterCapture(RenderTarget main, CallbackInfo ci)
 	{
 		StormFogFixes.afterCapture(opaque);
+	}
+
+	@Inject(method = "depthTexture", remap = false, require = 1, cancellable = true, at = @At("HEAD"))
+	private static void foreverfixes$particlesInStormFog(RenderTarget main, CallbackInfoReturnable<Integer> cir)
+	{
+		final int depth = StormFogFixes.fogDepthTexture();
+		if (depth > 0)
+		{
+			cir.setReturnValue(depth);
+		}
 	}
 
 	@Inject(method = "glassDepthTexture", remap = false, require = 1, cancellable = true, at = @At("HEAD"))
