@@ -109,9 +109,16 @@ public final class ForeverFixesConfig
 			.define("bettersimpleclouds.particlesNotGlass", true);
 
 	public static final ModConfigSpec.BooleanValue BSC_BEACON_GLOW_DEPTH = B
-			.comment("Better Simple Clouds: the storm fog and rain haze stop at a beacon beam's outer glow. The glow writes no depth, so the fog",
-					"was worked out to whatever was behind the beam and laid over it. Only the clouds' depth copies get the glow, not the game's.")
+			.comment("Better Simple Clouds: the storm fog and rain haze stop at a beacon beam's outer glow and at JourneyMap's waypoint beams.",
+					"Neither writes depth, so the fog was worked out to whatever was behind the beam and laid over it (against the sky the",
+					"waypoint beams vanished). Only the clouds' depth copies get the beams, not the game's.")
 			.define("bettersimpleclouds.beaconGlowDepth", true);
+
+	public static final ModConfigSpec.BooleanValue BSC_STORM_FOG_GLASS = B
+			.comment("Better Simple Clouds: glass (and other translucent blocks) is drawn in front of the storm fog behind it. The storm fog",
+					"looks through glass to what is behind it, then was laid over the glass too, so glass against a rain column vanished.",
+					"Needs simpleclouds.depthAwareStormFog.")
+			.define("bettersimpleclouds.glassInFrontOfStormFog", true);
 
 	public static final ModConfigSpec.BooleanValue SC_STORM_BLUR_VANILLA = B
 			.comment("Simple Clouds: blur the storm fog with a copy of vanilla's blur instead of minecraft:shaders/post/blur.json, which",

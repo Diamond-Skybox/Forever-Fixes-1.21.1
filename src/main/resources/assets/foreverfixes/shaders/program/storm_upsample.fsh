@@ -12,6 +12,11 @@ uniform mat4 InverseProjMat;      // the storm fog's own inverse projection
 uniform float DepthReverse;       // 1 = reversed Z
 uniform float DepthRange;         // 1 = clip Z in 0..1
 uniform vec2 InSize;
+// Better Simple Clouds' glass filter: what a translucent block adds (rgb) and lets through (alpha). The storm fog marched
+// through the glass to what is behind it and is blended over the frame by its alpha, which put the fog in front of the glass;
+// with the colour  glass + fog * (1 - coverage)  the blend gives the glass in front of the fog.
+uniform sampler2D GlassFilter;
+uniform float GlassOn;
 
 in vec2 texCoord;
 out vec4 fragColor;
@@ -64,5 +69,11 @@ void main()
 		}
 		widest = max(widest, d);
 	}
-	fragColor = widest < EDGE ? blended : nearest;
+	vec4 fog = widest < EDGE ? blended : nearest;
+	if (GlassOn > 0.5)
+	{
+		vec4 pane = texelFetch(GlassFilter, ivec2(gl_FragCoord.xy), 0);
+		fog.rgb = fog.rgb * pane.a + pane.rgb;
+	}
+	fragColor = fog;
 }

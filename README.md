@@ -26,7 +26,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   human form.
 - Better Simple Clouds: clouds and storm fog seen through glass no longer cover the entities, chests and beacon beams in front of
   or behind the glass. Particles no longer count as glass (smoke inside a rain column showed inverted colours), and the storm
-  fog and rain haze stop at a beacon beam's outer glow instead of covering it.
+  fog and rain haze stop at a beacon beam's outer glow and at JourneyMap's waypoint beams instead of covering them; glass is
+  drawn in front of the storm fog behind it (it vanished against rain columns).
 - Simple Clouds: the quarter-resolution storm fog is stretched to the screen by depth, so it stops at the edges of what is in
   front of it instead of bleeding over them in 4-pixel steps; its blur uses a copy of vanilla's, not the blur Exposure Expanded
   replaces (distant rain columns came out solid black).

@@ -36,6 +36,7 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			Map.entry("ragdollgender", List.of("sable_player_ragdoll", "mca", "mcabp")),
 			Map.entry("mcawerewolf", List.of("mca", "werewolves")),
 			Map.entry("bscglass", List.of("bettersimpleclouds", "simpleclouds")),
+			Map.entry("jmbeam", List.of("journeymap", "bettersimpleclouds", "simpleclouds")),
 			Map.entry("punchy", List.of("punchy", "mca")),
 			Map.entry("paraglidermobends", List.of("paraglider", "mobends")),
 			Map.entry("punchyarmor", List.of("punchy")),

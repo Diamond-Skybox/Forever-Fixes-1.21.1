@@ -61,6 +61,7 @@
     "bscglass.MixinSimpleCloudsStormChains",
     "bscglass.AccessorEffectInstance",
     "bscglass.AccessorSimpleCloudsRenderer",
+    "jmbeam.MixinWaypointBeaconRenderer",
     "punchy.MixinPunchyArmRenderer",
     "punchyarmor.MixinPunchyArmArmor",
     "paraglidermobends.MixinParagliderCompat",

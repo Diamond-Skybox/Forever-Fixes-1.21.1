@@ -15,6 +15,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import dev.bettersimpleclouds.core.IrisBridge;
 import dev.bettersimpleclouds.dh.CloudDepthCopy;
 import dev.bettersimpleclouds.immersion.CloudDepthFormat;
+import dev.bettersimpleclouds.immersion.CloudGlass;
 import dev.nonamecrackers2.simpleclouds.client.framebuffer.CloudRenderTarget;
 import dev.nonamecrackers2.simpleclouds.client.renderer.SimpleCloudsRenderer;
 import dev.nonamecrackers2.simpleclouds.mixin.MixinPostChain;
@@ -59,7 +60,10 @@ public final class StormFogFixes
 	private static final int MAX_BEAMS = 512;
 	private static final int CHECKED_BLITS = 8;
 
+	/** vanilla beacon beams, drawn before Better Simple Clouds' snapshot */
 	private static final List<Beam> beams = new ArrayList<>();
+	/** JourneyMap waypoint beams, drawn after the translucent blocks and wholly translucent: no depth at all */
+	private static final List<Beam> waypointBeams = new ArrayList<>();
 	/** Better Simple Clouds took its depth snapshot this frame */
 	private static boolean captured;
 	/** the depth after the translucent blocks, before the translucent particles */
@@ -82,12 +86,14 @@ public final class StormFogFixes
 	/** the rain haze pass is running: it reads the haze depth as the main depth */
 	private static boolean inRainHaze;
 	private static boolean loggedBeams;
+	private static boolean loggedWaypointBeams;
 	private static PostPass upsample;
 	private static RenderTarget upsampleIn;
 	private static RenderTarget upsampleOut;
 	private static boolean upsampleFailed;
 
-	private record Beam(Matrix4f pose, float bottom, float top, float radius)
+	/** an upright prism: four corners (x, z pairs, in order around it) from bottom to top, in the pose it was drawn with */
+	private record Beam(Matrix4f pose, float bottom, float top, float[] corners)
 	{
 	}
 
@@ -100,6 +106,7 @@ public final class StormFogFixes
 		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY)
 		{
 			beams.clear();
+			waypointBeams.clear();
 			captured = false;
 			glassReady = false;
 			depthsReady = false;
@@ -121,8 +128,34 @@ public final class StormFogFixes
 	{
 		if (beams.size() < MAX_BEAMS && ForeverFixesConfig.enabled(ForeverFixesConfig.BSC_BEACON_GLOW_DEPTH))
 		{
-			beams.add(new Beam(new Matrix4f(poseStack.last().pose()), Math.min(yOffset, yOffset + height), Math.max(yOffset, yOffset + height), glowRadius));
+			final float lo = 0.5F - glowRadius;
+			final float hi = 0.5F + glowRadius;
+			beams.add(new Beam(new Matrix4f(poseStack.last().pose()), Math.min(yOffset, yOffset + height), Math.max(yOffset, yOffset + height),
+					new float[] { lo, lo, hi, lo, hi, hi, lo, hi }));
 		}
+	}
+
+	/**
+	 * a JourneyMap waypoint beam segment as it draws it: an inner diamond and an outer square around the pose's origin, each
+	 * turning with the game time unless it is set to stand still
+	 */
+	public static void recordWaypointBeam(PoseStack poseStack, float partialTick, long gameTime, int yOffset, int height, float beamRadius,
+			float glowRadius, boolean staticInner, boolean rotatingOuter)
+	{
+		if (waypointBeams.size() + 2 > MAX_BEAMS || !ForeverFixesConfig.enabled(ForeverFixesConfig.BSC_BEACON_GLOW_DEPTH))
+		{
+			return;
+		}
+		final Matrix4f pose = poseStack.last().pose();
+		final float turn = (float) Math.toRadians(((float) Math.floorMod(gameTime, 40L) + partialTick) * 2.25F - 45.0F);
+		final float bottom = Math.min(yOffset, yOffset + height);
+		final float top = Math.max(yOffset, yOffset + height);
+		final float r = beamRadius;
+		final float g = glowRadius;
+		waypointBeams.add(new Beam(staticInner ? new Matrix4f(pose) : new Matrix4f(pose).rotateY(turn), bottom, top,
+				new float[] { 0.0F, r, r, 0.0F, 0.0F, -r, -r, 0.0F }));
+		waypointBeams.add(new Beam(rotatingOuter ? new Matrix4f(pose).rotateY(turn) : new Matrix4f(pose), bottom, top,
+				new float[] { -g, -g, g, -g, g, g, -g, g }));
 	}
 
 	/** Better Simple Clouds copied the main depth into its snapshot */
@@ -130,7 +163,7 @@ public final class StormFogFixes
 	{
 		captured = true;
 		opaque = snapshot;
-		drawGlowDepth(snapshot);
+		drawBeamDepth(snapshot, beams);
 		if (!loggedBeams && !beams.isEmpty())
 		{
 			loggedBeams = true;
@@ -233,7 +266,14 @@ public final class StormFogFixes
 		GlStateManager._glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, read);
 		GlStateManager._glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, draw);
 		RenderSystem.viewport(0, 0, main.width, main.height);
+		drawBeamDepth(fogDepth, waypointBeams);
+		drawBeamDepth(hazeDepth, waypointBeams);
 		depthsReady = true;
+		if (!loggedWaypointBeams && !waypointBeams.isEmpty())
+		{
+			loggedWaypointBeams = true;
+			ForeverFixes.LOGGER.info("Better Simple Clouds: JourneyMap waypoint beams drawn into the storm fog's depth ({} this frame)", waypointBeams.size() / 2);
+		}
 	}
 
 	private static void writeDepth(RenderTarget target, float mode, RenderTarget main)
@@ -318,14 +358,14 @@ public final class StormFogFixes
 		GlStateManager._glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, read);
 		GlStateManager._glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, draw);
 		RenderSystem.viewport(0, 0, main.width, main.height);
-		drawGlowDepth(glass);
+		drawBeamDepth(glass, beams);
 		glassReady = true;
 	}
 
-	/** draws the outer glow of this frame's beacon beams into the depth of the target, nothing into its colour */
-	private static void drawGlowDepth(RenderTarget target)
+	/** draws the beams into the depth of the target, nothing into its colour */
+	private static void drawBeamDepth(RenderTarget target, List<Beam> list)
 	{
-		if (beams.isEmpty() || target == null || IrisBridge.shadersRunning())
+		if (list.isEmpty() || target == null || IrisBridge.shadersRunning())
 		{
 			return;
 		}
@@ -342,17 +382,16 @@ public final class StormFogFixes
 		RenderSystem.setShader(GameRenderer::getPositionShader);
 		// the poses are the block entity poses (block position minus camera); the model-view matrix still holds the camera
 		final BufferBuilder buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
-		for (Beam beam : beams)
+		for (Beam beam : list)
 		{
 			final Matrix4f m = beam.pose();
-			final float lo = 0.5F - beam.radius();
-			final float hi = 0.5F + beam.radius();
-			final float y0 = beam.bottom();
-			final float y1 = beam.top();
-			buffer.addVertex(m, lo, y0, lo).addVertex(m, hi, y0, lo).addVertex(m, hi, y1, lo).addVertex(m, lo, y1, lo);
-			buffer.addVertex(m, lo, y0, hi).addVertex(m, lo, y1, hi).addVertex(m, hi, y1, hi).addVertex(m, hi, y0, hi);
-			buffer.addVertex(m, lo, y0, lo).addVertex(m, lo, y1, lo).addVertex(m, lo, y1, hi).addVertex(m, lo, y0, hi);
-			buffer.addVertex(m, hi, y0, lo).addVertex(m, hi, y0, hi).addVertex(m, hi, y1, hi).addVertex(m, hi, y1, lo);
+			final float[] c = beam.corners();
+			for (int i = 0; i < 4; i++)
+			{
+				final int j = (i + 1) % 4;
+				buffer.addVertex(m, c[2 * i], beam.bottom(), c[2 * i + 1]).addVertex(m, c[2 * j], beam.bottom(), c[2 * j + 1])
+						.addVertex(m, c[2 * j], beam.top(), c[2 * j + 1]).addVertex(m, c[2 * i], beam.top(), c[2 * i + 1]);
+			}
 		}
 		BufferUploader.drawWithShader(buffer.buildOrThrow());
 		RenderSystem.enableCull();
@@ -406,6 +445,11 @@ public final class StormFogFixes
 		effect.safeGetUniform("InverseProjMat").set(new Matrix4f().set(0, inverse.getFloatBuffer()));
 		effect.safeGetUniform("DepthReverse").set(floatUniform(fog, "MicDepthReverse"));
 		effect.safeGetUniform("DepthRange").set(floatUniform(fog, "MicDepthRange"));
+		// glass in front of the storm fog: Better Simple Clouds' filter, worked out once a frame against the finished frame
+		final boolean glassOn = ForeverFixesConfig.enabled(ForeverFixesConfig.BSC_STORM_FOG_GLASS) && CloudGlass.prepareFilter();
+		final int filter = glassOn ? CloudGlass.filterTexture() : 0;
+		effect.setSampler("GlassFilter", () -> filter);
+		effect.safeGetUniform("GlassOn").set(glassOn ? 1.0F : 0.0F);
 		upsample.setOrthoMatrix(new Matrix4f().setOrtho(0.0F, upsampleOut.width, 0.0F, upsampleOut.height, 0.1F, 1000.0F));
 		RenderSystem.colorMask(true, true, true, true);
 		RenderSystem.disableDepthTest();

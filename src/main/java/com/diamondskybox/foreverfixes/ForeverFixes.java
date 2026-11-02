@@ -43,7 +43,8 @@ public final class ForeverFixes
 		}
 		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("bettersimpleclouds") && ModList.get().isLoaded("simpleclouds"))
 		{
-			NeoForge.EVENT_BUS.addListener(StormFogFixes::onStage);
+			// lowest: the after-particles depths need JourneyMap's waypoint beams, which it draws at that stage too
+			NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, StormFogFixes::onStage);
 		}
 		LOGGER.info("Forever Fixes loaded");
 	}
