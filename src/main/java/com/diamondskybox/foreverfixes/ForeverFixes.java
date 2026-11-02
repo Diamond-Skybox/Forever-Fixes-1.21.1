@@ -13,7 +13,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** Compatibility fixes between mods of the 1.21.1 pack. No content, no commands; a server tick listener (ShipReseat), a player tick listener (BlockedEnchantments), trade listeners (VillagerTradeFixes), loot table listeners (ChestCoins, LootFixes) and client listeners (RagdollSourceHider, InventoryBridge); each fix only applies when its target mod is installed. */
+/** Compatibility fixes between mods of the 1.21.1 pack. No content, no commands; a server tick listener (ShipReseat), a player tick listener (BlockedEnchantments), trade listeners (VillagerTradeFixes), loot table listeners (ChestCoins, LootFixes) and client listeners (RagdollSourceHider, InventoryBridge, StormFogFixes); each fix only applies when its target mod is installed. */
 @Mod(ForeverFixes.MOD_ID)
 public final class ForeverFixes
 {
@@ -40,6 +40,10 @@ public final class ForeverFixes
 		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("betterinventory"))
 		{
 			InventoryBridge.register();
+		}
+		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("bettersimpleclouds") && ModList.get().isLoaded("simpleclouds"))
+		{
+			NeoForge.EVENT_BUS.addListener(StormFogFixes::onStage);
 		}
 		LOGGER.info("Forever Fixes loaded");
 	}

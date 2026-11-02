@@ -102,6 +102,27 @@ public final class ForeverFixesConfig
 					"They were still batched at that point, so clouds and storm fog were drawn over them wherever glass was behind them.")
 			.define("bettersimpleclouds.flushBeforeGlass", true);
 
+	public static final ModConfigSpec.BooleanValue BSC_PARTICLES_NOT_GLASS = B
+			.comment("Better Simple Clouds: particles (smoke) do not count as glass. Under Fast/Fancy graphics it took the finished depth as the",
+					"glass, so every particle in front of the frame was 'glass', and the rain haze worked out what is behind it by dividing by",
+					"the particle's estimated coverage, which turned faint smoke into inverted colours. The glass is the depth after translucent blocks.")
+			.define("bettersimpleclouds.particlesNotGlass", true);
+
+	public static final ModConfigSpec.BooleanValue BSC_BEACON_GLOW_DEPTH = B
+			.comment("Better Simple Clouds: the storm fog and rain haze stop at a beacon beam's outer glow. The glow writes no depth, so the fog",
+					"was worked out to whatever was behind the beam and laid over it. Only the clouds' depth copies get the glow, not the game's.")
+			.define("bettersimpleclouds.beaconGlowDepth", true);
+
+	public static final ModConfigSpec.BooleanValue SC_STORM_BLUR_VANILLA = B
+			.comment("Simple Clouds: blur the storm fog with a copy of vanilla's blur instead of minecraft:shaders/post/blur.json, which",
+					"Exposure Expanded replaces with a blur that adds up alpha instead of averaging it: distant rain columns came out solid black.")
+			.define("simpleclouds.vanillaStormBlur", true);
+
+	public static final ModConfigSpec.BooleanValue SC_STORM_UPSAMPLE = B
+			.comment("Simple Clouds: stretch the quarter-resolution storm fog to the screen by depth instead of linearly, so it stops at the",
+					"edges of what is in front of it instead of bleeding over them in 4-pixel steps (leaves, window frames, beacon beams).")
+			.define("simpleclouds.depthAwareStormFog", true);
+
 	public static final ModConfigSpec.BooleanValue MOBENDS_PARAGLIDER_POSE = B
 			.comment("Mo' Bends + Paraglider 21.1: play Mo' Bends' paragliding pose (glider held above the head) while gliding.",
 					"Mo' Bends looks for a Paraglider class that 21.1 no longer has, so the pose never played.")

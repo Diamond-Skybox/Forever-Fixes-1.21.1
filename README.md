@@ -25,7 +25,11 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Werewolves + MCA: a player in a transformed werewolf form shows the werewolf model instead of nothing; the MCA look returns in
   human form.
 - Better Simple Clouds: clouds and storm fog seen through glass no longer cover the entities, chests and beacon beams in front of
-  or behind the glass.
+  or behind the glass. Particles no longer count as glass (smoke inside a rain column showed inverted colours), and the storm
+  fog and rain haze stop at a beacon beam's outer glow instead of covering it.
+- Simple Clouds: the quarter-resolution storm fog is stretched to the screen by depth, so it stops at the edges of what is in
+  front of it instead of bleeding over them in 4-pixel steps; its blur uses a copy of vanilla's, not the blur Exposure Expanded
+  replaces (distant rain columns came out solid black).
 - Tall worlds (JJThunder): the far clip plane is raised so mountain tops stay visible.
 - Sodium: terrain more than one render distance above or below the camera no longer disappears.
 - Sable + Flywheel (Create): ships' and the world's Flywheel lighting updates no longer build a Java stream for every
