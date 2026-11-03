@@ -94,6 +94,11 @@ public final class ForeverFixesCommonConfig
 					"from the enchantments left, like the grindstone (none left: no penalty). It is never raised.")
 			.define("enchantments.editEnchantingResetRepairCost", true);
 
+	public static final ModConfigSpec.BooleanValue ARCHITECTURY_COPY_ON_WRITE_EVENTS = B
+			.comment("Architectury: registering or removing an event listener while that event runs no longer crashes the game",
+					"(ConcurrentModificationException in the client tick event at the title screen). Changes go to a copy of the listener list.")
+			.define("stability.architecturyCopyOnWriteEvents", true);
+
 	public static final ModConfigSpec.BooleanValue IP_RESERVOIR_GENERATOR_BIOMES = B
 			.comment("Immersive Petroleum: oil reservoirs read the biome from the world's biome source while they are placed, not through the",
 					"server level. The level loads the chunk, and IP does that while holding the lock every reservoir placement waits for: with",

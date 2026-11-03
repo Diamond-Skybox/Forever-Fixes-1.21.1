@@ -35,6 +35,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   bindings, and the saved bindings of keys added later (PneumaticCraft armor keys) are kept and applied when they appear.
 - Immersive Petroleum: oil reservoir placement no longer freezes the server when two world generators run at once (a pregen
   and Distant Horizons generating for a player).
+- Architectury: registering or removing an event listener while the event runs no longer crashes the game (ConcurrentModificationException
+  in the client tick event at the title screen).
 - Tall worlds (JJThunder): the far clip plane is raised so mountain tops stay visible.
 - Sodium: terrain more than one render distance above or below the camera no longer disappears.
 - Sable + Flywheel (Create): ships' and the world's Flywheel lighting updates no longer build a Java stream for every

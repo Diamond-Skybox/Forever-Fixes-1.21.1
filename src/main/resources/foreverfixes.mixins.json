@@ -35,7 +35,8 @@
     "skeletonsrising.MixinTheFamilyReunionDemandsProcedure",
     "skeletonsrising.MixinSoulTerrorOnEntityTickUpdateProcedure",
     "createnuclear.MixinRadiationCapability",
-    "immersivepetroleum.MixinFeatureReservoir"
+    "immersivepetroleum.MixinFeatureReservoir",
+    "architectury.MixinEventImpl"
   ],
   "client": [
     "sableflywheel.MixinSableFlywheelLightStorage",
