@@ -1,5 +1,6 @@
 package com.diamondskybox.foreverfixes;
 
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.List;
@@ -116,8 +117,19 @@ public final class ForeverFixesConfig
 
 	public static final ModConfigSpec.BooleanValue SABLE_SHIP_RAIN = B
 			.comment("Sable: rain, its splashes, Better Simple Clouds' downpour and its wet ground stop on ships instead of falling through",
-					"them. They only knew the world's heightmap, which has no Sable ships in it; the columns under nearby ships are raycast.")
+					"them. They only knew the world's heightmap, which has no Sable ships in it. Each ship keeps the tops of its block columns,",
+					"worked out again only when a block on it changes, and lays them over the world when it moves, only while it is under rain or snow.")
 			.define("sable.shipsBlockRain", true);
+
+	public static final ModConfigSpec.BooleanValue BSC_WET_ONLY_WHERE_IT_RAINS = B
+			.comment("Better Simple Clouds: wet ground only where it rains. Its wet ground covered everything near a storm, also deserts,",
+					"savannas and badlands, where no rain falls, and ground where it snows.")
+			.define("bettersimpleclouds.wetGroundOnlyWhereItRains", true);
+
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> BSC_DRY_BIOMES = B
+			.comment("Better Simple Clouds: biomes (ids, or #tags) whose ground never gets wet, in addition to those without rain.")
+			.defineListAllowEmpty("bettersimpleclouds.dryBiomes", List.of(), () -> "",
+					o -> o instanceof String s && ResourceLocation.tryParse(s.startsWith("#") ? s.substring(1) : s) != null);
 
 	public static final ModConfigSpec.BooleanValue BSC_WET_GROUND_SEAMS = B
 			.comment("Better Simple Clouds: wet ground without dry dashed lines along block edges. Its rain shader worked out which ground faces",

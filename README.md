@@ -43,7 +43,10 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Architectury: registering or removing an event listener while the event runs no longer crashes the game (ConcurrentModificationException
   in the client tick event at the title screen).
 - Sable: rain, its splashes, Better Simple Clouds' downpour and its wet ground stop on ships instead of falling through them
-  (the heightmap they used has no ships in it; the columns under nearby ships are raycast).
+  (the heightmap they used has no ships in it). Each ship keeps the tops of its block columns, read again only when a block on it
+  changes, and lays them over the world when it moves, only while rain or snow falls on it: parked ships cost nothing.
+- Better Simple Clouds: wet ground only where it rains: no wet deserts, savannas, badlands or snow under storm clouds, plus a list
+  of biomes that always stay dry (`bettersimpleclouds.dryBiomes`).
 - Tall worlds (JJThunder): the far clip plane is raised so mountain tops stay visible.
 - Sodium: terrain more than one render distance above or below the camera no longer disappears.
 - Sable + Flywheel (Create): ships' and the world's Flywheel lighting updates no longer build a Java stream for every
