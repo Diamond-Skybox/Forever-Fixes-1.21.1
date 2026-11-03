@@ -45,6 +45,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Sable: rain, its splashes, Better Simple Clouds' downpour and its wet ground stop on ships instead of falling through them
   (the heightmap they used has no ships in it). Each ship keeps the tops of its block columns, read again only when a block on it
   changes, and lays them over the world when it moves, only while rain or snow falls on it: parked ships cost nothing.
+  With Better Simple Clouds, wet decks keep their puddles and raindrop rings in place on a moving ship, and the dry ground under
+  a ship follows it (the 8 nearest ships' column tops and poses go to the wet ground shader).
 - Better Simple Clouds: wet ground only where it rains: no wet deserts, savannas, badlands or snow under storm clouds, plus a list
   of biomes that always stay dry (`bettersimpleclouds.dryBiomes`).
 - Tall worlds (JJThunder): the far clip plane is raised so mountain tops stay visible.

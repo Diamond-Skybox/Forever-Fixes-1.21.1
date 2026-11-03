@@ -70,6 +70,7 @@
     "sablerain.MixinLevelPlotRainCache",
     "sablebscrain.MixinBscShipRain",
     "sablebscrain.MixinBscRainHazeShips",
+    "sablebscrain.MixinBscRainHazeShipSpace",
     "punchy.MixinPunchyArmRenderer",
     "punchyarmor.MixinPunchyArmArmor",
     "paraglidermobends.MixinParagliderCompat",

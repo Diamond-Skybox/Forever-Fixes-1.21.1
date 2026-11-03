@@ -121,6 +121,13 @@ public final class ForeverFixesConfig
 					"worked out again only when a block on it changes, and lays them over the world when it moves, only while it is under rain or snow.")
 			.define("sable.shipsBlockRain", true);
 
+	public static final ModConfigSpec.BooleanValue SABLE_SHIP_WET_GROUND = B
+			.comment("Sable + Better Simple Clouds: wet decks keep their puddles and ripples in place on a moving ship, and the dry ground",
+					"under a ship follows it. The wet ground's pattern and open-sky test were in world coordinates (and the sky test on a",
+					"heightmap rebuilt once a second), so the water slid across a flying ship's deck. The nearest 8 ships' column tops and",
+					"poses go to the shader. Needs sable.shipsBlockRain.")
+			.define("sable.shipWetGroundInShipSpace", true);
+
 	public static final ModConfigSpec.BooleanValue BSC_WET_ONLY_WHERE_IT_RAINS = B
 			.comment("Better Simple Clouds: wet ground only where it rains. Its wet ground covered everything near a storm, also deserts,",
 					"savannas and badlands, where no rain falls, and ground where it snows.")

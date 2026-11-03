@@ -4,7 +4,9 @@
 // marked: the wet ground's face normal. It came from dFdx/dFdy of the view position, which the GPU takes over 2x2 pixel quads; a
 // quad on the seam between two blocks mixed both and tilted the normal, so a dashed line of dry pixels ran along every block edge.
 // The normal is rebuilt from the depth of the neighbouring pixels instead, on each axis from the side on the same surface.
-// Also marked: only faces pointing up are wet (the original took faces pointing down as well).
+// Also marked: only faces pointing up are wet (the original took faces pointing down as well), and Sable ships: a pixel on a
+// ship takes its water pattern and open-sky test in the ship's own frame (they slid across a moving deck), and ground under a
+// ship's column is covered on the frame it is drawn.
 
 // Better Simple Clouds: the rain on the world, over the whole frame at once (see RainHaze).
 //
@@ -152,6 +154,92 @@ float ripples(vec2 worldXZ)
     return ring * (1.0 - t) * (1.0 - t);
 }
 
+// === Forever Fixes: Sable ships (see ShipWetGround). Per ship, STRIDE floats in ShipData: a matrix from camera-relative world
+// space to the ship's space (whole blocks from the corner of its block bounds), its size and a pattern offset, where its column
+// tops sit in ShipTopsSampler, and its up direction in world space. ShipTopsSampler: the first free height above each block
+// column of the ship, in ship space, or far below where the column is empty. ===
+uniform float ShipCount;
+uniform float ShipData[224];
+uniform sampler2D ShipTopsSampler;
+const int SHIP_STRIDE = 28;
+
+mat4 foreverfixesShipMatrix(int s)
+{
+    int b = s * SHIP_STRIDE;
+    return mat4(ShipData[b], ShipData[b + 1], ShipData[b + 2], ShipData[b + 3],
+                ShipData[b + 4], ShipData[b + 5], ShipData[b + 6], ShipData[b + 7],
+                ShipData[b + 8], ShipData[b + 9], ShipData[b + 10], ShipData[b + 11],
+                ShipData[b + 12], ShipData[b + 13], ShipData[b + 14], ShipData[b + 15]);
+}
+
+vec3 foreverfixesShipSize(int s)
+{
+    int b = s * SHIP_STRIDE + 16;
+    return vec3(ShipData[b], ShipData[b + 1], ShipData[b + 2]);
+}
+
+// the first free height above the ship's column c, in ship space; far below for an empty column or one off the ship
+float foreverfixesShipTop(int s, ivec2 c)
+{
+    vec3 size = foreverfixesShipSize(s);
+    if (c.x < 0 || c.y < 0 || c.x >= int(size.x) || c.y >= int(size.z))
+        return -1.0e4;
+    int b = s * SHIP_STRIDE + 20;
+    return texelFetch(ShipTopsSampler, ivec2(int(ShipData[b]), int(ShipData[b + 1])) + c, 0).r;
+}
+
+// the ship whose block bounds hold this camera-relative position (and the position in its space), or -1
+int foreverfixesShipAt(vec3 rel, out vec3 local)
+{
+    local = vec3(0.0);
+    for (int s = 0; s < 8; s++)
+    {
+        if (float(s) >= ShipCount)
+            break;
+        vec3 l = (foreverfixesShipMatrix(s) * vec4(rel, 1.0)).xyz;
+        vec3 size = foreverfixesShipSize(s);
+        if (all(greaterThanEqual(l, vec3(-0.02))) && all(lessThanEqual(l, size + 0.02)))
+        {
+            local = l;
+            return s;
+        }
+    }
+    return -1;
+}
+
+// 1 where ship column c is open to the sky down to height y (an empty column counts as open), else 0
+float foreverfixesShipOpenAt(int s, ivec2 c, float y)
+{
+    float top = foreverfixesShipTop(s, c);
+    return top < -1.0e3 || y >= top - 0.08 ? 1.0 : 0.0;
+}
+
+// how open a point on the ship is, softened by the neighbouring columns like the world's (an open column beside a deckhouse
+// is four fifths open)
+float foreverfixesShipExposure(int s, vec3 l)
+{
+    ivec2 c = ivec2(floor(l.xz));
+    return 0.6 * foreverfixesShipOpenAt(s, c, l.y) + 0.1 * (foreverfixesShipOpenAt(s, c + ivec2(1, 0), l.y)
+            + foreverfixesShipOpenAt(s, c - ivec2(1, 0), l.y) + foreverfixesShipOpenAt(s, c + ivec2(0, 1), l.y)
+            + foreverfixesShipOpenAt(s, c - ivec2(0, 1), l.y));
+}
+
+// 0 where a ship's column lies above this camera-relative position, else 1
+float foreverfixesUnderShips(vec3 rel)
+{
+    for (int s = 0; s < 8; s++)
+    {
+        if (float(s) >= ShipCount)
+            break;
+        vec3 l = (foreverfixesShipMatrix(s) * vec4(rel, 1.0)).xyz;
+        float top = foreverfixesShipTop(s, ivec2(floor(l.xz)));
+        if (top > -1.0e3 && l.y < top - 0.08)
+            return 0.0;
+    }
+    return 1.0;
+}
+// === end Forever Fixes ===
+
 // The distance to Distant Horizons' LOD under this pixel; negative where there is none.
 float lodDistance()
 {
@@ -255,18 +343,43 @@ void main()
     if (terrain && Wetness > 0.0 && dist < WetRange)
     {
         vec3 normal = foreverfixesFaceNormal(viewPos); // Forever Fixes: was normalize(cross(slopeX, slopeY))
-        if (dot(normal, UpView) > 0.85) // Forever Fixes: was abs(...) - undersides facing straight down (Sable ships, which the
-                                         // terrain heightmap does not know, so they pass the open-sky test) got wet too
+        // === Forever Fixes: on a Sable ship, its own up, water pattern and sky test (see the helpers above) ===
+        vec3 rel = (InverseModelViewMat * vec4(viewPos, 1.0)).xyz;
+        vec3 shipLocal;
+        int ship = foreverfixesShipAt(rel, shipLocal);
+        if (ship >= 0 && foreverfixesShipTop(ship, ivec2(floor(shipLocal.xz))) < -1.0e3)
+            ship = -1; // inside the ship's bounds but not on one of its columns: the world's ground
+        vec3 up = UpView;
+        if (ship >= 0)
         {
-            vec3 world = CameraPos + (InverseModelViewMat * vec4(viewPos, 1.0)).xyz;
-            vec2 hm = (world.xz - HeightmapOrigin) / HeightmapSize;
-            float open = all(greaterThanEqual(hm, vec2(0.0))) && all(lessThan(hm, vec2(1.0))) ? exposure(world.xz, world.y) : 0.0;
+            int b = ship * SHIP_STRIDE + 24;
+            up = normalize(transpose(mat3(InverseModelViewMat)) * vec3(ShipData[b], ShipData[b + 1], ShipData[b + 2]));
+        }
+        if (dot(normal, up) > 0.85) // Forever Fixes: was abs(...) - undersides facing straight down (Sable ships, which the
+                                    // terrain heightmap does not know, so they pass the open-sky test) got wet too
+        {
+            vec3 world = CameraPos + rel;
+            vec2 at = world.xz; // where the water's pattern is taken: the world, or the ship
+            float open;
+            if (ship >= 0)
+            {
+                open = foreverfixesShipExposure(ship, shipLocal);
+                at = shipLocal.xz + ShipData[ship * SHIP_STRIDE + 19];
+            }
+            else
+            {
+                vec2 hm = (world.xz - HeightmapOrigin) / HeightmapSize;
+                open = all(greaterThanEqual(hm, vec2(0.0))) && all(lessThan(hm, vec2(1.0))) ? exposure(world.xz, world.y) : 0.0;
+                if (open > 0.001)
+                    open *= foreverfixesUnderShips(rel);
+            }
+            // === end Forever Fixes ===
             if (open > 0.001)
             {
                 float wet = Wetness * open * (1.0 - smoothstep(WetRange * 0.66, WetRange, dist));
                 // puddles where the ground's noise dips, more of them the wetter it is, soft-edged as water
                 // creeping over uneven ground is
-                float noise = vnoise(world.xz * 0.35) * 0.7 + vnoise(world.xz * 0.9 + 17.3) * 0.3;
+                float noise = vnoise(at * 0.35) * 0.7 + vnoise(at * 0.9 + 17.3) * 0.3;
                 float puddle = smoothstep(0.58, 0.74, noise + 0.14 * Wetness - 0.10) * wet;
                 // wet ground is darker and a little cooler; under standing water darker still: the water is
                 // seen through, the ground's own texture stays
@@ -275,9 +388,9 @@ void main()
                 // the mirror: water gives back a few percent of the sky seen from above and most of it at a
                 // grazing angle; the film on wet ground does so weakly and diffusely, a puddle's still surface
                 // outright, and a ring from a raindrop tilts the surface out of the mirror
-                float cosTheta = clamp(dot(normalize(-viewPos), UpView), 0.0, 1.0);
+                float cosTheta = clamp(dot(normalize(-viewPos), up), 0.0, 1.0);
                 float fresnel = 0.03 + 0.97 * pow(1.0 - cosTheta, 4.0);
-                float rings = puddle > 0.001 ? ripples(world.xz) : 0.0;
+                float rings = puddle > 0.001 ? ripples(at) : 0.0;
                 float mirror = wet * (0.02 + 0.22 * fresnel) + puddle * (0.10 + 0.70 * fresnel) * (1.0 - 0.7 * rings);
                 col = mix(damp, WetSkyColor, clamp(mirror, 0.0, 0.8)) + rings * puddle * 0.05;
             }

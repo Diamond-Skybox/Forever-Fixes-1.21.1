@@ -30,6 +30,9 @@
         },
         {
             "name": "GlassFilterSampler"
+        },
+        {
+            "name": "ShipTopsSampler"
         }
     ],
     "uniforms": [
@@ -299,6 +302,22 @@
             "name": "GlassOn",
             "type": "float",
             "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "ShipCount",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "ShipData",
+            "type": "float",
+            "count": 224,
             "values": [
                 0.0
             ]

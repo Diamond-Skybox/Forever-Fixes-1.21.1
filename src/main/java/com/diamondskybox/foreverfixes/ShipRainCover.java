@@ -36,7 +36,8 @@ import java.util.Map;
  * are drawn moved and turned into place, so rain fell through airships and the ground under them counted as open sky.
  * <p>
  * Each nearby ship keeps the tops of its block columns in its own (plot) coordinates, worked out again only when a block on the
- * ship changes (and every ten seconds, in case a change was missed). While rain or snow falls on the ship, those tops are laid
+ * ship changes (and every ten seconds, in case a change was missed); Better Simple Clouds' wet ground reads them in the ship's
+ * own frame (see {@link ShipWetGround}). While rain or snow falls on the ship, those tops are laid
  * over the world's columns through the ship's pose, again only when the ship has moved. A parked ship costs nothing, and a ship
  * out of the weather blocks nothing. The height lookups take the top of the ship where it is above the terrain. Client only.
  */
@@ -67,8 +68,12 @@ public final class ShipRainCover
 	/** what one ship covers */
 	private static final class Ship
 	{
-		/** the tops of the ship's block columns in plot coordinates: x, first free y, z */
+		/** the tops of the ship's block columns, relative to minX/minY/minZ of its plot bounds: x, first free y, z */
 		final IntArrayList tops = new IntArrayList();
+		/** the plot bounds the tops were read in: their minimum and size */
+		int minX, minY, minZ, sizeX, sizeY, sizeZ;
+		/** counts the reads, so a reader of the tops can tell when they changed */
+		int version;
 		boolean blocksChanged = true;
 		int updatesSinceRead;
 		int weatherCheckIn;
@@ -135,6 +140,13 @@ public final class ShipRainCover
 			}
 			seen.put(subLevel, Boolean.TRUE);
 			final Ship ship = ships.computeIfAbsent(subLevel, s -> new Ship());
+			if (ship.blocksChanged || ++ship.updatesSinceRead >= REREAD_UPDATES)
+			{
+				readTops(subLevel, ship);
+				ship.blocksChanged = false;
+				ship.updatesSinceRead = 0;
+				ship.placed = false;
+			}
 			if (--ship.weatherCheckIn <= 0)
 			{
 				ship.weatherCheckIn = WEATHER_CHECK_UPDATES;
@@ -154,13 +166,6 @@ public final class ShipRainCover
 				continue;
 			}
 			ship.weatherLeft--;
-			if (ship.blocksChanged || ++ship.updatesSinceRead >= REREAD_UPDATES)
-			{
-				readTops(subLevel, ship);
-				ship.blocksChanged = false;
-				ship.updatesSinceRead = 0;
-				ship.placed = false;
-			}
 			final Pose3dc pose = subLevel.renderPose();
 			if (pose != null && (!ship.placed || moved(ship, pose)))
 			{
@@ -216,12 +221,20 @@ public final class ShipRainCover
 	private static void readTops(ClientSubLevel subLevel, Ship ship)
 	{
 		ship.tops.clear();
+		ship.version++;
 		final LevelPlot plot = subLevel.getPlot();
 		final BoundingBox3ic bounds = plot == null ? null : plot.getBoundingBox();
 		if (bounds == null)
 		{
+			ship.sizeX = ship.sizeY = ship.sizeZ = 0;
 			return;
 		}
+		ship.minX = bounds.minX();
+		ship.minY = bounds.minY();
+		ship.minZ = bounds.minZ();
+		ship.sizeX = bounds.maxX() - bounds.minX() + 1;
+		ship.sizeY = bounds.maxY() - bounds.minY() + 1;
+		ship.sizeZ = bounds.maxZ() - bounds.minZ() + 1;
 		final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		for (int x = bounds.minX(); x <= bounds.maxX(); x++)
 		{
@@ -241,9 +254,9 @@ public final class ShipRainCover
 						{
 							return;
 						}
-						ship.tops.add(x);
-						ship.tops.add(y + 1);
-						ship.tops.add(z);
+						ship.tops.add(x - ship.minX);
+						ship.tops.add(y + 1 - ship.minY);
+						ship.tops.add(z - ship.minZ);
 						break;
 					}
 				}
@@ -281,13 +294,35 @@ public final class ShipRainCover
 		{
 			for (int corner = 0; corner < 4; corner++)
 			{
-				point.set(tops[i] + ((corner & 1) == 0 ? 0.25 : 0.75), tops[i + 1], tops[i + 2] + ((corner & 2) == 0 ? 0.25 : 0.75));
+				point.set(ship.minX + tops[i] + ((corner & 1) == 0 ? 0.25 : 0.75), ship.minY + tops[i + 1],
+						ship.minZ + tops[i + 2] + ((corner & 2) == 0 ? 0.25 : 0.75));
 				pose.transformPosition(point, point);
 				final long key = key(Mth.floor(point.x), Mth.floor(point.z));
 				final int y = Mth.ceil(point.y - 1.0E-4);
 				ship.columns.put(key, Math.max(y, ship.columns.getOrDefault(key, Integer.MIN_VALUE)));
 			}
 		}
+	}
+
+	/** a ship's column tops as last read, for Better Simple Clouds' wet ground (see {@link ShipWetGround}) */
+	public record Tops(ClientSubLevel subLevel, int[] tops, int count, int minX, int minY, int minZ, int sizeX, int sizeY, int sizeZ, int version)
+	{
+	}
+
+	/** the nearby ships whose column tops are known */
+	public static java.util.List<Tops> knownTops()
+	{
+		final java.util.List<Tops> list = new java.util.ArrayList<>();
+		for (Map.Entry<SubLevel, Ship> entry : ships.entrySet())
+		{
+			final Ship ship = entry.getValue();
+			if (!ship.tops.isEmpty() && entry.getKey() instanceof ClientSubLevel subLevel)
+			{
+				list.add(new Tops(subLevel, ship.tops.elements(), ship.tops.size(), ship.minX, ship.minY, ship.minZ, ship.sizeX, ship.sizeY,
+						ship.sizeZ, ship.version));
+			}
+		}
+		return list;
 	}
 
 	/** a heightmap height with the ships over the column taken into account */
