@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Simple Clouds: the storm fog's blur chain, dropping Forever Fixes' storm fog shaders on a reload, and marking the storm fog
+ * Simple Clouds: the storm fog's blur chain, the storm fog's own chain (smooth rain column edges), dropping Forever Fixes' storm fog shaders on a reload, and marking the storm fog
  * pass, during which Better Simple Clouds' depth is the one with the particles in it (see {@link StormFogFixes}).
  */
 @Mixin(targets = "dev.nonamecrackers2.simpleclouds.client.renderer.SimpleCloudsRenderer", remap = false)
@@ -23,6 +23,14 @@ public abstract class MixinSimpleCloudsStormChains
 	private ResourceLocation foreverfixes$vanillaStormBlur(ResourceLocation chain)
 	{
 		return StormFogFixes.stormBlurChain(chain);
+	}
+
+	@ModifyArg(method = "onResourceManagerReload", remap = false, require = 1, index = 1,
+			at = @At(value = "INVOKE", remap = false,
+					target = "Ldev/nonamecrackers2/simpleclouds/client/renderer/SimpleCloudsRenderer;createPostChain(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/resources/ResourceLocation;Lcom/mojang/blaze3d/pipeline/RenderTarget;Ljava/util/function/Consumer;)Lnet/minecraft/client/renderer/PostChain;"))
+	private ResourceLocation foreverfixes$smoothStormFogEdges(ResourceLocation chain)
+	{
+		return StormFogFixes.stormFogChain(chain);
 	}
 
 	@Inject(method = "onResourceManagerReload", remap = false, require = 1, at = @At("RETURN"))

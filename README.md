@@ -33,6 +33,9 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Simple Clouds: the quarter-resolution storm fog is stretched to the screen by depth, so it stops at the edges of what is in
   front of it instead of bleeding over them in 4-pixel steps; its blur uses a copy of vanilla's, not the blur Exposure Expanded
   replaces (distant rain columns came out solid black).
+  Distant rain columns no longer flicker along their edges against the sky (a fixed copy of its storm fog shader, which is
+  PolyForm Perimeter 1.0.1 licensed, https://polyformproject.org/licenses/perimeter/1.0.1: each pixel's samples are offset and a
+  step the rain starts or stops in counts only its rainy part).
 - Key bindings no longer reset after a restart: options saves during mod loading are held back until mod keys have their saved
   bindings, and the saved bindings of keys added later (PneumaticCraft armor keys) are kept and applied when they appear.
 - Immersive Petroleum: oil reservoir placement no longer freezes the server when two world generators run at once (a pregen
@@ -136,4 +139,6 @@ The mixins compile against jars of the patched mods, which are not part of this 
 
 ## License
 
-0BSD (see LICENSE). No code from the patched mods is included.
+0BSD (see LICENSE). No code from the patched mods is included, except the two marked shader copies above
+(`bsc_rain_haze.fsh`, MIT; `storm_fog.fsh`, PolyForm Perimeter 1.0.1 with Better Simple Clouds' MIT changes), which keep
+their own licenses.

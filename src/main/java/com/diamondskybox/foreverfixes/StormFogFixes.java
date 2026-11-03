@@ -55,6 +55,8 @@ public final class StormFogFixes
 {
 	private static final ResourceLocation VANILLA_BLUR = ResourceLocation.withDefaultNamespace("shaders/post/blur.json");
 	private static final ResourceLocation STORM_BLUR = ResourceLocation.fromNamespaceAndPath(ForeverFixes.MOD_ID, "shaders/post/storm_blur.json");
+	/** Forever Fixes' storm fog chain; its name must not end in storm_post.json, which Better Simple Clouds swaps for its own */
+	private static final ResourceLocation STORM_FOG_CHAIN = ResourceLocation.fromNamespaceAndPath(ForeverFixes.MOD_ID, "shaders/post/storm_fog_chain.json");
 	private static final String UPSAMPLE_PROGRAM = ForeverFixes.MOD_ID + ":storm_upsample";
 	private static final String DEPTH_PROGRAM = ForeverFixes.MOD_ID + ":storm_depth";
 	private static final int MAX_BEAMS = 512;
@@ -207,6 +209,16 @@ public final class StormFogFixes
 	public static ResourceLocation stormBlurChain(ResourceLocation chain)
 	{
 		return VANILLA_BLUR.equals(chain) && ForeverFixesConfig.enabled(ForeverFixesConfig.SC_STORM_BLUR_VANILLA) ? STORM_BLUR : chain;
+	}
+
+	/**
+	 * Simple Clouds' storm fog chain (or Better Simple Clouds' copy of it, which replaces any chain named storm_post.json) becomes
+	 * Forever Fixes' copy with smooth rain column edges (assets/foreverfixes/shaders/program/storm_fog.fsh).
+	 */
+	public static ResourceLocation stormFogChain(ResourceLocation chain)
+	{
+		return chain != null && chain.getPath().endsWith("storm_post.json") && ForeverFixesConfig.enabled(ForeverFixesConfig.SC_STORM_FOG_EDGES)
+				? STORM_FOG_CHAIN : chain;
 	}
 
 	public static void onResourceReload()

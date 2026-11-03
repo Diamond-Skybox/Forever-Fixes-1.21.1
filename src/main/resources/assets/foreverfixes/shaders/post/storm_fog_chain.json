@@ -1,0 +1,17 @@
+{
+	"targets": [
+		"out"
+	],
+	"passes": [
+		{
+			"name": "foreverfixes:storm_fog",
+			"intarget": "minecraft:main",
+			"outtarget": "out"
+		},
+		{
+			"name": "blit",
+			"intarget": "out",
+			"outtarget": "minecraft:main"
+		}
+	]
+}

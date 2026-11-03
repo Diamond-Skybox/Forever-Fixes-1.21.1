@@ -147,6 +147,14 @@ public final class ForeverFixesConfig
 					"edges of what is in front of it instead of bleeding over them in 4-pixel steps (leaves, window frames, beacon beams).")
 			.define("simpleclouds.depthAwareStormFog", true);
 
+	public static final ModConfigSpec.BooleanValue SC_STORM_FOG_EDGES = B
+			.comment("Simple Clouds: smooth edges on distant rain columns. Its storm fog samples the rain farther apart the farther out it",
+					"looks (about 57 blocks apart at 4000 blocks), each sample all in or all out, so a column's edge could only be 0, 40, 80 or",
+					"100 % fogged and flickered in 4x4-pixel blocks as the clouds drifted, worst against the sky. Uses a copy of Better Simple",
+					"Clouds' storm fog shader that offsets each pixel's samples and counts the part of a step that is in the rain. Takes",
+					"effect on a resource reload (F3+T).")
+			.define("simpleclouds.smoothStormFogEdges", true);
+
 	public static final ModConfigSpec.BooleanValue MOBENDS_PARAGLIDER_POSE = B
 			.comment("Mo' Bends + Paraglider 21.1: play Mo' Bends' paragliding pose (glider held above the head) while gliding.",
 					"Mo' Bends looks for a Paraglider class that 21.1 no longer has, so the pose never played.")
