@@ -39,6 +39,8 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			Map.entry("jmbeam", List.of("journeymap", "bettersimpleclouds", "simpleclouds")),
 			Map.entry("immersivepetroleum", List.of("immersivepetroleum")),
 			Map.entry("architectury", List.of("architectury")),
+			Map.entry("sablerain", List.of("sable")),
+			Map.entry("sablebscrain", List.of("sable", "bettersimpleclouds", "simpleclouds")),
 			Map.entry("punchy", List.of("punchy", "mca")),
 			Map.entry("paraglidermobends", List.of("paraglider", "mobends")),
 			Map.entry("punchyarmor", List.of("punchy")),

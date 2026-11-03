@@ -114,6 +114,11 @@ public final class ForeverFixesConfig
 					"the particle's estimated coverage, which turned faint smoke into inverted colours. The glass is the depth after translucent blocks.")
 			.define("bettersimpleclouds.particlesNotGlass", true);
 
+	public static final ModConfigSpec.BooleanValue SABLE_SHIP_RAIN = B
+			.comment("Sable: rain, its splashes, Better Simple Clouds' downpour and its wet ground stop on ships instead of falling through",
+					"them. They only knew the world's heightmap, which has no Sable ships in it; the columns under nearby ships are raycast.")
+			.define("sable.shipsBlockRain", true);
+
 	public static final ModConfigSpec.BooleanValue BSC_WET_GROUND_SEAMS = B
 			.comment("Better Simple Clouds: wet ground without dry dashed lines along block edges. Its rain shader worked out which ground faces",
 					"up from 2x2-pixel depth slopes, which tilt on the seam between two blocks; a copy of the shader rebuilds it from the",
