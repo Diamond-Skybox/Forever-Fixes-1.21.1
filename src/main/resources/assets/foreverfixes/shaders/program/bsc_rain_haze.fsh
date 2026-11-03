@@ -4,6 +4,7 @@
 // marked: the wet ground's face normal. It came from dFdx/dFdy of the view position, which the GPU takes over 2x2 pixel quads; a
 // quad on the seam between two blocks mixed both and tilted the normal, so a dashed line of dry pixels ran along every block edge.
 // The normal is rebuilt from the depth of the neighbouring pixels instead, on each axis from the side on the same surface.
+// Also marked: only faces pointing up are wet (the original took faces pointing down as well).
 
 // Better Simple Clouds: the rain on the world, over the whole frame at once (see RainHaze).
 //
@@ -254,7 +255,8 @@ void main()
     if (terrain && Wetness > 0.0 && dist < WetRange)
     {
         vec3 normal = foreverfixesFaceNormal(viewPos); // Forever Fixes: was normalize(cross(slopeX, slopeY))
-        if (abs(dot(normal, UpView)) > 0.85)
+        if (dot(normal, UpView) > 0.85) // Forever Fixes: was abs(...) - undersides facing straight down (Sable ships, which the
+                                         // terrain heightmap does not know, so they pass the open-sky test) got wet too
         {
             vec3 world = CameraPos + (InverseModelViewMat * vec4(viewPos, 1.0)).xyz;
             vec2 hm = (world.xz - HeightmapOrigin) / HeightmapSize;
