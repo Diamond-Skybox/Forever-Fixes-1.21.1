@@ -114,6 +114,12 @@ public final class ForeverFixesConfig
 					"the particle's estimated coverage, which turned faint smoke into inverted colours. The glass is the depth after translucent blocks.")
 			.define("bettersimpleclouds.particlesNotGlass", true);
 
+	public static final ModConfigSpec.BooleanValue BSC_WET_GROUND_SEAMS = B
+			.comment("Better Simple Clouds: wet ground without dry dashed lines along block edges. Its rain shader worked out which ground faces",
+					"up from 2x2-pixel depth slopes, which tilt on the seam between two blocks; a copy of the shader rebuilds it from the",
+					"neighbouring pixels on the same surface. Takes effect on a resource reload (F3+T).")
+			.define("bettersimpleclouds.wetGroundSeamFix", true);
+
 	public static final ModConfigSpec.BooleanValue BSC_BEACON_GLOW_DEPTH = B
 			.comment("Better Simple Clouds: the storm fog and rain haze stop at a beacon beam's outer glow and at JourneyMap's waypoint beams.",
 					"Neither writes depth, so the fog was worked out to whatever was behind the beam and laid over it (against the sky the",

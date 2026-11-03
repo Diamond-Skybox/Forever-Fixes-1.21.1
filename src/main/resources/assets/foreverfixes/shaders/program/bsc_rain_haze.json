@@ -1,0 +1,307 @@
+{
+    "blend": {
+        "func": "add",
+        "srcrgb": "one",
+        "dstrgb": "zero"
+    },
+    "vertex": "blit",
+    "fragment": "foreverfixes:bsc_rain_haze",
+    "attributes": [
+        "Position"
+    ],
+    "samplers": [
+        {
+            "name": "DiffuseSampler"
+        },
+        {
+            "name": "DiffuseDepthSampler"
+        },
+        {
+            "name": "DhDepthSampler"
+        },
+        {
+            "name": "HeightmapSampler"
+        },
+        {
+            "name": "NearDepthSampler"
+        },
+        {
+            "name": "OpaqueDepthSampler"
+        },
+        {
+            "name": "GlassFilterSampler"
+        }
+    ],
+    "uniforms": [
+        {
+            "name": "ProjMat",
+            "type": "matrix4x4",
+            "count": 16,
+            "values": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        {
+            "name": "OutSize",
+            "type": "float",
+            "count": 2,
+            "values": [
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "name": "InverseProjMat",
+            "type": "matrix4x4",
+            "count": 16,
+            "values": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        {
+            "name": "InverseModelViewMat",
+            "type": "matrix4x4",
+            "count": 16,
+            "values": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        {
+            "name": "DhInverseProjMat",
+            "type": "matrix4x4",
+            "count": 16,
+            "values": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        {
+            "name": "DhEnabled",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "DhReverse",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "DhRange",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "FogStart",
+            "type": "float",
+            "count": 1,
+            "values": [
+                1.0
+            ]
+        },
+        {
+            "name": "FogEnd",
+            "type": "float",
+            "count": 1,
+            "values": [
+                2.0
+            ]
+        },
+        {
+            "name": "FogColor",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.5,
+                0.5,
+                0.5
+            ]
+        },
+        {
+            "name": "Strength",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "Wetness",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "WetRange",
+            "type": "float",
+            "count": 1,
+            "values": [
+                48.0
+            ]
+        },
+        {
+            "name": "CameraPos",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "name": "UpView",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.0,
+                1.0,
+                0.0
+            ]
+        },
+        {
+            "name": "WetSkyColor",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.5,
+                0.5,
+                0.5
+            ]
+        },
+        {
+            "name": "HeightmapOrigin",
+            "type": "float",
+            "count": 2,
+            "values": [
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "name": "HeightmapSize",
+            "type": "float",
+            "count": 1,
+            "values": [
+                160.0
+            ]
+        },
+        {
+            "name": "RainTime",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "RainLevel",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "CloudBase",
+            "type": "float",
+            "count": 1,
+            "values": [
+                100.0
+            ]
+        },
+        {
+            "name": "Mode",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "CoverRadius",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.08
+            ]
+        },
+        {
+            "name": "GlassOn",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        }
+    ]
+}
