@@ -36,6 +36,7 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			Map.entry("vampirism", List.of("vampirism")),
 			Map.entry("printingpress", List.of("printingpress")),
 			Map.entry("lootr", List.of("lootr")),
+			Map.entry("energyfield", List.of("energyfield")),
 			Map.entry("rocketnautics", List.of("rocketnautics")),
 			Map.entry("gyro", List.of("gyro")),
 			Map.entry("sable", List.of("sable")),

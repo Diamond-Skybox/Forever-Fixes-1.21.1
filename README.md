@@ -127,6 +127,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Lootr boss chests (`bossChest.*`): a boss (`#c:bosses`, minus Twilight Forest bosses and BOMD's Gauntlet/Obsidilith, which leave
   their own chests) drops nothing on the ground; a Lootr chest appears where it died. Only players who damaged it can open it, each
   gets their own roll of the boss's loot table (as the killer, with their own looting and luck), and it vanishes after 20 minutes.
+- Energy Field: its reflection helper caches method lists per class instead of copying them on every first-person frame (3-4% of
+  the render thread).
 - Mob caps (`spawning.mobCapScale`): natural spawning per category scaled, monsters halved by default (35 instead of 70).
 - Glowbrick's Printing Press: a type block with durability loses one point per printed book and crumbles at zero; the Typesetter refuses
   books carrying a `printing.noTypesetEnchantments` enchantment. The server data pack `pack-data/heimdall_wildmagic` gives bosses

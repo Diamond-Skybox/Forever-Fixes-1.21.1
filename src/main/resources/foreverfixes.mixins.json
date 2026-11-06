@@ -49,7 +49,8 @@
     "vampirism.MixinEntityPredicateVampireUndead",
     "printingpress.MixinPrintingPressWear",
     "printingpress.MixinTypesetterDeny",
-    "lootr.MixinDefaultLootFillerBossChest"
+    "lootr.MixinDefaultLootFillerBossChest",
+    "energyfield.MixinReflectCache"
   ],
   "client": [
     "sableflywheel.MixinSableFlywheelLightStorage",
