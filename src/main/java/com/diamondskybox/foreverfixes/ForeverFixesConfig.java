@@ -16,6 +16,12 @@ public final class ForeverFixesConfig
 					"disables the whole compat and RPG-series armors (Paladins, Wizards, Archers, Rogues, Armory) lose their textures.")
 			.define("mobends.armorModelApiFix", true);
 
+	public static final ModConfigSpec.DoubleValue CHROMEWARE_FIRST_PERSON_SPREAD = B
+			.comment("Chromeware: first-person arms carrying implant hardware (Gorilla Arms, cyber arms, Mantis Blades, Projectile Launcher)",
+					"are moved this far outward (blocks) per side. Chromeware draws them in vanilla's empty-hand pose, which angles both arms",
+					"toward the screen centre; its bulky arms then meet in the middle. 0 = as Chromeware draws them.")
+			.defineInRange("chromeware.firstPersonArmSpread", 0.18D, 0.0D, 1.0D);
+
 	public static final ModConfigSpec.BooleanValue MOBENDS_MCA_PLAYER_BREASTS = B
 			.comment("Mo' Bends + MCA: draw MCA's breast parts on players Mo' Bends animates.",
 					"Mo' Bends adds them back only for its villager mutators, never for the player model MCA gives the player.")
@@ -249,8 +255,8 @@ public final class ForeverFixesConfig
 			.define("betterinventory.modButtons", true);
 
 	public static final ModConfigSpec.ConfigValue<List<? extends String>> BI_MOD_BUTTON_ORDER = B
-			.comment("Mods whose inventory button is shown there, top to bottom: spell_atlas, fieldguide, solonion, doggytalents.")
-			.defineListAllowEmpty("betterinventory.modButtonOrder", List.of("spell_atlas", "fieldguide", "solonion", "doggytalents"), () -> "", o -> o instanceof String);
+			.comment("Mods whose inventory button is shown there, top to bottom: spell_atlas, fieldguide, solonion, doggytalents, chromeware.")
+			.defineListAllowEmpty("betterinventory.modButtonOrder", List.of("spell_atlas", "fieldguide", "solonion", "doggytalents", "chromeware"), () -> "", o -> o instanceof String);
 
 	public static final ModConfigSpec.BooleanValue BI_MOD_PANELS = B
 			.comment("Better Inventory: Spell Atlas's inventory panel and NTGL's chassis tabs, which are drawn on the vanilla inventory screen, also on Better Inventory's.")

@@ -1,0 +1,11 @@
+{
+  "description": { "text": "Wild Magic" },
+  "exclusive_set": "#foreverworld:exclusive_set/wild_magic",
+  "supported_items": "#minecraft:enchantable/armor",
+  "slots": ["armor"],
+  "max_level": 10,
+  "min_cost": { "base": 1, "per_level_above_first": 10 },
+  "max_cost": { "base": 10, "per_level_above_first": 10 },
+  "anvil_cost": 8,
+  "weight": 1
+}

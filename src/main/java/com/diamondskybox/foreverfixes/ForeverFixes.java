@@ -24,11 +24,37 @@ public final class ForeverFixes
 	{
 		container.registerConfig(ModConfig.Type.CLIENT, ForeverFixesConfig.SPEC);
 		container.registerConfig(ModConfig.Type.COMMON, ForeverFixesCommonConfig.SPEC);
+		NeoForge.EVENT_BUS.addListener(WildMagic::onDamage);
 		NeoForge.EVENT_BUS.addListener(ShipReseat::onServerTick);
 		NeoForge.EVENT_BUS.addListener(BlockedEnchantments::onPlayerTick);
 		NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, VillagerTradeFixes::onVillagerTrades);
 		NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, VillagerTradeFixes::onWandererTrades);
 		NeoForge.EVENT_BUS.addListener(EventPriority.LOW, ChestCoins::onLootTableLoad);
+		if (ModList.get().isLoaded("aerowarptics") && ModList.get().isLoaded("dimensional_sable"))
+		{
+			AeroWarpticsBridge.init();
+		}
+		if (ModList.get().isLoaded("irons_spellbooks") && (ModList.get().isLoaded("chromeware") || ModList.get().isLoaded("energyfield")))
+		{
+			NeoForge.EVENT_BUS.addListener(ChromeMagic::onPlayerTick);
+			if (FMLEnvironment.dist == Dist.CLIENT)
+			{
+				NeoForge.EVENT_BUS.addListener(ChromeTooltips::onTooltip);
+			}
+		}
+		if (ModList.get().isLoaded("vampirism"))
+		{
+			NeoForge.EVENT_BUS.addListener(VampireHoly::onPlayerTick);
+		}
+		if (ModList.get().isLoaded("lootr"))
+		{
+			NeoForge.EVENT_BUS.addListener(BossChests::onDamage);
+			NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, BossChests::onDrops);
+			NeoForge.EVENT_BUS.addListener(EventPriority.HIGH, BossChests::onRightClick);
+			NeoForge.EVENT_BUS.addListener(BossChests::onBreak);
+			NeoForge.EVENT_BUS.addListener(BossChests::onServerTick);
+			NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.TagsUpdatedEvent e) -> BossChests.clearCache());
+		}
 		if (ModList.get().isLoaded("opencomputers"))
 		{
 			NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, LootFixes::onLootTableLoad);

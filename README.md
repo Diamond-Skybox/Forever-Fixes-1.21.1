@@ -9,6 +9,12 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Mo' Bends + Armor Model API: RPG-series armor (Paladins, Wizards, Archers, Rogues, Armory) no longer loses its textures
   (Mo' Bends before 6.0; 6.0 fixed it itself).
 - Wavey Capes + Mo' Bends: no double tilt while crouching; the cape lies along the back in creative flight.
+- Chromeware + Mo' Bends: cyber torso, arms and legs and Gorilla Arms replace the flesh parts (Mantis Blades and the Projectile
+  Launcher replace the flesh forearm), and all of them, Monowire included, bend at Mo' Bends' elbows and knees. Third person;
+  first-person hands stay as they were.
+- Better Inventory: Chromeware's Cyberware button is a Surgery Chair icon in the gutter with the other mods' buttons.
+- Chromeware first person: implant hardware stays on MCA's arm (it drew on the vanilla arm while MCA showed its own), and arms
+  carrying hardware sit further apart instead of meeting in the middle (`chromeware.firstPersonArmSpread`, client config).
 - Mo' Bends + MCA: players keep their MCA body.
 - Punchy + MCA: first-person arms show the MCA look instead of the Minecraft skin.
 - Paraglider + Mo' Bends / Punchy: the open paraglider is held above the head while gliding, in third person (Mo' Bends'
@@ -102,6 +108,35 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Traveler's Titles: dimension titles also show when arriving above the build height, and Create: Cosmonautics' deep space and
   Moon have names.
 
+**Magic balance**
+- Iron's Spells x Chromeware: cyberware trades magic for magic resistance. Each installed part takes its own share of spell power,
+  max mana and mana regen (0.4% per capacity point, rounded to 0.5%), applied one after another from the costliest part down and
+  after every other bonus; spell resistance is +0.65% per point up to +60% (or, with `resistMode = LOST_POTENTIAL`, 60% of the
+  fraction of magic lost). Wearing Energy Field's personal shield generator costs another 75% of mana regen. Advancements of other
+  Create-based mods raise the cyberware capacity limit by 2 each, up to +360 (a 720 limit, the cost of the costliest part in every
+  slot). Values in `magic.chrome.*` (common config); each part and the shield list their share on the tooltip.
+- Chromeware immunosuppressants: a Standard dose protects for one Minecraft day, a Military dose for half a day
+  (`chromeware.suppressant*Ticks`); re-dosing while protected still adds it halved per dose.
+- Corail Tombstone's Blessing gives one of a short holy list (regeneration, resistance, absorption, fire resistance, health boost,
+  instant health, Angel Wings, Fortified, Blessed Strikes, Sanctified Coating, Vampire's Delight Blessing, Sunblock, Purification,
+  Holy Power; `holy.blessingEffects`) instead of any beneficial effect in the pack.
+- Vampirism: vampire players count as undead for Smite (`holy.vampirePlayersUndead`); vampire mobs are undead through the pack's tag data.
+- Wild Magic (`wildMagic.*`): an armor enchantment from a data pack (default `foreverworld:wild_magic`) that, like Blessing, has a
+  level x 1% chance per piece when you're hit, but gives any effect in the game, good, bad or neutral (instant-death, exploding,
+  vampire/werewolf-converting, Pastel's Divinity and summon-timer effects left out; never rolled by random-enchant loot; harmful ones capped at level II). Server-side only.
+- Lootr boss chests (`bossChest.*`): a boss (`#c:bosses`, minus Twilight Forest bosses and BOMD's Gauntlet/Obsidilith, which leave
+  their own chests) drops nothing on the ground; a Lootr chest appears where it died. Only players who damaged it can open it, each
+  gets their own roll of the boss's loot table (as the killer, with their own looting and luck), and it vanishes after 20 minutes.
+- Mob caps (`spawning.mobCapScale`): natural spawning per category scaled, monsters halved by default (35 instead of 70).
+- Glowbrick's Printing Press: a type block with durability loses one point per printed book and crumbles at zero; the Typesetter refuses
+  books carrying a `printing.noTypesetEnchantments` enchantment. The server data pack `pack-data/heimdall_wildmagic` gives bosses
+  (`#c:bosses`, killed by a player) a 1% chance to drop a single-use Wild Magic typesetting (levels I-V, rarer the higher).
+- Vampirism: holy things burn vampires: each worn Blessing piece, held Smite or Sanctified weapon, or held enchanted book carrying
+  one of those deals 1 heart of holy damage per second and sets them alight (`holy.*`).
+- Iron's Spells Scroll Forge: chosen spells need a specific focus (`magic.scrollForgeFocus`); The World Stop is forged with an AE2
+  Singularity instead of a Grain of Time.
+- Chromeware x Chronomancy: a Sandevistan keeps you outside stopped time: you move during a world-wide time stop like its caster, and Temporal Stasis / Paradox do not take hold on you while it is running (`magic.chrome.sandevistanTimeStopImmunity`: ACTIVE, INSTALLED or OFF).
+
 **Create: Cosmonautics / Sable ships**
 - Ships keep their blocks, machine data, passengers and seats when moving between dimensions of different height, including
   2096-block-tall worlds (also fixes Cosmonautics issue #116).
@@ -116,6 +151,14 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Ship links to sub-levels that were not moved no longer crash the server.
 - Gyroscope Stabilizers only damp rotation in deep space instead of spinning the ship.
 - Ships saved with the ship library load intact in dimensions with a different bottom.
+- Aero Warptics + Dimensional Sable (Cosmonautics): Rift Drives can warp to Warp Anchors in other dimensions (planets). The ship
+  flies its departure rift and corridor as usual, then Dimensional Sable moves it to its resting place beside the anchor; the
+  arrival rift run-out is skipped and the drive arrives in cooldown. Needs `allowCrossDimensionWarp = true` in
+  aerowarptics-server.toml. Cosmonautics' deep space is refused (ships there belong to orbit instances). Only what is on or against the ship
+  goes with it (the 48-block entity margin used for Cosmonautics launches is 2 blocks for warps).
+- Sable: a ship breaking glass, leaves or ice (or anything else changing blocks during the physics step) no longer freezes the
+  server when a neighbouring block reacts by changing itself (seen with a Vista TV); those block changes reach the physics
+  engine right after the step.
 
 **Lighting**
 - ScalableLux: no crash when leaving a world with Sable ships or ragdolls loaded ("Index … out of bounds for length 25").

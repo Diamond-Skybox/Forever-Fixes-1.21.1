@@ -153,6 +153,173 @@ public final class ForeverFixesCommonConfig
 			.comment("Log each structure left out for a priority structure.")
 			.define("worldgen.priorityStructures.log", true);
 
+	public static final ModConfigSpec.BooleanValue CHROME_MAGIC = B
+			.comment("Iron's Spells x Chromeware / Energy Field: cyberware trades magic for magic resistance. Each installed part takes its own",
+					"share of spell power, max mana and mana regen (capacity x the rates below, rounded to magic.chrome.rounding), applied one",
+					"after another from the costliest part down and after every other bonus: 1200 mana with parts at -30%, -30%, -20% and -5%",
+					"is 1200 x 0.7 x 0.7 x 0.8 x 0.95. Spell resistance comes from magic.chrome.resistMode. Wearing the Energy Field personal",
+					"shield generator cuts mana regen further. Applied every second while the player is online.")
+			.define("magic.chrome.enabled", true);
+
+	public static final ModConfigSpec.DoubleValue CHROME_SPELL_POWER_PER_POINT = B
+			.comment("Spell power each part takes per point of its capacity cost (0.004 = 0.4%: the 44-point Sandevistan takes 17.5%).")
+			.defineInRange("magic.chrome.spellPowerPerPoint", 0.004D, 0.0D, 0.05D);
+
+	public static final ModConfigSpec.DoubleValue CHROME_MAX_MANA_PER_POINT = B
+			.comment("Max mana each part takes per point of its capacity cost.")
+			.defineInRange("magic.chrome.maxManaPerPoint", 0.004D, 0.0D, 0.05D);
+
+	public static final ModConfigSpec.DoubleValue CHROME_MANA_REGEN_PER_POINT = B
+			.comment("Mana regen each part takes per point of its capacity cost.")
+			.defineInRange("magic.chrome.manaRegenPerPoint", 0.004D, 0.0D, 0.05D);
+
+	public static final ModConfigSpec.DoubleValue CHROME_ROUNDING = B
+			.comment("Each part's share is rounded to the nearest multiple of this (0.005 = half a percent); 0 = no rounding.")
+			.defineInRange("magic.chrome.rounding", 0.005D, 0.0D, 0.1D);
+
+	public static final ModConfigSpec.ConfigValue<String> CHROME_RESIST_MODE = B
+			.comment("How cyberware gives spell resistance. ADDITIVE: resistPerPoint per capacity point in use, capped at resistCap.",
+					"LOST_POTENTIAL: lostPotentialShare of the fraction of magic the parts took (max mana lost 94.5% -> +56.7% at 0.6).")
+			.define("magic.chrome.resistMode", "ADDITIVE", o -> o instanceof String s && (s.equals("ADDITIVE") || s.equals("LOST_POTENTIAL")));
+
+	public static final ModConfigSpec.DoubleValue CHROME_RESIST_PER_POINT = B
+			.comment("ADDITIVE: spell resistance gained per capacity point in use (0.0065 = +0.65%).")
+			.defineInRange("magic.chrome.resistPerPoint", 0.0065D, 0.0D, 1.0D);
+
+	public static final ModConfigSpec.DoubleValue CHROME_RESIST_CAP = B
+			.comment("ADDITIVE: most spell resistance cyberware can give (0.6 = +60%).")
+			.defineInRange("magic.chrome.resistCap", 0.6D, 0.0D, 10.0D);
+
+	public static final ModConfigSpec.DoubleValue CHROME_LOST_POTENTIAL_SHARE = B
+			.comment("LOST_POTENTIAL: share of the lost fraction of magic given back as spell resistance.")
+			.defineInRange("magic.chrome.lostPotentialShare", 0.6D, 0.0D, 2.0D);
+
+	public static final ModConfigSpec.IntValue CHROME_ADDON_ADVANCEMENT_POINTS = B
+			.comment("Chromeware capacity limit gained per completed advancement of other Create-based mods (any mod that requires Create;",
+					"Create's own advancements already count through Chromeware). 0 = off.")
+			.defineInRange("magic.chrome.addonAdvancementPoints", 2, 0, 64);
+
+	public static final ModConfigSpec.IntValue CHROME_ADDON_ADVANCEMENT_CAP = B
+			.comment("Most capacity those advancements can add. 360 brings the limit to 720 (38 start + 272 Create + 50 cyber limbs + 360),",
+					"the cost of the costliest part in every slot.")
+			.defineInRange("magic.chrome.addonAdvancementCap", 360, 0, 10000);
+
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> CHROME_ADDON_EXCLUDED = B
+			.comment("Mod ids whose advancements do not count toward the capacity limit.")
+			.defineListAllowEmpty("magic.chrome.addonAdvancementExcluded", List.of("create", "chromeware", "aerowarptics"), () -> "", o -> o instanceof String);
+
+	public static final ModConfigSpec.DoubleValue SHIELD_MANA_REGEN_PENALTY = B
+			.comment("Mana regen lost while a personal shield generator is worn (0.75 = -75%), on top of the cyberware penalty.")
+			.defineInRange("magic.chrome.shieldManaRegenPenalty", 0.75D, 0.0D, 1.0D);
+
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> SHIELD_ITEMS = B
+			.comment("Items that count as a worn personal shield (Curios slots).")
+			.defineListAllowEmpty("magic.chrome.shieldItems",
+					List.of("energyfield:shield_amulet", "energyfield:shield_amulet_stage0", "energyfield:shield_amulet_stage1",
+							"energyfield:shield_amulet_stage2", "energyfield:shield_amulet_stage3"), () -> "",
+					o -> o instanceof String s && ResourceLocation.tryParse(s) != null);
+
+	public static final ModConfigSpec.ConfigValue<String> SANDEVISTAN_TIME_STOP = B
+			.comment("Chromeware x Chronomancy: a Sandevistan keeps you outside stopped time. ACTIVE = only while it is running (activating it",
+					"during a time stop frees you); INSTALLED = having one installed is enough; OFF = no immunity. Covers the world-wide time stop",
+					"(you move like its caster) and Temporal Stasis / Paradox on you.")
+			.define("magic.chrome.sandevistanTimeStopImmunity", "ACTIVE", o -> o instanceof String s && (s.equals("INSTALLED") || s.equals("ACTIVE") || s.equals("OFF")));
+
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> SCROLL_FORGE_FOCUS = B
+			.comment("Iron's Spells Scroll Forge: spells that need a specific focus item instead of their school's focus (\"spell=item\").",
+					"That item then makes only those spells (add it to the school's focus tag so the forge accepts it), and the school's",
+					"usual focus no longer makes them. Default: The World Stop needs an AE2 Singularity instead of a Grain of Time.")
+			.defineListAllowEmpty("magic.scrollForgeFocus", List.of("chronomancy:the_world_stop=ae2:singularity"), () -> "",
+					o -> o instanceof String s && s.contains("="));
+
+	public static final ModConfigSpec.IntValue SUPPRESSANT_STANDARD_TICKS = B
+			.comment("Chromeware: protection one Standard Grade Immunosuppressant dose gives, in ticks (24000 = one Minecraft day; Chromeware: 12000).",
+					"A dose taken while still protected adds this halved once per dose in a row (diminishing returns, as in Chromeware).")
+			.defineInRange("chromeware.suppressantStandardTicks", 24000, 1, 10000000);
+
+	public static final ModConfigSpec.IntValue SUPPRESSANT_MILITARY_TICKS = B
+			.comment("Chromeware: protection one Military Grade dose gives, in ticks (12000 = half a Minecraft day; Chromeware: 3600).")
+			.defineInRange("chromeware.suppressantMilitaryTicks", 12000, 1, 10000000);
+
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> BLESSING_EFFECTS = B
+			.comment("Corail Tombstone's Blessing gives one of these effects when hit instead of any beneficial effect in the game. Empty = Tombstone's own pick.")
+			.defineListAllowEmpty("holy.blessingEffects", List.of("minecraft:regeneration", "minecraft:resistance", "minecraft:absorption",
+					"minecraft:fire_resistance", "minecraft:health_boost", "minecraft:instant_health",
+					"irons_spellbooks:angel_wings", "irons_spellbooks:fortify", "paladins:blessed_strikes", "farmers_spell:holy_spirit_oil",
+					"vampiresdelight:blessing", "mowziesmobs:sunblock", "tombstone:purification", "spell_power:holy"), () -> "",
+					o -> o instanceof String s && ResourceLocation.tryParse(s) != null);
+
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> WILD_MAGIC_EXCLUDED = B
+			.comment("Effects Wild Magic never gives. * matches anything.",
+					"Defaults leave out effects that kill outright, explode, or turn you into a vampire/werewolf, Pastel's Divinity (and its loud music), and internal summon timers.")
+			.defineListAllowEmpty("wildMagic.excludedEffects", List.of("pastel:fatal_slumber", "pastel:deadly_poison", "pastel:eternal_slumber",
+					"ars_nouveau:blasting", "vinery:creeper_effect", "kaleidoscope_world_liquor:explosion", "kaleidoscope_world_liquor:respawn",
+					"vampirism:sanguinare", "werewolves:lupus_sanguinem", "werewolves:un_werewolf", "tombstone:ghostly_shape", "pastel:ascension", "pastel:divinity", "*_timer"), () -> "",
+					o -> o instanceof String s && !s.isBlank());
+
+	public static final ModConfigSpec.ConfigValue<String> WILD_MAGIC_ENCHANTMENT = B
+			.comment("Enchantment id that works as Wild Magic (a data-pack enchantment; nothing happens if it doesn't exist).")
+			.define("wildMagic.enchantment", "foreverworld:wild_magic");
+
+	public static final ModConfigSpec.IntValue WILD_MAGIC_MAX_HARMFUL_AMPLIFIER = B
+			.comment("Highest amplifier (0 = level I) Wild Magic gives a harmful effect, so Instant Damage or Wither can't one-shot.")
+			.defineInRange("wildMagic.maxHarmfulAmplifier", 1, 0, 255);
+
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> PRINTING_NO_TYPESET = B
+			.comment("Glowbrick's Printing Press: enchanted books carrying any of these can't go through the Typesetter (so a single-use typesetting",
+					"can't be turned back into a reusable one). Type blocks with durability always lose one point per print.")
+			.defineListAllowEmpty("printing.noTypesetEnchantments", List.of("foreverworld:wild_magic"), () -> "",
+					o -> o instanceof String s && ResourceLocation.tryParse(s) != null);
+
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> MOB_CAP_SCALE = B
+			.comment("Natural-spawn mob caps per category as \"category=scale\" (vanilla caps: monster 70, creature 10, ambient 15, axolotls 5,",
+					"underground_water_creature 5, water_creature 5, water_ambient 20). 0.5 = half as many. Spawners and structures are not affected.")
+			.defineListAllowEmpty("spawning.mobCapScale", List.of("monster=0.5"), () -> "", o -> o instanceof String s && s.contains("="));
+
+	public static final ModConfigSpec.BooleanValue BOSS_CHEST_ENABLED = B
+			.comment("Lootr boss chests: bosses that don't leave their own chest drop nothing on the ground; a Lootr chest appears where they died",
+					"that only players who damaged the boss can open, each with their own roll of the boss's loot table. Needs Lootr.")
+			.define("bossChest.enabled", true);
+
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> BOSS_CHEST_BOSSES = B
+			.comment("Entities (ids or #tags) that leave a boss chest.")
+			.defineListAllowEmpty("bossChest.bosses", List.of("#c:bosses"), () -> "", o -> o instanceof String s && !s.isBlank());
+
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> BOSS_CHEST_EXCLUDED = B
+			.comment("Bosses that already leave their own chest (or shouldn't get one).")
+			.defineListAllowEmpty("bossChest.excluded", List.of("#twilightforest:bosses", "bosses_of_mass_destruction:gauntlet",
+					"bosses_of_mass_destruction:obsidilith"), () -> "", o -> o instanceof String s && !s.isBlank());
+
+	public static final ModConfigSpec.IntValue BOSS_CHEST_MINUTES = B
+			.comment("Minutes before a boss chest vanishes, opened or not.")
+			.defineInRange("bossChest.minutes", 20, 1, 1440);
+
+	public static final ModConfigSpec.BooleanValue VAMPIRE_PLAYERS_UNDEAD = B
+			.comment("Vampirism: vampire players match the undead and sensitive_to_smite entity tags in predicates, so Smite (and anything else",
+					"that checks those tags through a predicate) hits them like undead mobs. Vampire mobs are undead through the pack's tag data.")
+			.define("holy.vampirePlayersUndead", true);
+
+	public static final ModConfigSpec.DoubleValue VAMPIRE_HOLY_DAMAGE = B
+			.comment("Vampirism: holy damage per second a vampire takes for each holy source on them (worn holy armor piece, held holy weapon,",
+					"held enchanted book carrying one of those enchantments). 0 = off.")
+			.defineInRange("holy.vampireDamagePerSource", 2.0D, 0.0D, 100.0D);
+
+	public static final ModConfigSpec.IntValue VAMPIRE_HOLY_FIRE = B
+			.comment("Seconds of fire a vampire is set to while touching a holy source.")
+			.defineInRange("holy.vampireFireSeconds", 3, 0, 60);
+
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> HOLY_WORN_ENCHANTMENTS = B
+			.comment("Enchantments that make worn armor holy.")
+			.defineListAllowEmpty("holy.wornEnchantments", List.of("tombstone:blessing"), () -> "", o -> o instanceof String s && ResourceLocation.tryParse(s) != null);
+
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> HOLY_HELD_ENCHANTMENTS = B
+			.comment("Enchantments that make a held item holy.")
+			.defineListAllowEmpty("holy.heldEnchantments", List.of("minecraft:smite", "tombstone:sanctified"), () -> "", o -> o instanceof String s && ResourceLocation.tryParse(s) != null);
+
+	public static final ModConfigSpec.BooleanValue HOLY_BOOKS = B
+			.comment("A held enchanted book carrying any of the holy enchantments above burns a vampire too.")
+			.define("holy.booksCount", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	/** Read from tick code, which can run before the config file is loaded; default to enabled then. */

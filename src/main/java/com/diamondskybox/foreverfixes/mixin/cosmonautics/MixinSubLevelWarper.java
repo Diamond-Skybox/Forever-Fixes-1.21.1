@@ -57,7 +57,7 @@ public abstract class MixinSubLevelWarper
 			at = @At(value = "INVOKE", remap = false, target = "Lnet/minecraft/server/level/ServerLevel;getEntities(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;)Ljava/util/List;"))
 	private static List<Entity> foreverfixes$gatherWithMargin(ServerLevel level, Entity except, AABB box, Operation<List<Entity>> original)
 	{
-		return original.call(level, except, box.inflate(ShipTransferOrigin.GATHER_MARGIN));
+		return original.call(level, except, box.inflate(ShipTransferOrigin.gatherMargin()));
 	}
 
 	/** Diagnostic (1.14.1): every entity Dimensional Sable carries along, where to, and whether the teleport worked. */

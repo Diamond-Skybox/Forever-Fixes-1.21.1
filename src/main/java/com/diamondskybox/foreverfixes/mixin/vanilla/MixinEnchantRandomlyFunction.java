@@ -24,6 +24,6 @@ public abstract class MixinEnchantRandomlyFunction
 			at = @At(value = "INVOKE", remap = false, target = "Ljava/util/stream/Stream;toList()Ljava/util/List;"))
 	private List<Holder<Enchantment>> foreverfixes$skipBlocked(Stream<Holder<Enchantment>> candidates, Operation<List<Holder<Enchantment>>> original)
 	{
-		return original.call(candidates.filter(enchantment -> !BlockedEnchantments.isBlocked(enchantment)));
+		return original.call(candidates.filter(enchantment -> !BlockedEnchantments.isBlocked(enchantment) && !com.diamondskybox.foreverfixes.WildMagic.is(enchantment)));
 	}
 }

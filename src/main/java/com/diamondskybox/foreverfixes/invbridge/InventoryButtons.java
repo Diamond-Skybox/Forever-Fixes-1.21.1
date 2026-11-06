@@ -54,6 +54,8 @@ final class InventoryButtons
 						GutterButton.icon(id("solonion", "textures/item/food_book.png"), 0, 0, 16, 16, 16, 16), FoodBookBridge::open));
 				case "doggytalents" -> make(mod, DogInventoryBridge::buttonEnabled, () -> new GutterButton(x, y, "foreverfixes.betterinventory.doggytalents",
 						GutterButton.icon(id("doggytalents", "textures/gui/small_widgets.png"), 0, 46, 13, 10, 256, 256), DogInventoryBridge::open));
+				case "chromeware" -> make(mod, () -> true, () -> new GutterButton(x, y, "foreverfixes.betterinventory.chromeware",
+						GutterButton.item(CyberwareButtonBridge::icon), CyberwareButtonBridge::open));
 				default -> null;
 			};
 			if (button != null)

@@ -1,0 +1,8 @@
+{
+  "type": "neoforge:add_table",
+  "conditions": [
+    { "condition": "minecraft:entity_properties", "entity": "this", "predicate": { "type": "#c:bosses" } },
+    { "condition": "minecraft:killed_by_player" }
+  ],
+  "table": "foreverworld:boss/wild_magic_typesetting"
+}

@@ -9,5 +9,6 @@
   "foreverfixes.betterinventory.doggytalents": "Dog Inventories",
   "foreverfixes.stockmarket.tab_auction_house": "Auction House",
   "foreverfixes.teleport.cross_dimension_refused": "That kind of teleport cannot cross into another dimension.",
-  "foreverfixes.teleport.waystone_cross_dimension": "Waystones cannot warp to another dimension"
+  "foreverfixes.teleport.waystone_cross_dimension": "Waystones cannot warp to another dimension",
+  "foreverfixes.betterinventory.chromeware": "Cyberware"
 }

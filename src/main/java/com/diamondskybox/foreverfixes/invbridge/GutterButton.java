@@ -50,6 +50,16 @@ final class GutterButton extends AbstractButton
 		};
 	}
 
+	/** A vanilla button frame with an item's icon on it. */
+	static Face item(java.util.function.Supplier<net.minecraft.world.item.ItemStack> stack)
+	{
+		return (graphics, x, y, isHovered) ->
+		{
+			graphics.blitSprite(isHovered ? FRAME_HOVERED : FRAME, x, y, SIZE, SIZE);
+			graphics.renderItem(stack.get(), x + 1, y + 1);
+		};
+	}
+
 	@Override
 	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
 	{

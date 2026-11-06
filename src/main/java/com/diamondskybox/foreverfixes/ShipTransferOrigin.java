@@ -19,6 +19,30 @@ public final class ShipTransferOrigin
 	/** Margin (blocks) around the ship when gathering the entities that travel with it; covers about 900 m/s of trailing bounds. */
 	public static final double GATHER_MARGIN = 48.0D;
 
+	/** Margin for Rift Drive warps (Aero Warptics): the ship is at rest in the corridor, so only what is on or against it goes. */
+	public static final double WARP_GATHER_MARGIN = 2.0D;
+
+	private static final ThreadLocal<Boolean> RIFT_WARP = ThreadLocal.withInitial(() -> false);
+
+	/** Runs a Dimensional Sable transfer started by a Rift Drive (narrow entity gathering). */
+	public static <T> T riftWarp(java.util.function.Supplier<T> transfer)
+	{
+		RIFT_WARP.set(true);
+		try
+		{
+			return transfer.get();
+		}
+		finally
+		{
+			RIFT_WARP.set(false);
+		}
+	}
+
+	public static double gatherMargin()
+	{
+		return RIFT_WARP.get() ? WARP_GATHER_MARGIN : GATHER_MARGIN;
+	}
+
 	/** Block-Y extent of the ship saved last on this thread; WarpSubLevels saves a sub-level right before computing its offset. */
 	private static final ThreadLocal<int[]> LAST_EXTENT = new ThreadLocal<>();
 

@@ -140,4 +140,41 @@ public final class McaArms
 		}
 		throw new NoSuchMethodException(name);
 	}
+
+	private static java.lang.reflect.Field villagerModel;
+	private static boolean villagerLookedUp;
+
+	/**
+	 * The arm MCA actually shows in first person: its villager-animation model's arm (MCA copies that arm's pose onto the visible
+	 * skin/clothing arms). Null when MCA is absent or the field cannot be found.
+	 */
+	public static ModelPart shownArm(Object playerRenderer, boolean right)
+	{
+		if (!villagerLookedUp)
+		{
+			villagerLookedUp = true;
+			try
+			{
+				villagerModel = net.minecraft.client.renderer.entity.player.PlayerRenderer.class.getDeclaredField("mca$villagerAnimationModel");
+				villagerModel.setAccessible(true);
+			}
+			catch (Throwable t)
+			{
+				villagerModel = null;
+			}
+		}
+		if (villagerModel == null)
+		{
+			return null;
+		}
+		try
+		{
+			final Object model = villagerModel.get(playerRenderer);
+			return model instanceof net.minecraft.client.model.HumanoidModel<?> humanoid ? (right ? humanoid.rightArm : humanoid.leftArm) : null;
+		}
+		catch (Throwable t)
+		{
+			return null;
+		}
+	}
 }
