@@ -42,6 +42,22 @@ public abstract class MixinBipedMutatorCyberLimbs
 	protected BendsModelPart body;
 	@Shadow(remap = false)
 	protected BendsModelPart outerBody;
+	@Shadow(remap = false)
+	protected BendsModelPart outerLeftArm;
+	@Shadow(remap = false)
+	protected BendsModelPart outerRightArm;
+	@Shadow(remap = false)
+	protected BendsModelPart outerLeftForeArm;
+	@Shadow(remap = false)
+	protected BendsModelPart outerRightForeArm;
+	@Shadow(remap = false)
+	protected BendsModelPart outerLeftLeg;
+	@Shadow(remap = false)
+	protected BendsModelPart outerRightLeg;
+	@Shadow(remap = false)
+	protected BendsModelPart outerLeftForeLeg;
+	@Shadow(remap = false)
+	protected BendsModelPart outerRightForeLeg;
 
 	@Unique
 	private int foreverfixes$depth;
@@ -58,10 +74,10 @@ public abstract class MixinBipedMutatorCyberLimbs
 			return;
 		}
 		final java.util.List<BendsModelPart> hide = new java.util.ArrayList<>();
-		foreverfixes$limb(hide, player, BodyPart.LEFT_ARM, this.leftArm, this.leftForeArm);
-		foreverfixes$limb(hide, player, BodyPart.RIGHT_ARM, this.rightArm, this.rightForeArm);
-		foreverfixes$limb(hide, player, BodyPart.LEFT_LEG, this.leftLeg, this.leftForeLeg);
-		foreverfixes$limb(hide, player, BodyPart.RIGHT_LEG, this.rightLeg, this.rightForeLeg);
+		foreverfixes$limb(hide, player, BodyPart.LEFT_ARM, this.leftArm, this.leftForeArm, this.outerLeftArm, this.outerLeftForeArm);
+		foreverfixes$limb(hide, player, BodyPart.RIGHT_ARM, this.rightArm, this.rightForeArm, this.outerRightArm, this.outerRightForeArm);
+		foreverfixes$limb(hide, player, BodyPart.LEFT_LEG, this.leftLeg, this.leftForeLeg, this.outerLeftLeg, this.outerLeftForeLeg);
+		foreverfixes$limb(hide, player, BodyPart.RIGHT_LEG, this.rightLeg, this.rightForeLeg, this.outerRightLeg, this.outerRightForeLeg);
 		this.foreverfixes$hidden = hide.toArray(new BendsModelPart[0]);
 		final java.util.List<BendsModelPart> conceal = new java.util.ArrayList<>();
 		if (CyberLimbBends.fleshHidden(player, BodyPart.BODY))
@@ -98,7 +114,8 @@ public abstract class MixinBipedMutatorCyberLimbs
 	}
 
 	@Unique
-	private static void foreverfixes$limb(java.util.List<BendsModelPart> out, Player player, BodyPart limb, BendsModelPart upper, BendsModelPart lower)
+	private static void foreverfixes$limb(java.util.List<BendsModelPart> out, Player player, BodyPart limb, BendsModelPart upper, BendsModelPart lower,
+			BendsModelPart outerUpper, BendsModelPart outerLower)
 	{
 		final boolean whole = CyberLimbBends.fleshHidden(player, limb);
 		final boolean forearm = !whole && (limb == BodyPart.LEFT_ARM || limb == BodyPart.RIGHT_ARM) && CyberLimbBends.forearmReplaced(player, limb);
@@ -106,7 +123,8 @@ public abstract class MixinBipedMutatorCyberLimbs
 		{
 			return;
 		}
-		for (BendsModelPart part : whole ? new BendsModelPart[]{upper, lower} : new BendsModelPart[]{lower})
+		// the outer (sleeve / clothing) layer goes with the flesh, or it would still cover the implant
+		for (BendsModelPart part : whole ? new BendsModelPart[]{upper, lower, outerUpper, outerLower} : new BendsModelPart[]{lower, outerLower})
 		{
 			if (part != null && !part.hidden)
 			{

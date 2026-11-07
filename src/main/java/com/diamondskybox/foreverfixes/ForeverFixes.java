@@ -42,6 +42,10 @@ public final class ForeverFixes
 				NeoForge.EVENT_BUS.addListener(ChromeTooltips::onTooltip);
 			}
 		}
+		if (ModList.get().isLoaded("chromeware"))
+		{
+			NeoForge.EVENT_BUS.addListener(CyberArmorFit::onPlayerTick);
+		}
 		if (ModList.get().isLoaded("vampirism"))
 		{
 			NeoForge.EVENT_BUS.addListener(VampireHoly::onPlayerTick);
@@ -70,6 +74,10 @@ public final class ForeverFixes
 		if (FMLEnvironment.dist == Dist.CLIENT)
 		{
 			NeoForge.EVENT_BUS.addListener(KeybindKeeper::onClientTick);
+		}
+		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("chromeware") && ModList.get().isLoaded("mobends"))
+		{
+			ChromeFirstPersonDeferral.register();
 		}
 		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("sable"))
 		{

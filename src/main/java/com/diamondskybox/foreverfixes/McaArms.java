@@ -1,6 +1,7 @@
 package com.diamondskybox.foreverfixes;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -60,6 +61,125 @@ public final class McaArms
 		{
 			ForeverFixes.LOGGER.warn("MCA first-person arms are not available ({}); other mods' arms stay as they are", e.toString());
 			renderArms = null;
+		}
+	}
+
+	/** Whether MCA draws this player with its own body (either arm), i.e. Chromeware's skin pieces should wear the MCA look. */
+	public static boolean usesMcaLook(AbstractClientPlayer player)
+	{
+		return replaces(player, true) || replaces(player, false);
+	}
+
+	/** One capture per player/buffer source while a Chromeware arm is drawn; replayed into MCA's layers when it finishes. */
+	private static final ThreadLocal<java.util.ArrayDeque<Object[]>> PENDING = ThreadLocal.withInitial(java.util.ArrayDeque::new);
+
+	/**
+	 * A stand-in for the player-skin buffer of geometry laid out on the player-skin UVs (Chromeware's skin copies of the forearm, Gorilla
+	 * Arms): the vertices are captured and, at {@link #flushLayered()}, written the way MCA paints the body, skin layer tinted with the
+	 * skin colour, then the clothing layer. Null if MCA has nothing to draw for this player.
+	 */
+	public static VertexConsumer layeredSkin(AbstractClientPlayer player, MultiBufferSource buffers)
+	{
+		lookUp();
+		if (renderArms == null)
+		{
+			return null;
+		}
+		for (Object[] pending : PENDING.get())
+		{
+			if (pending[0] == player && pending[1] == buffers)
+			{
+				return (CapturedVertices) pending[2];
+			}
+		}
+		final CapturedVertices capture = new CapturedVertices();
+		PENDING.get().push(new Object[]{player, buffers, capture});
+		return capture;
+	}
+
+	/** Writes every capture of this thread into MCA's skin and clothing buffers, one buffer at a time. */
+	public static void flushLayered()
+	{
+		final java.util.ArrayDeque<Object[]> pending = PENDING.get();
+		while (!pending.isEmpty())
+		{
+			final Object[] entry = pending.pollLast();
+			final AbstractClientPlayer player = (AbstractClientPlayer) entry[0];
+			final MultiBufferSource buffers = (MultiBufferSource) entry[1];
+			final CapturedVertices capture = (CapturedVertices) entry[2];
+			if (capture.isEmpty())
+			{
+				continue;
+			}
+			final EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+			if (!(renderer instanceof PlayerRenderer playerRenderer))
+			{
+				continue;
+			}
+			try
+			{
+				for (Field layer : new Field[] { skinLayer, clothingLayer })
+				{
+					final Object value = layer.get(playerRenderer);
+					if (value == null)
+					{
+						continue;
+					}
+					final Object texture = getSkin.invoke(value, player);
+					if (texture == null || !(boolean) canUse.invoke(value, texture))
+					{
+						continue;
+					}
+					final RenderType type = layer == skinLayer ? RenderType.entityCutoutNoCull((ResourceLocation) texture)
+							: RenderType.entityTranslucent((ResourceLocation) texture);
+					capture.replay(buffers.getBuffer(type), (int) getColor.invoke(value, player, 0F));
+				}
+			}
+			catch (ReflectiveOperationException | RuntimeException e)
+			{
+				ForeverFixes.LOGGER.warn("MCA skin for Chromeware pieces failed: {}", e.toString());
+			}
+		}
+	}
+
+	private static Field layerModel;
+
+	/** MCA's skin and clothing layer models for this player (empty if MCA doesn't draw them), so Chromeware's limb rules can cover them. */
+	public static java.util.List<net.minecraft.client.model.HumanoidModel<?>> layerModels(AbstractClientPlayer player)
+	{
+		if (!usesMcaLook(player))
+		{
+			return java.util.List.of();
+		}
+		final EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+		if (!(renderer instanceof PlayerRenderer playerRenderer))
+		{
+			return java.util.List.of();
+		}
+		try
+		{
+			final java.util.List<net.minecraft.client.model.HumanoidModel<?>> models = new java.util.ArrayList<>(2);
+			for (Field layer : new Field[] { skinLayer, clothingLayer })
+			{
+				final Object value = layer.get(playerRenderer);
+				if (value == null)
+				{
+					continue;
+				}
+				if (layerModel == null)
+				{
+					layerModel = Class.forName("net.conczin.mca.client.render.layer.VillagerLayer").getField("model");
+				}
+				if (layerModel.get(value) instanceof net.minecraft.client.model.HumanoidModel<?> model)
+				{
+					models.add(model);
+				}
+			}
+			return models;
+		}
+		catch (ReflectiveOperationException | RuntimeException e)
+		{
+			return java.util.List.of();
 		}
 	}
 

@@ -60,6 +60,12 @@ public final class CyberLimbBends
 		}
 	}
 
+	/** The player whose third-person render is running, or null. */
+	public static Player drawing()
+	{
+		return DRAWING.get();
+	}
+
 	/** Third-person entity render scope (LivingEntityRenderer.render); returns the outer value to restore. */
 	public static Player enterEntity(Player player)
 	{
@@ -80,13 +86,14 @@ public final class CyberLimbBends
 		}
 	}
 
-	/** Mantis Blades / Projectile Launcher draw their own skin copy of the forearm: Mo' Bends' flesh forearm goes. */
+	/** Mantis Blades / Projectile Launcher / Extendo Grip draw their own skin copy of the forearm: Mo' Bends' flesh forearm goes. */
 	public static boolean forearmReplaced(Player player, BodyPart arm)
 	{
 		final HumanoidArm side = arm == BodyPart.LEFT_ARM ? HumanoidArm.LEFT : HumanoidArm.RIGHT;
 		try
 		{
-			return com.chromeware.mantis.MantisImplant.hasHardware(player, side) || com.chromeware.launcher.ProjectileLauncher.active(player, side);
+			return com.chromeware.mantis.MantisImplant.hasHardware(player, side) || com.chromeware.launcher.ProjectileLauncher.active(player, side)
+					|| com.chromeware.extendo.ExtendoGrip.active(player, side);
 		}
 		catch (RuntimeException e)
 		{

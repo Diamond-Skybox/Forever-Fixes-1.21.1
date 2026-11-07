@@ -127,16 +127,29 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Lootr boss chests (`bossChest.*`): a boss (`#c:bosses`, minus Twilight Forest bosses and BOMD's Gauntlet/Obsidilith, which leave
   their own chests) drops nothing on the ground; a Lootr chest appears where it died. Only players who damaged it can open it, each
   gets their own roll of the boss's loot table (as the killer, with their own looting and luck), and it vanishes after 20 minutes.
+- Chromeware x Female Gender Mod: on a bare chrome torso (no Synthskin) the breasts use the cyber body's pectoral plate texture,
+  tinted with the player's Shells colour, instead of the skin (and no skin jacket layer over them); on any cyber torso the breast physics
+  is held still.
+- First-person arms with MCA + Mo' Bends + Punchy + Chromeware, as one system: MCA's own first-person arm draws on parts Mo' Bends
+  rebuilt for the third-person body and comes out empty, so with Mo' Bends present FF draws the MCA skin and clothing on the posed
+  arm; Chromeware's skin pieces (Mantis / Launcher / Extendo forearm copies, Gorilla Arms) wear the MCA skin and clothing instead of
+  the Minecraft skin; and on Punchy's first-person arms Chromeware's limb rules and implant renderers run as they do on vanilla arms.
+- Chromeware's first-person implant view (Mantis Blades, Launcher, Monowire, Gorilla Arms draw the whole body from the camera with the
+  arms swung toward the eyes): Mo' Bends defers its animation for that pass (it pulled the arms down), and MCA's genetics resize is
+  skipped in it (it moved the arms away from the camera); both still apply in third person.
+- Chromeware armour fit (`chromeware.armorFit`): each cyber torso/arm takes 1/3 off the chestplate, each cyber leg 1/2 off leggings
+  and boots (armour, toughness, knockback resistance, enchantment levels); armour isn't drawn on replaced limbs, and with every
+  covered part replaced the piece comes off and won't go back on, even with Curse of Binding.
 - Energy Field: its reflection helper caches method lists per class instead of copying them on every first-person frame (3-4% of
   the render thread).
+- Gamerule registration is locked: Twilight Forest registers its gamerules on a background thread while other mods register theirs, and
+  two at once corrupted the gamerule map so a world crashed on its first tick (`GameRules.getInt` NPE), at random.
 - Mob caps (`spawning.mobCapScale`): natural spawning per category scaled, monsters halved by default (35 instead of 70).
 - Glowbrick's Printing Press: a type block with durability loses one point per printed book and crumbles at zero; the Typesetter refuses
   books carrying a `printing.noTypesetEnchantments` enchantment. The server data pack `pack-data/heimdall_wildmagic` gives bosses
   (`#c:bosses`, killed by a player) a 1% chance to drop a single-use Wild Magic typesetting (levels I-V, rarer the higher).
 - Vampirism: holy things burn vampires: each worn Blessing piece, held Smite or Sanctified weapon, or held enchanted book carrying
   one of those deals 1 heart of holy damage per second and sets them alight (`holy.*`).
-- Iron's Spells Scroll Forge: chosen spells need a specific focus (`magic.scrollForgeFocus`); The World Stop is forged with an AE2
-  Singularity instead of a Grain of Time.
 - Chromeware x Chronomancy: a Sandevistan keeps you outside stopped time: you move during a world-wide time stop like its caster, and Temporal Stasis / Paradox do not take hold on you while it is running (`magic.chrome.sandevistanTimeStopImmunity`: ACTIVE, INSTALLED or OFF).
 
 **Create: Cosmonautics / Sable ships**

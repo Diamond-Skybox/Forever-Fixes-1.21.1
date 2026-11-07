@@ -225,13 +225,6 @@ public final class ForeverFixesCommonConfig
 					"(you move like its caster) and Temporal Stasis / Paradox on you.")
 			.define("magic.chrome.sandevistanTimeStopImmunity", "ACTIVE", o -> o instanceof String s && (s.equals("INSTALLED") || s.equals("ACTIVE") || s.equals("OFF")));
 
-	public static final ModConfigSpec.ConfigValue<List<? extends String>> SCROLL_FORGE_FOCUS = B
-			.comment("Iron's Spells Scroll Forge: spells that need a specific focus item instead of their school's focus (\"spell=item\").",
-					"That item then makes only those spells (add it to the school's focus tag so the forge accepts it), and the school's",
-					"usual focus no longer makes them. Default: The World Stop needs an AE2 Singularity instead of a Grain of Time.")
-			.defineListAllowEmpty("magic.scrollForgeFocus", List.of("chronomancy:the_world_stop=ae2:singularity"), () -> "",
-					o -> o instanceof String s && s.contains("="));
-
 	public static final ModConfigSpec.IntValue SUPPRESSANT_STANDARD_TICKS = B
 			.comment("Chromeware: protection one Standard Grade Immunosuppressant dose gives, in ticks (24000 = one Minecraft day; Chromeware: 12000).",
 					"A dose taken while still protected adds this halved once per dose in a row (diminishing returns, as in Chromeware).")
@@ -293,6 +286,12 @@ public final class ForeverFixesCommonConfig
 	public static final ModConfigSpec.IntValue BOSS_CHEST_MINUTES = B
 			.comment("Minutes before a boss chest vanishes, opened or not.")
 			.defineInRange("bossChest.minutes", 20, 1, 1440);
+
+	public static final ModConfigSpec.BooleanValue CYBER_ARMOR_FIT = B
+			.comment("Chromeware: cyber limbs don't fit inside armour. Each cyber torso/arm takes 1/3 off the chestplate, each cyber leg 1/2 off",
+					"leggings and boots (armour, toughness, knockback resistance and enchantment levels); the piece isn't drawn on replaced limbs,",
+					"and with every covered part replaced it comes off and can't be worn (Curse of Binding or not).")
+			.define("chromeware.armorFit", true);
 
 	public static final ModConfigSpec.BooleanValue VAMPIRE_PLAYERS_UNDEAD = B
 			.comment("Vampirism: vampire players match the undead and sensitive_to_smite entity tags in predicates, so Smite (and anything else",

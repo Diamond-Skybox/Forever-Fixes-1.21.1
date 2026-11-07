@@ -34,5 +34,15 @@ public abstract class MixinPlayerRendererMcaImplantArm
 			arm.copyFrom(shown);
 			sleeve.copyFrom(shown);
 		}
+		if (foreverfixes$MOBENDS)
+		{
+			// MCA draws its first-person arm with its skin/clothing layer models, whose parts Mo' Bends has replaced with bendable ones
+			// set up for the third-person body: that draw comes out empty. Draw the MCA look on the posed player arm instead.
+			McaArms.draw(player, right, arm, false, stack, buffers, light);
+			McaArms.draw(player, right, sleeve, true, stack, buffers, light);
+		}
 	}
+
+	@org.spongepowered.asm.mixin.Unique
+	private static final boolean foreverfixes$MOBENDS = net.neoforged.fml.ModList.get().isLoaded("mobends");
 }

@@ -42,7 +42,6 @@
     "createnuclear.MixinRadiationCapability",
     "immersivepetroleum.MixinFeatureReservoir",
     "architectury.MixinEventImpl",
-    "ironsspellbooks.MixinScrollForgeMenuFocus",
     "chromeware.MixinCapacityProgress",
     "chromeware.MixinSuppressionTiming",
     "tombstone.MixinApplyRandomBeneficialEffect",
@@ -50,7 +49,10 @@
     "printingpress.MixinPrintingPressWear",
     "printingpress.MixinTypesetterDeny",
     "lootr.MixinDefaultLootFillerBossChest",
-    "energyfield.MixinReflectCache"
+    "energyfield.MixinReflectCache",
+    "chromeware.MixinArmorSlotCyberFit",
+    "chromeware.MixinEnchantmentHelperCyberFit",
+    "vanilla.MixinGameRulesRegisterLock"
   ],
   "client": [
     "sableflywheel.MixinSableFlywheelLightStorage",
@@ -111,8 +113,15 @@
     "chromewaremobends.MixinLivingEntityRendererCyberScope",
     "chromeware.MixinPlayerRendererMcaImplantArm",
     "chromeware.MixinItemInHandRendererImplantSpread",
-    "ironsspellbooks.MixinScrollForgeScreenFocus",
-    "chromeware.MixinCyberwareMenuClientButton"
+    "chromeware.MixinCyberwareMenuClientButton",
+    "chromewaregender.MixinGenderLayerChromeTorso",
+    "chromeware.MixinHumanoidArmorLayerCyberFit",
+    "chromewaremobends.MixinTier1ArmorCyberFit",
+    "chromewaremca.MixinChromewareSkinPiecesMca",
+    "chromewaremca.MixinGorillaArmSkinMca",
+    "punchychromeware.MixinPunchyChromewareImplants",
+    "chromewaremca.MixinLimbRenderContextMcaLayers",
+    "chromewaremca.MixinPlayerRendererMcaScaleFirstPerson"
   ],
   "injectors": {
     "defaultRequire": 1
