@@ -140,6 +140,71 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Chromeware armour fit (`chromeware.armorFit`): each cyber torso/arm takes 1/3 off the chestplate, each cyber leg 1/2 off leggings
   and boots (armour, toughness, knockback resistance, enchantment levels); armour isn't drawn on replaced limbs, and with every
   covered part replaced the piece comes off and won't go back on, even with Curse of Binding.
+- `/bendsrec start <name> [self|look]` … `/bendsrec stop` (client, with Mo' Bends): records the live Mo' Bends pose of you or the
+  entity you look at, one keyframe per tick, to `bendspacks/recorded/<name>.bendsanim`, the clip format Bends packs use. The
+  stock player animations are Java code, so this is how to get them into the Blockbench plugin to study or edit.
+- Chromeware x Mo' Bends joints: a cyber arm or leg is cut at Mo' Bends' joint. Every quad of Chromeware's limb mesh is split at
+  the seam plane through the forearm / foreleg pivot (4 px below the shoulder, 6 below the hip); what lies above stays with the
+  upper bone and what lies below turns with the lower one, so chrome and flesh share one joint line and nothing straddles it.
+  `config/foreverfixes-chrome-joints.json` can move the seam and hinge, switch a limb to whole-piece mode with a `lower` list,
+  and tweak pieces (hide above/below a bend angle, offset in pixels, rotation about the piece's centre); `/ffchrome reload`
+  applies edits in game, `/ffchrome show` prints the current values. The Mantis/Launcher skin and sleeve copies and the Gorilla
+  Arms elbow keep Mo' Bends' own pivot, and lower segments follow Mo' Bends' forearm/foreleg position keyframes.
+- Chromeware x Mo' Bends arms and packs (`chromeware.packOwnsArms`): while a Bends pack node poses an arm bone, the pack owns it
+  and Chromeware's implant hold pose (blades up by the face) isn't copied over it; when the pack lets go (walking, retracting)
+  Chromeware's deploy / hold / slash poses return.
+- Chromeware x Mo' Bends layers follow the pose: Mo' Bends only writes its pose into the vanilla model parts (which Chromeware's
+  implant hardware and skin/sleeve copies draw from) after it has resolved the player's adaptive pivots, and it refuses to do that
+  while a Player Animation Lib animation is on the model. Chromeware's blade and wire clips run the whole time an implant is out,
+  so the layers stayed at the Player Animation Lib pose while the arm was elsewhere (pack-owned arms, or after a first-person
+  round trip). Those clips only rotate, so the pivots are now resolved under them and the layers follow Mo' Bends again. The
+  pivots and the vanilla rest positions are resolved once per renderer, and Chromeware's first-person pass pulls the implant arms
+  toward the camera, so if blades were first deployed in first person (before any third-person look since launch) the camera-arm
+  positions were baked in for the session (the rest positions live in a static per-model snapshot that every later sync re-reads):
+  arms pushed back, the flesh bicep inside the body, held items at the elbow. Nothing is resolved, snapshotted or stored during a
+  first-person pass any more. `/ffchrome debug` also prints the pivot state and arm positions.
+- Connection timeouts (`network.timeoutSeconds`, default 600): vanilla drops a connection after 30 s without packets and a player
+  after 15 s without a keep-alive answer, so a client that stalls for half a minute (shader compile, a big Sable assembly, a long GC)
+  is kicked as "Timed out" and has to log back in. Both limits, on the server's side and on the client's, follow the setting; 0
+  disables them (a dead connection then lasts until TCP gives up). Server-side it needs the Forever Fixes build on the server.
+- Sable centre of mass (client, `sable.centerOfMass.*`): while the configured item is held (default Create Simulated's Creative
+  Physics Staff, either hand), every sub-level within 128 blocks shows its centre of mass as a marker drawn through blocks (magenta
+  cube with red / green / blue axis bars) and its total mass above it; `sable.centerOfMass.bounds` also outlines each sub-level's
+  block bounds. Sable keeps mass data on the server only, so the client measures the plot blocks itself with Sable's MassTracker
+  (same block masses and per-block centres), once a second per sub-level while the item is held.
+- Chromeware x Mo' Bends geometry measurement: Mo' Bends measures each vanilla model part once per model by rendering its cubes
+  into a capture buffer, and derives the elbow / knee pivots and the split meshes from that. Chromeware rewrites how a player's
+  parts draw while that player renders (Mantis forearm cutout, hidden cyber limbs, shortened stumps), so a model first measured
+  inside one of its render scopes (typically the first-person blade pass, blades deployed before any third-person look) got a
+  6 px arm and an empty cyber limb: the forearm pivot sat at the shoulder, the forearm drew over the bicep, the hand and anything
+  held ended at the elbow, and a relog didn't help because the cache is static. Chromeware's rules now stand aside while Mo' Bends
+  measures, and `/ffchrome rebuild` throws the player's Mo' Bends model away and measures it again.
+- Chromeware x Mo' Bends Sandevistan copies: the Sandevistan draws the player again through a proxy (the live copy for its post
+  effect and the afterimage captures). Mo' Bends animated the proxy as a player of its own, so the copy walked without swinging
+  while the real player attacked; the proxy now takes the real player's finished pose of the frame (pack, Player Animation Lib
+  copy and Forever Fixes adjustments included) and its frozen Player Animation Lib layers no longer re-pose it.
+- Chromeware x Mo' Bends elbows: while Mantis Blades, the Monowire or the Projectile Launcher are out, Chromeware poses the arms
+  through Player Animation Lib, and Mo' Bends straightened its forearms to match a rigid vanilla arm, locking the elbows in its
+  own animations and in Bends packs. The forearm now keeps its Mo' Bends / pack bend under Chromeware's upper-arm pose.
+- Mo' Bends pack transitions blend properly: 6.0.1 adds the two poses' quaternions weighted (1-t)/t, which the renderer shows as
+  the model shrinking mid-transition (to nothing against a node that doesn't animate the bone) and popping back, and bones only
+  one side animates snap. Non-additive keyframe layers now interpolate per bone with normalised quaternions, a side without the
+  bone contributing the live stock pose, so clips fade in from and out to whatever Mo' Bends was doing.
+- Mo' Bends' Packs tab works: 6.0.1 covers it with a "WIP" overlay that swallows clicks although the list and toggles behind it
+  work; the overlay is left off that tab (the Customize tab keeps its). `/bendspack list|apply <key>|remove <key>|clear|reload`
+  (client) does the same from chat, and reports Mo' Bends' reason when it rejects a pack.
+- Mo' Bends pack conditions for Chromeware (client): `foreverfixes:mantis_deployed`, `foreverfixes:mantis_drawing` (a blade is
+  still extending, the first 16 ticks after deploying; for a draw animation that hands over to an idle), `foreverfixes:mantis_striking_right` /
+  `foreverfixes:mantis_striking_left` (that arm is mid-slash, 10 ticks; for swing clips on an additive layer) and `foreverfixes:sandevistan_active` can be
+  used as `triggerCondition` types in a Bends pack's animator, with `core:not`/`core:and` around them like any other.
+- Dark Doppelganger x Chromeware (`chromeware.doppelganger.*`): the boss, its mirror clones and shadow echoes copy the summoner's cyber
+  limbs and Shell colours and draw them (armour over those limbs is hidden, as on the player), and the spell power it copies leaves
+  out Forever Fixes' cyberware magic penalties. If the summoner has a Sandevistan, the boss gets one: a Chromeware time field it owns
+  (everything else inside slows, the boss doesn't), 5 s on, 30 s cooldown (also before the first use), 48-block field, 90% slowdown,
+  used when its target is within 24 blocks; all configurable. A summoner who pops their own Sandevistan is immune to it, as the boss
+  is to theirs. A boss summoned by a Sandevistan user has a 10% chance (`sandevistanDropChance`) to drop one Clot of Time
+  (`sandevistanDropItem`) when it dies: one roll, one item, Looting ignored, clones and echoes never, and only on a real death
+  (loot-table simulators such as Drygmy charms don't get it).
 - Energy Field: its reflection helper caches method lists per class instead of copying them on every first-person frame (3-4% of
   the render thread).
 - Gamerule registration is locked: Twilight Forest registers its gamerules on a background thread while other mods register theirs, and

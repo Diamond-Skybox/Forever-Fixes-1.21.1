@@ -293,6 +293,64 @@ public final class ForeverFixesCommonConfig
 					"and with every covered part replaced it comes off and can't be worn (Curse of Binding or not).")
 			.define("chromeware.armorFit", true);
 
+	public static final ModConfigSpec.BooleanValue DOPPEL_CHROME = B
+			.comment("Dark Doppelganger x Chromeware: the boss (and its mirror clones and shadow echoes) copies the summoner's cyber limbs and",
+					"Shell colours and draws them, without Forever Fixes' cyberware magic penalties on the spell power it copies. If the summoner",
+					"has a Sandevistan, the boss gets its own, with the timings below. Nothing else about the fight changes.")
+			.define("chromeware.doppelganger.copyChrome", true);
+
+	public static final ModConfigSpec.IntValue DOPPEL_SANDY_DURATION = B
+			.comment("Dark Doppelganger: ticks its Sandevistan stays on (20 = 1 second).")
+			.defineInRange("chromeware.doppelganger.sandevistanDuration", 100, 20, 1200);
+
+	public static final ModConfigSpec.IntValue DOPPEL_SANDY_COOLDOWN = B
+			.comment("Dark Doppelganger: ticks after its Sandevistan ends before it can use it again. The first use waits this long too,",
+					"counted from when the boss appears.")
+			.defineInRange("chromeware.doppelganger.sandevistanCooldown", 600, 0, 12000);
+
+	public static final ModConfigSpec.DoubleValue DOPPEL_SANDY_RADIUS = B
+			.comment("Dark Doppelganger: half-width in blocks of its Sandevistan field (Chromeware's player default is 48).")
+			.defineInRange("chromeware.doppelganger.sandevistanRadius", 48.0D, 4.0D, 128.0D);
+
+	public static final ModConfigSpec.IntValue DOPPEL_SANDY_SLOWDOWN = B
+			.comment("Dark Doppelganger: how much its field slows everything but the boss, in percent (Chromeware's player default is 90).")
+			.defineInRange("chromeware.doppelganger.sandevistanSlowdown", 90, 10, 95);
+
+	public static final ModConfigSpec.DoubleValue DOPPEL_SANDY_RANGE = B
+			.comment("Dark Doppelganger: it only turns its Sandevistan on when its target is within this many blocks.")
+			.defineInRange("chromeware.doppelganger.sandevistanRange", 24.0D, 2.0D, 128.0D);
+
+	public static final ModConfigSpec.IntValue NETWORK_TIMEOUT_SECONDS = B
+			.comment("Seconds of silence before a connection is dropped as \"Timed out\" (vanilla: 30 s of no packets, 15 s for an unanswered",
+					"keep-alive). A client that stalls for half a minute (shader compile, big Sable assembly, long GC) is otherwise thrown off the",
+					"server. Applies to the server's view of each player and to the client's view of the server. 0 disables both limits;",
+					"a dead connection then lasts until TCP gives up on it.")
+			.defineInRange("network.timeoutSeconds", 600, 0, 86400);
+
+	public static final ModConfigSpec.ConfigValue<String> SABLE_COM_ITEM = B
+			.comment("Sable (client): while this item is held (either hand), every nearby sub-level shows its centre of mass as a marker visible",
+					"through blocks, with its total mass above it. Measured on the client from the sub-level's blocks with Sable's own mass",
+					"rules, once a second. Empty disables.")
+			.define("sable.centerOfMass.item", "simulated:creative_physics_staff");
+
+	public static final ModConfigSpec.BooleanValue SABLE_COM_BOUNDS = B
+			.comment("Sable (client): also outline each sub-level's block bounds while the centre-of-mass item is held.")
+			.define("sable.centerOfMass.bounds", false);
+
+	public static final ModConfigSpec.BooleanValue PACK_OWNS_ARMS = B
+			.comment("Chromeware x Mo' Bends: while a Bends pack node poses an arm, the pack owns that arm and Chromeware's blade / wire / launcher",
+					"hold pose isn't copied over it. Off = Chromeware's arm pose always wins while an implant is out.")
+			.define("chromeware.packOwnsArms", true);
+
+	public static final ModConfigSpec.DoubleValue DOPPEL_CLOT_CHANCE = B
+			.comment("Dark Doppelganger: chance (0-1) that the boss drops one of the item below when it dies after being summoned by a",
+					"Sandevistan user. One roll, one item, Looting ignored; clones and echoes never drop it. 0 disables.")
+			.defineInRange("chromeware.doppelganger.sandevistanDropChance", 0.1D, 0.0D, 1.0D);
+
+	public static final ModConfigSpec.ConfigValue<String> DOPPEL_CLOT_ITEM = B
+			.comment("Dark Doppelganger: the item for the drop above.")
+			.define("chromeware.doppelganger.sandevistanDropItem", "relics:clot_of_time");
+
 	public static final ModConfigSpec.BooleanValue VAMPIRE_PLAYERS_UNDEAD = B
 			.comment("Vampirism: vampire players match the undead and sensitive_to_smite entity tags in predicates, so Smite (and anything else",
 					"that checks those tags through a predicate) hits them like undead mobs. Vampire mobs are undead through the pack's tag data.")

@@ -12,6 +12,9 @@
     "worldgen.MixinStructureReservation",
     "worldgen.MixinChunkGeneratorStructureContext",
     "nostructureoverlap.MixinStructureBoundingBoxTracker",
+    "network.MixinServerReadTimeout",
+    "network.MixinClientReadTimeout",
+    "network.MixinKeepAliveLimit",
     "aerowarptics.MixinRiftDriveCrossDimension",
     "chronomancy.MixinGlobalTimeStopManager",
     "chronomancy.MixinTimeMagicImmunity",
@@ -52,6 +55,7 @@
     "energyfield.MixinReflectCache",
     "chromeware.MixinArmorSlotCyberFit",
     "chromeware.MixinEnchantmentHelperCyberFit",
+    "chromewaredoppel.AccessorSandevistanFields",
     "vanilla.MixinGameRulesRegisterLock"
   ],
   "client": [
@@ -108,6 +112,9 @@
     "vanilla.AccessorAbstractContainerScreen",
     "chromewaremobends.MixinBipedMutatorCyberLimbs",
     "chromewaremobends.MixinCyberLimbRendererBends",
+    "chromewaremobends.MixinCyberLimbRendererCut",
+    "chromewaremobends.MixinBipedMutatorPivotsUnderChrome",
+    "chromewaremobends.MixinMutatorProxyPose",
     "chromewaremobends.MixinGorillaArmsBends",
     "chromewaremobends.MixinCyberwareRigBends",
     "chromewaremobends.MixinLivingEntityRendererCyberScope",
@@ -117,11 +124,22 @@
     "chromewaregender.MixinGenderLayerChromeTorso",
     "chromeware.MixinHumanoidArmorLayerCyberFit",
     "chromewaremobends.MixinTier1ArmorCyberFit",
+    "chromewaremobends.MixinPalCompatKeepForearms",
+    "chromewaremobends.MixinPartCaptureNeutral",
+    "chromewaremobends.MixinLimbRenderContextNeutralCapture",
     "chromewaremca.MixinChromewareSkinPiecesMca",
     "chromewaremca.MixinGorillaArmSkinMca",
     "punchychromeware.MixinPunchyChromewareImplants",
     "chromewaremca.MixinLimbRenderContextMcaLayers",
-    "chromewaremca.MixinPlayerRendererMcaScaleFirstPerson"
+    "chromewaremca.MixinPlayerRendererMcaScaleFirstPerson",
+    "mobends.AccessorEntityDataParts",
+    "mobends.AccessorBipedMutatorArms",
+    "mobends.MixinMoBendsScreenPacksOverlay",
+    "mobends.MixinKeyframeLayerStateBlend",
+    "chromewaredoppel.MixinDoppelRendererChrome",
+    "chromewaredoppel.MixinHumanoidArmorLayerDoppelFit",
+    "chromewaredoppel.MixinSandevistanHistoryDoppel",
+    "chromewaredoppel.MixinSandevistanAfterimagesDoppel"
   ],
   "injectors": {
     "defaultRequire": 1

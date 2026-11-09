@@ -46,6 +46,18 @@ public final class ForeverFixes
 		{
 			NeoForge.EVENT_BUS.addListener(CyberArmorFit::onPlayerTick);
 		}
+		if (ModList.get().isLoaded("chromeware") && ModList.get().isLoaded("darkdoppelganger"))
+		{
+			NeoForge.EVENT_BUS.addListener(DoppelChrome::onJoin);
+			NeoForge.EVENT_BUS.addListener(DoppelChrome::onTick);
+			NeoForge.EVENT_BUS.addListener(DoppelChrome::onLeave);
+			NeoForge.EVENT_BUS.addListener(DoppelChrome::onDrops);
+			NeoForge.EVENT_BUS.addListener(DoppelChrome::onServerStopped);
+			if (FMLEnvironment.dist == Dist.CLIENT)
+			{
+				NeoForge.EVENT_BUS.addListener(DoppelAfterimages::onNameTag);
+			}
+		}
 		if (ModList.get().isLoaded("vampirism"))
 		{
 			NeoForge.EVENT_BUS.addListener(VampireHoly::onPlayerTick);
@@ -75,13 +87,22 @@ public final class ForeverFixes
 		{
 			NeoForge.EVENT_BUS.addListener(KeybindKeeper::onClientTick);
 		}
+		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("mobends"))
+		{
+			BendsRecorder.register();
+			BendsPackCommand.register();
+		}
 		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("chromeware") && ModList.get().isLoaded("mobends"))
 		{
 			ChromeFirstPersonDeferral.register();
+			BendsConditions.register();
+			ChromeJoints.register();
+			ChromeDebug.register();
 		}
 		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("sable"))
 		{
 			NeoForge.EVENT_BUS.addListener(ShipRainCover::onClientTick);
+			NeoForge.EVENT_BUS.addListener(SableCenterOfMass::onStage);
 		}
 		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("bettersimpleclouds") && ModList.get().isLoaded("simpleclouds"))
 		{

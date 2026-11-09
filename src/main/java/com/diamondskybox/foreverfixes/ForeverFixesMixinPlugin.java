@@ -33,6 +33,7 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			Map.entry("chromewaregender", List.of("chromeware", "mcabp")),
 			Map.entry("chromewaremca", List.of("chromeware", "mca")),
 			Map.entry("punchychromeware", List.of("punchy", "chromeware")),
+			Map.entry("chromewaredoppel", List.of("chromeware", "darkdoppelganger")),
 			Map.entry("chromeware", List.of("chromeware")),
 			Map.entry("ironsspellbooks", List.of("irons_spellbooks")),
 			Map.entry("tombstone", List.of("tombstone")),
