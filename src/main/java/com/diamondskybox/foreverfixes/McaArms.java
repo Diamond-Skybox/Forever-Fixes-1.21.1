@@ -206,6 +206,11 @@ public final class McaArms
 	 * clothing layer's texture for the arm, only the clothing texture for the sleeve. MCA's own layer-model arm drew nothing when
 	 * used this way (1.18.0 to 1.18.4), while the caller's arm is known to show. MCA skins use the player-skin layout. Returns
 	 * false if MCA does not draw this arm or a call failed, so the caller draws its own.
+	 * <p>
+	 * The skin layer is cutout and the clothing layer translucent, as MCA's own first-person arm does. Both layers sit on the same
+	 * geometry, so whichever is drawn last shows; Iris batches the hand pass by render type and, with no ordering between two
+	 * types, draws them in reverse order of first use, which put the skin over the clothing (bare arms with shaders on). Iris
+	 * always draws opaque/cutout types before translucent ones, so the clothing stays on top.
 	 */
 	public static boolean draw(AbstractClientPlayer player, boolean right, ModelPart part, boolean sleeve, PoseStack pose, MultiBufferSource buffers, int light)
 	{
@@ -233,7 +238,9 @@ public final class McaArms
 					continue;
 				}
 				final int color = (int) getColor.invoke(value, player, 0F);
-				part.render(pose, buffers.getBuffer(RenderType.entityTranslucent((ResourceLocation) skin)), light, OverlayTexture.NO_OVERLAY, color);
+				final RenderType type = layer == skinLayer ? RenderType.entityCutoutNoCull((ResourceLocation) skin)
+						: RenderType.entityTranslucent((ResourceLocation) skin);
+				part.render(pose, buffers.getBuffer(type), light, OverlayTexture.NO_OVERLAY, color);
 			}
 			return true;
 		}
