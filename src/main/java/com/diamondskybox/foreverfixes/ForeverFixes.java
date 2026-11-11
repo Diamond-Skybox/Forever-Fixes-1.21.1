@@ -109,6 +109,15 @@ public final class ForeverFixes
 			// lowest: the after-particles depths need JourneyMap's waypoint beams, which it draws at that stage too
 			NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, StormFogFixes::onStage);
 		}
+		if (ModList.get().isLoaded("simpleclouds") && (ModList.get().isLoaded("petrichor") || ModList.get().isLoaded("hoarfrost")))
+		{
+			NeoForge.EVENT_BUS.addListener(CloudWeather::onLevelTick);
+			NeoForge.EVENT_BUS.addListener(CloudWeather::onLogout);
+		}
+		if (ModList.get().isLoaded("simpleclouds") && ModList.get().isLoaded("livingwind"))
+		{
+			NeoForge.EVENT_BUS.addListener(CloudWind::onRegionTick);
+		}
 		LOGGER.info("Forever Fixes loaded");
 	}
 }

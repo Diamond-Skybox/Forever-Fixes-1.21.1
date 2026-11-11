@@ -377,6 +377,42 @@ public final class ForeverFixesCommonConfig
 			.comment("A held enchanted book carrying any of the holy enchantments above burns a vampire too.")
 			.define("holy.booksCount", true);
 
+	public static final ModConfigSpec.BooleanValue CLOUD_WEATHER = B
+			.comment("Simple Clouds + Petrichor / Hoarfrost: when Simple Clouds runs its own weather (DEFAULT mode, or SINGLE mode with a",
+					"storm cloud type), each player's Petrichor rain type and Hoarfrost snow kind come from the cloud over that player",
+					"instead of the vanilla weather flags, which Simple Clouds keeps off. Their own level-wide sync is replaced by a",
+					"per-player one, Petrichor's ground wetness is tracked per player, and Hoarfrost drifts grow for players under snow.")
+			.define("simpleclouds.weatherFromClouds", true);
+
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> CLOUD_WEATHER_TYPES = B
+			.comment("Which Petrichor rain type and Hoarfrost snow kind a Simple Clouds cloud type brings: \"<cloud type>=<rain>,<snow>\".",
+					"Rain types: drizzle, rain, downpour, thunderstorm. Snow kinds: light_snow, snow, heavy_snow, heavy_large_flakes,",
+					"light_blizzard, blizzard, heavy_blizzard. A rain cloud type not listed brings rain and snow, a thunderstorm type brings",
+					"thunderstorm and blizzard. Rain versus snow is the biome's choice, as in both mods; intensity follows the cloud's edge fade.")
+			.defineListAllowEmpty("simpleclouds.cloudWeatherTypes",
+					List.of("simpleclouds:stratus=rain,snow", "simpleclouds:nimbostratus=downpour,heavy_snow",
+							"simpleclouds:cumulonimbus=thunderstorm,blizzard"),
+					() -> "", o -> o instanceof String s && s.contains("="));
+
+	public static final ModConfigSpec.DoubleValue CLOUD_STRIKE_SHARE = B
+			.comment("Simple Clouds + Petrichor: share of Simple Clouds' lightning decisions that become a real Petrichor strike near a player",
+					"standing in a thunder cloud's core, in place of that distant visual bolt. 0 leaves all lightning to Simple Clouds.")
+			.defineInRange("simpleclouds.petrichorStrikeShare", 0.15D, 0.0D, 1.0D);
+
+	public static final ModConfigSpec.BooleanValue CLOUD_DRIFTS = B
+			.comment("Simple Clouds + Hoarfrost: snowdrifts grow around players under a snow-bringing cloud (Hoarfrost's own drifts setting",
+					"and limits still apply).")
+			.define("simpleclouds.hoarfrostDrifts", true);
+
+	public static final ModConfigSpec.BooleanValue CLOUD_WIND = B
+			.comment("Simple Clouds + Living Wind: cloud formations move with Living Wind's direction, and the drifting cloud shapes scroll",
+					"along it, so Simple Clouds' rain slant, storm fog and Better Simple Clouds' rain wind follow the same wind.")
+			.define("simpleclouds.windFromLivingWind", true);
+
+	public static final ModConfigSpec.BooleanValue CLOUD_WIND_SPEED = B
+			.comment("Simple Clouds + Living Wind: cloud speed also scales with Living Wind's strength (0.5x in a calm, up to 2x in a gale).")
+			.define("simpleclouds.cloudSpeedFromWind", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	/** Read from tick code, which can run before the config file is loaded; default to enabled then. */

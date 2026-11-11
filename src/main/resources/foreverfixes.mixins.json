@@ -139,7 +139,13 @@
     "chromewaredoppel.MixinDoppelRendererChrome",
     "chromewaredoppel.MixinHumanoidArmorLayerDoppelFit",
     "chromewaredoppel.MixinSandevistanHistoryDoppel",
-    "chromewaredoppel.MixinSandevistanAfterimagesDoppel"
+    "chromewaredoppel.MixinSandevistanAfterimagesDoppel",
+    "simpleclouds.AccessorCloudManagerLevel",
+    "simpleclouds.MixinWorldEffectsThunder",
+    "simplecloudswind.MixinCloudManagerWindScroll",
+    "scpetrichor.MixinServerCloudManagerStrikes",
+    "scpetrichor.MixinPetrichorWeatherEvents",
+    "schoarfrost.MixinHoarfrostSnowEvents"
   ],
   "injectors": {
     "defaultRequire": 1
