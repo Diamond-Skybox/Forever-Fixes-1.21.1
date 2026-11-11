@@ -3,7 +3,6 @@ package com.diamondskybox.foreverfixes.mixin.bscglass;
 import com.diamondskybox.foreverfixes.ForeverFixesConfig;
 import com.diamondskybox.foreverfixes.StormFogFixes;
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,7 +30,7 @@ public abstract class MixinCloudGlassCapture
 	{
 		if (ForeverFixesConfig.enabled(ForeverFixesConfig.BSC_GLASS_FLUSH))
 		{
-			Minecraft.getInstance().renderBuffers().bufferSource().endBatch();
+			StormFogFixes.flushBatchedIntoMain();
 		}
 	}
 

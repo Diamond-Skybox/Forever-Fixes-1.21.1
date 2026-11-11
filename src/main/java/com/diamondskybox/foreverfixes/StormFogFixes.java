@@ -160,6 +160,32 @@ public final class StormFogFixes
 				new float[] { -g, -g, g, -g, g, g, -g, g }));
 	}
 
+	/**
+	 * Draws the batched entities, block entities and beacon beams now, into the main framebuffer, before a depth copy that needs
+	 * them. The copy may run while another framebuffer is bound (Simple Clouds' no-DH pipeline copies the main depth into its
+	 * cloud buffer after binding that buffer; Better Simple Clouds takes over the pipeline whenever Distant Horizons draws
+	 * nothing), and a flush into that buffer loses the entities for the frame: players and mobs vanished until Distant Horizons
+	 * drew again. The previous read and draw bindings are restored.
+	 */
+	public static void flushBatchedIntoMain()
+	{
+		final Minecraft mc = Minecraft.getInstance();
+		final RenderTarget main = mc.getMainRenderTarget();
+		final int drawBefore = GL11.glGetInteger(GL30.GL_DRAW_FRAMEBUFFER_BINDING);
+		final int readBefore = GL11.glGetInteger(GL30.GL_READ_FRAMEBUFFER_BINDING);
+		final boolean rebind = main != null && drawBefore != main.frameBufferId;
+		if (rebind)
+		{
+			main.bindWrite(false);
+		}
+		mc.renderBuffers().bufferSource().endBatch();
+		if (rebind)
+		{
+			GlStateManager._glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, drawBefore);
+			GlStateManager._glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, readBefore);
+		}
+	}
+
 	/** Better Simple Clouds copied the main depth into its snapshot */
 	public static void afterCapture(RenderTarget snapshot)
 	{
