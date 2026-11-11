@@ -112,10 +112,16 @@ public final class CloudWind
 			return;
 		}
 		final ScAPICloudRegion region = event.getCloudRegion();
-		event.setModifiedMovementDirection(new Vec2(wind[0], wind[1]));
-		if (wind[2] != 1F)
+		if (region.getMaxSpeed() <= 0F)
 		{
-			event.setModifiedMaxSpeed(region.getMaxSpeed() * CloudManager.get(event.getLevel()).getCloudSpeed() * wind[2]);
+			// a stationary cloud (FairSnowClouds) ignores the wind; the event refuses a speed of 0 anyway
+			return;
+		}
+		event.setModifiedMovementDirection(new Vec2(wind[0], wind[1]));
+		final float speed = region.getMaxSpeed() * CloudManager.get(event.getLevel()).getCloudSpeed() * wind[2];
+		if (wind[2] != 1F && speed > 0F)
+		{
+			event.setModifiedMaxSpeed(speed);
 		}
 	}
 }
