@@ -72,6 +72,10 @@ public final class CloudWeather
 		final CloudManager<?> manager = CloudManager.get(level);
 		final long time = level.getGameTime();
 		final boolean drifts = HOARFROST && ForeverFixesCommonConfig.CLOUD_DRIFTS.get();
+		if (HOARFROST)
+		{
+			FairSnowClouds.tick(level, manager);
+		}
 		for (ServerPlayer player : level.players())
 		{
 			final State state = STATES.computeIfAbsent(player.getUUID(), k -> new State());

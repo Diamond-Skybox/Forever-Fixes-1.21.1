@@ -141,6 +141,7 @@
     "chromewaredoppel.MixinSandevistanHistoryDoppel",
     "chromewaredoppel.MixinSandevistanAfterimagesDoppel",
     "simpleclouds.AccessorCloudManagerLevel",
+    "simpleclouds.AccessorCloudRegionLife",
     "simpleclouds.MixinWorldEffectsThunder",
     "simplecloudswind.MixinCloudManagerWindScroll",
     "scpetrichor.MixinServerCloudManagerStrikes",

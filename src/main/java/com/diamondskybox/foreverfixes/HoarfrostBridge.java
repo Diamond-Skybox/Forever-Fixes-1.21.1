@@ -1,11 +1,14 @@
 package com.diamondskybox.foreverfixes;
 
 import com.pockyl.hoarfrost.Config;
+import com.pockyl.hoarfrost.compat.Climate;
 import com.pockyl.hoarfrost.compat.LivingWind;
 import com.pockyl.hoarfrost.network.SnowSyncPayload;
 import com.pockyl.hoarfrost.weather.SnowConditions;
 import com.pockyl.hoarfrost.weather.SnowKind;
+import com.pockyl.hoarfrost.weather.SnowSchedule;
 import com.pockyl.hoarfrost.world.DriftBuilder;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -47,6 +50,18 @@ final class HoarfrostBridge
 			return -1;
 		}
 		return kind.ordinal();
+	}
+
+	/** Hoarfrost's fair-weather snow schedule says it snows in snowy land now (its own fairWeatherSnow switch is ignored) */
+	static boolean fairSpell(ServerLevel level)
+	{
+		return SnowSchedule.fairKind(level.getGameTime(), Config.<Integer>value(Config.CLEAR_SPELLS)) != null;
+	}
+
+	/** Hoarfrost's climate check: snow (not rain) falls here */
+	static boolean snowsAt(ServerLevel level, BlockPos pos)
+	{
+		return Climate.snowsAt(level, pos);
 	}
 
 	static void send(ServerPlayer player, int kindOrdinal)

@@ -408,6 +408,21 @@ public final class ForeverFixesCommonConfig
 					"standing in a thunder cloud's core, in place of that distant visual bolt. 0 leaves all lightning to Simple Clouds.")
 			.defineInRange("simpleclouds.petrichorStrikeShare", 0.15D, 0.0D, 1.0D);
 
+	public static final ModConfigSpec.BooleanValue FAIR_SNOW_CLOUDS = B
+			.comment("Simple Clouds + Hoarfrost: during Hoarfrost's fair-weather snow spells (its clearSpells percent decides how often,",
+					"whether or not its fairWeatherSnow is on), a player in snowy land with no cloud overhead gets a stationary fair-weather",
+					"cloud placed over them, which ignores the wind and stays until the spell ends, the player leaves its core or a drifting",
+					"cloud covers the player, then shrinks away. With the flurry mapping above, that cloud is what snows.")
+			.define("simpleclouds.fairSnowClouds", true);
+
+	public static final ModConfigSpec.ConfigValue<String> FAIR_SNOW_CLOUD_TYPE = B
+			.comment("The Simple Clouds cloud type of those stationary clouds (a fair-weather type mapped to a snow kind above).")
+			.define("simpleclouds.fairSnowCloudType", "simpleclouds:cumulus");
+
+	public static final ModConfigSpec.IntValue FAIR_SNOW_CLOUD_RADIUS = B
+			.comment("Their radius in blocks (Simple Clouds' own formations are 4000 to 10000); the snowing core is about 480 blocks less.")
+			.defineInRange("simpleclouds.fairSnowCloudRadius", 3000, 1000, 10000);
+
 	public static final ModConfigSpec.BooleanValue CLOUD_DRIFTS = B
 			.comment("Simple Clouds + Hoarfrost: snowdrifts grow around players under a snow-bringing cloud (Hoarfrost's own drifts setting",
 					"and limits still apply).")
