@@ -147,7 +147,8 @@
     "scpetrichor.MixinServerCloudManagerStrikes",
     "scpetrichor.MixinPetrichorWeatherEvents",
     "schoarfrost.MixinHoarfrostSnowEvents",
-    "schoarfrost.MixinHoarfrostClientWeatherFair"
+    "schoarfrost.MixinHoarfrostClientWeatherFair",
+    "hoarfrost.MixinSnowCoverStepOnLayers"
   ],
   "injectors": {
     "defaultRequire": 1
