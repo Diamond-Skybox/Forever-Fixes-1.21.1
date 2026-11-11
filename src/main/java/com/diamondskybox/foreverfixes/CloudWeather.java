@@ -2,6 +2,7 @@ package com.diamondskybox.foreverfixes;
 
 import dev.nonamecrackers2.simpleclouds.api.common.cloud.weather.WeatherType;
 import dev.nonamecrackers2.simpleclouds.common.cloud.CloudType;
+import dev.nonamecrackers2.simpleclouds.common.cloud.SimpleCloudsConstants;
 import dev.nonamecrackers2.simpleclouds.common.world.CloudManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -76,17 +77,20 @@ public final class CloudWeather
 			final State state = STATES.computeIfAbsent(player.getUUID(), k -> new State());
 			final Pair<CloudType, Float> info = manager.getCloudTypeAtWorldPos((float) player.getX(), (float) player.getZ());
 			final CloudType type = info.getLeft();
-			final float rain = type.weatherType().includesRain()
-					? Mth.clamp(manager.getRainLevel((float) player.getX(), (float) player.getY(), (float) player.getZ()), 0F, 1F) : 0F;
-			final boolean raining = rain > RAINING;
 			final int[] mapped = mapping(type);
+			// a fair-weather cloud with a snow kind brings a flurry at its core, at the configured level
+			final float rain = type.weatherType().includesRain()
+					? Mth.clamp(manager.getRainLevel((float) player.getX(), (float) player.getY(), (float) player.getZ()), 0F, 1F)
+					: mapped[1] >= 0 ? flurry(manager, type, info.getRight(), (float) player.getY()) : 0F;
+			final boolean raining = rain > RAINING;
 			final boolean sync = time % SYNC_INTERVAL == 0;
 			if (PETRICHOR)
 			{
-				// a downpour cloud starts as rain at its edge and becomes a downpour in its core
-				final float target = raining && mapped[0] >= 0 ? Math.max(0F, mapped[0] - (1F - Mth.clamp(rain / FULL_INTENSITY, 0F, 1F))) : 0F;
-				state.wetness = PetrichorBridge.stepWetness(state.wetness, rain, raining ? target : -1F, level.isDay());
-				final int ordinal = raining && mapped[0] >= 0 ? PetrichorBridge.typeAt(target) : -1;
+				// a downpour cloud starts as rain at its edge and becomes a downpour in its core; a flurry is never rain
+				final boolean rains = raining && mapped[0] >= 0 && type.weatherType().includesRain();
+				final float target = rains ? Math.max(0F, mapped[0] - (1F - Mth.clamp(rain / FULL_INTENSITY, 0F, 1F))) : 0F;
+				state.wetness = PetrichorBridge.stepWetness(state.wetness, rains ? rain : 0F, rains ? target : -1F, level.isDay());
+				final int ordinal = rains ? PetrichorBridge.typeAt(target) : -1;
 				if (ordinal != state.sentRain || sync)
 				{
 					state.sentRain = ordinal;
@@ -112,6 +116,36 @@ public final class CloudWeather
 	public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event)
 	{
 		STATES.remove(event.getEntity().getUUID());
+	}
+
+	/**
+	 * A fair-weather cloud's flurry level (0..1) at a position: Simple Clouds' own rain presence (full from 0.3 into the region,
+	 * fading over 32 blocks above the cloud base) scaled by the configured level.
+	 */
+	private static float flurry(CloudManager<?> manager, CloudType type, float fade, float y)
+	{
+		final float level = ForeverFixesCommonConfig.CLOUD_FAIR_SNOW.get().floatValue();
+		if (level <= 0F)
+		{
+			return 0F;
+		}
+		final float presence = Math.min(1F, Math.max(0F, SimpleCloudsConstants.RAIN_THRESHOLD - fade) / SimpleCloudsConstants.RAIN_FADE);
+		final float vertical = 1F - Mth.clamp((y - (type.stormStart() * SimpleCloudsConstants.CLOUD_SCALE + manager.getCloudHeight()))
+				/ SimpleCloudsConstants.RAIN_VERTICAL_FADE, 0F, 1F);
+		return presence * vertical * level;
+	}
+
+	/** The flurry level of the fair-weather cloud over a position in any level (0 where there is none); for Hoarfrost's client. */
+	public static float fairSnowAt(Level level, double x, double y, double z)
+	{
+		if (!isActive(level))
+		{
+			return 0F;
+		}
+		final CloudManager<?> manager = CloudManager.get(level);
+		final Pair<CloudType, Float> info = manager.getCloudTypeAtWorldPos((float) x, (float) z);
+		final CloudType type = info.getLeft();
+		return !type.weatherType().includesRain() && mapping(type)[1] >= 0 ? flurry(manager, type, info.getRight(), (float) y) : 0F;
 	}
 
 	/**
@@ -161,9 +195,11 @@ public final class CloudWeather
 					ForeverFixes.LOGGER.warn("simpleclouds.cloudWeatherTypes: cannot read '{}'", entry);
 					continue;
 				}
-				final String[] kinds = entry.substring(eq + 1).split(",");
-				MAPPING.put(id, new int[] { PETRICHOR ? PetrichorBridge.typeOrdinal(kinds[0].trim()) : -1,
-						HOARFROST && kinds.length > 1 ? HoarfrostBridge.kindOrdinal(kinds[1].trim()) : -1 });
+				final String[] kinds = entry.substring(eq + 1).split(",", -1);
+				final String rain = kinds[0].trim();
+				final String snow = kinds.length > 1 ? kinds[1].trim() : "";
+				MAPPING.put(id, new int[] { PETRICHOR && !rain.isEmpty() ? PetrichorBridge.typeOrdinal(rain) : -1,
+						HOARFROST && !snow.isEmpty() ? HoarfrostBridge.kindOrdinal(snow) : -1 });
 			}
 			parsedFrom = list;
 		}

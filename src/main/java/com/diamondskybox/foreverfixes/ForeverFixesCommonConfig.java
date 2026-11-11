@@ -388,11 +388,20 @@ public final class ForeverFixesCommonConfig
 			.comment("Which Petrichor rain type and Hoarfrost snow kind a Simple Clouds cloud type brings: \"<cloud type>=<rain>,<snow>\".",
 					"Rain types: drizzle, rain, downpour, thunderstorm. Snow kinds: light_snow, snow, heavy_snow, heavy_large_flakes,",
 					"light_blizzard, blizzard, heavy_blizzard. A rain cloud type not listed brings rain and snow, a thunderstorm type brings",
-					"thunderstorm and blizzard. Rain versus snow is the biome's choice, as in both mods; intensity follows the cloud's edge fade.")
+					"thunderstorm and blizzard. Rain versus snow is the biome's choice, as in both mods; intensity follows the cloud's edge fade.",
+					"A fair-weather cloud type (no rain in Simple Clouds) may list a snow kind alone (\"<cloud type>=,light_snow\"): a light",
+					"flurry falls in snowy land while that cloud is overhead, in place of Hoarfrost's time-scheduled fair-weather snow",
+					"(turn its fairWeatherSnow off). Rain is never given by a fair-weather cloud.")
 			.defineListAllowEmpty("simpleclouds.cloudWeatherTypes",
 					List.of("simpleclouds:stratus=rain,snow", "simpleclouds:nimbostratus=downpour,heavy_snow",
-							"simpleclouds:cumulonimbus=thunderstorm,blizzard"),
+							"simpleclouds:cumulonimbus=thunderstorm,blizzard", "simpleclouds:itty_bitty=,light_snow",
+							"simpleclouds:small_cumulus=,light_snow", "simpleclouds:cumulus=,light_snow", "simpleclouds:stratocumulus=,snow"),
 					() -> "", o -> o instanceof String s && s.contains("="));
+
+	public static final ModConfigSpec.DoubleValue CLOUD_FAIR_SNOW = B
+			.comment("Simple Clouds + Hoarfrost: how heavily a fair-weather cloud's flurry falls in its core (Hoarfrost's own fair-weather snow",
+					"falls at 0.45 to 0.95). 0 turns flurries off.")
+			.defineInRange("simpleclouds.fairSnowLevel", 0.6D, 0.0D, 1.0D);
 
 	public static final ModConfigSpec.DoubleValue CLOUD_STRIKE_SHARE = B
 			.comment("Simple Clouds + Petrichor: share of Simple Clouds' lightning decisions that become a real Petrichor strike near a player",

@@ -145,7 +145,8 @@
     "simplecloudswind.MixinCloudManagerWindScroll",
     "scpetrichor.MixinServerCloudManagerStrikes",
     "scpetrichor.MixinPetrichorWeatherEvents",
-    "schoarfrost.MixinHoarfrostSnowEvents"
+    "schoarfrost.MixinHoarfrostSnowEvents",
+    "schoarfrost.MixinHoarfrostClientWeatherFair"
   ],
   "injectors": {
     "defaultRequire": 1
