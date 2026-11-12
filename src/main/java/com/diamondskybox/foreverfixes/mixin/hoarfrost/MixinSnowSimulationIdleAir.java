@@ -18,7 +18,8 @@ import java.util.function.BiPredicate;
  * any dimension with weather: a terrain grid around the camera, rebuilt whenever the camera has moved or the wind has turned (with a
  * trace of the Sable ships overhead for roofs), then eddies and a blur. Only the flakes use it, yet it ran with no snow for thousands
  * of blocks, about 1 ms a tick. While Hoarfrost sees no snowy land in its survey and no snow falling, the update is skipped and the
- * gusts and entity wakes queued for it are dropped (the update would have used and cleared them). Snowy land coming into the survey
+ * gusts and entity wakes queued for it are dropped (the update would have used and cleared them); the weather it samples is still
+ * handed over, and the first update in a world always runs, so whatever samples it in the meantime finds it set up. Snowy land coming into the survey
  * starts it again before any flake falls; the camera has moved by then, so the grid is rebuilt fresh.
  */
 @Mixin(targets = "com.pockyl.hoarfrost.sim.SnowSimulation", remap = false)
@@ -30,10 +31,12 @@ public abstract class MixinSnowSimulationIdleAir
 	private void foreverfixes$idleWithoutSnow(AirFlow air, Level level, SnowConditions weather, double x, double y, double z,
 			BiPredicate<Level, BlockPos> cold, Operation<Void> original)
 	{
-		if (ClientWeather.presence() <= 0F && ClientWeather.snow() <= 0F
+		final AccessorAirFlowQueues queues = (AccessorAirFlowQueues) (Object) air;
+		// the first update always runs: it sets up the grid and the weather the flakes (and Hoarfrost's other drifting snow) sample
+		if (queues.foreverfixes$weather() != null && ClientWeather.presence() <= 0F && ClientWeather.snow() <= 0F
 				&& ForeverFixesConfig.enabled(ForeverFixesConfig.WEATHER_IDLE_WHEN_CLEAR))
 		{
-			final AccessorAirFlowQueues queues = (AccessorAirFlowQueues) (Object) air;
+			queues.foreverfixes$setWeather(weather);
 			queues.foreverfixes$blasts().clear();
 			queues.foreverfixes$wakes().clear();
 			return;
