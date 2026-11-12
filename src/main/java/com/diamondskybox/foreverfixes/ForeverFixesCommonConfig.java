@@ -457,6 +457,12 @@ public final class ForeverFixesCommonConfig
 					"sand sat in three stacks. Origins already on other items are cleared from players' inventories so those stacks merge.")
 			.define("chestdna.gearOnly", true);
 
+	public static final ModConfigSpec.BooleanValue VEGANDELIGHT_NO_DROP_LABELS = B
+			.comment("Vegan Delight: items dropped by an entity are not stamped \"not vegan\". It stamped every food, drink and sugar any entity",
+					"dropped (a zombie's potato, a villager's crops), whatever the item, and the stamp kept those stacks apart from the rest.",
+					"Stamps already on items are cleared from players' inventories. Its labels from its tags and recipe scan stay.")
+			.define("vegandelight.noDropLabels", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	/** Read from tick code, which can run before the config file is loaded; default to enabled then. */

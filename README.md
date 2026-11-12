@@ -77,6 +77,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   opened from it goes back to Stock Market.
 
 **Gameplay**
+- Vegan Delight: food dropped by mobs and other entities is no longer stamped "not vegan" (a zombie's potato, a villager's
+  crops), so it stacks with the rest; stamps already on items are cleared from players' inventories (`vegandelight.noDropLabels`).
 - ChestDNA: origins (and the origin panel and rarity) only on player gear: armor and worn items, weapons, tools, shields and
   Curios baubles, and artifacts and relics (Artifacts, Relics) even when not worn. Blocks and materials from chests, mining and mob drops stack together again; origins already on them are
   cleared from players' inventories (`chestdna.gearOnly`).
