@@ -87,6 +87,7 @@ public final class ForeverFixes
 		if (FMLEnvironment.dist == Dist.CLIENT)
 		{
 			NeoForge.EVENT_BUS.addListener(KeybindKeeper::onClientTick);
+			NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, WeatherFogLight::onFogColor);
 		}
 		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("mobends"))
 		{
