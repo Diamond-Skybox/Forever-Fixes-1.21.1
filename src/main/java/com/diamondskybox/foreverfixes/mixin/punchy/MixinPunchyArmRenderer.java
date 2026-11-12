@@ -17,12 +17,13 @@ import org.spongepowered.asm.mixin.injection.At;
 /**
  * Punchy draws the first-person arm with its own arm model in the player's Minecraft skin (the arm, then the sleeve), bypassing
  * the vanilla hand rendering MCA hooks, so MCA players saw Minecraft-skin arms. For players whose arms MCA draws, Punchy's posed
- * arm and sleeve are drawn with MCA's skin and clothing textures instead ({@link McaArms}).
+ * arm and sleeve are drawn with MCA's skin and clothing textures instead ({@link McaArms}). Punchy 3.2 moved the arm drawing into
+ * original$renderArm (renderArm became a wrapper for its arm API); both are targeted, so either version works.
  */
 @Mixin(targets = "punchy.client.render.PunchyArmRenderer", remap = false)
 public abstract class MixinPunchyArmRenderer
 {
-	@WrapOperation(method = "renderArm", remap = false, require = 1,
+	@WrapOperation(method = { "renderArm", "original$renderArm" }, remap = false, require = 1,
 			at = @At(value = "INVOKE", ordinal = 0, remap = false, target = "Lnet/minecraft/client/model/geom/ModelPart;render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;II)V"))
 	private static void foreverfixes$mcaArm(ModelPart arm, PoseStack pose, VertexConsumer buffer, int light, int overlay, Operation<Void> original,
 			@Local(argsOnly = true) AbstractClientPlayer player, @Local(argsOnly = true) HumanoidArm side, @Local(argsOnly = true) MultiBufferSource buffers)
@@ -33,7 +34,7 @@ public abstract class MixinPunchyArmRenderer
 		}
 	}
 
-	@WrapOperation(method = "renderArm", remap = false, require = 1,
+	@WrapOperation(method = { "renderArm", "original$renderArm" }, remap = false, require = 1,
 			at = @At(value = "INVOKE", ordinal = 1, remap = false, target = "Lnet/minecraft/client/model/geom/ModelPart;render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;II)V"))
 	private static void foreverfixes$mcaSleeve(ModelPart sleeve, PoseStack pose, VertexConsumer buffer, int light, int overlay, Operation<Void> original,
 			@Local(argsOnly = true) AbstractClientPlayer player, @Local(argsOnly = true) HumanoidArm side, @Local(argsOnly = true) MultiBufferSource buffers)

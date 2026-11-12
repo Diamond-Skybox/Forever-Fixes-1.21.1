@@ -91,7 +91,13 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 
 	/** mixin (path below the mixin package) -> mod id and the first version of that mod that fixed the problem itself */
 	private static final Map<String, Map.Entry<String, String>> FIXED_IN = Map.of(
-			"mobends.MixinArmorModelApiCompat", Map.entry("mobends", "6.0.0"));
+			"mobends.MixinArmorModelApiCompat", Map.entry("mobends", "6.0.0"),
+			// Databank 1.3.2.1 dropped its "Main: {}, Backup: {}" log line
+			"databank.MixinPostShaderInstance", Map.entry("databank", "1.3.2.1"),
+			// Chromeware 1.2.1: suppressant durations are its own config ([immunosuppressants] *_duration_seconds)
+			"chromeware.MixinSuppressionTiming", Map.entry("chromeware", "1.2.1"),
+			// Chromeware 1.2.1 handles Punchy itself: Punchy's arms give way to vanilla hands while arm hardware shows
+			"punchychromeware.MixinPunchyChromewareImplants", Map.entry("chromeware", "1.2.1"));
 
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName)

@@ -226,7 +226,8 @@ public final class ForeverFixesCommonConfig
 			.define("magic.chrome.sandevistanTimeStopImmunity", "ACTIVE", o -> o instanceof String s && (s.equals("INSTALLED") || s.equals("ACTIVE") || s.equals("OFF")));
 
 	public static final ModConfigSpec.IntValue SUPPRESSANT_STANDARD_TICKS = B
-			.comment("Chromeware: protection one Standard Grade Immunosuppressant dose gives, in ticks (24000 = one Minecraft day; Chromeware: 12000).",
+			.comment("Chromeware before 1.2.1: protection one Standard Grade Immunosuppressant dose gives, in ticks (24000 = one Minecraft day; Chromeware: 12000).",
+					"From Chromeware 1.2.1 this is its own setting, [immunosuppressants] standard_duration_seconds, and this one is ignored.",
 					"A dose taken while still protected adds this halved once per dose in a row (diminishing returns, as in Chromeware).")
 			.defineInRange("chromeware.suppressantStandardTicks", 24000, 1, 10000000);
 
