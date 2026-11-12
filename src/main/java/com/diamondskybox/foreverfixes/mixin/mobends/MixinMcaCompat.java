@@ -7,7 +7,6 @@ import goblinbob.mobends.core.client.MoBendsRenderContext;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /** Logs which way Mo' Bends sends each MCA model it intercepts (see {@link McaHairDiagnostics}). */

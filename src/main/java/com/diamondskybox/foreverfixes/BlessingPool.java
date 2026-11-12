@@ -3,7 +3,6 @@ package com.diamondskybox.foreverfixes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +35,5 @@ public final class BlessingPool
 			}
 		}
 		return holders.isEmpty() ? Optional.empty() : Optional.of(holders.get(ThreadLocalRandom.current().nextInt(holders.size())));
-	}
-
-	static boolean isEffectRegistry(Registry<?> registry)
-	{
-		return registry.key().location().getPath().equals("mob_effect");
 	}
 }

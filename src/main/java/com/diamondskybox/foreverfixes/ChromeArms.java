@@ -30,20 +30,4 @@ public final class ChromeArms
 			return false;
 		}
 	}
-
-	public static boolean animating(LivingEntity entity)
-	{
-		if (!(entity instanceof AbstractClientPlayer player))
-		{
-			return false;
-		}
-		try
-		{
-			return MantisAnimation.rendering(player) || MonowireAnimation.rendering(player) || LauncherAnimation.rendering(player) || GorillaAnimation.rendering(player);
-		}
-		catch (RuntimeException e)
-		{
-			return false;
-		}
-	}
 }

@@ -16,7 +16,6 @@ import net.minecraft.world.entity.player.Player;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import java.util.Set;
 
 /**
  * Chromeware x Mo' Bends (client). Mo' Bends draws players with its own two-piece limbs, so Chromeware's way of hiding a

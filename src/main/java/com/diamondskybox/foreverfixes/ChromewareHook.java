@@ -14,19 +14,6 @@ public final class ChromewareHook
 	{
 	}
 
-	/** Cyberware capacity points the player's installed implants and cyber limbs take up. */
-	static int capacityUsed(Player player)
-	{
-		try
-		{
-			return Math.max(0, CyberwareCapacity.used(player));
-		}
-		catch (RuntimeException e)
-		{
-			return 0;
-		}
-	}
-
 	/** Whether this player's Sandevistan puts them outside stopped time (per magic.chrome.sandevistanTimeStopImmunity). */
 	public static boolean outsideStoppedTime(Player player)
 	{
