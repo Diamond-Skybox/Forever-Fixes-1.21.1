@@ -1,10 +1,11 @@
 package com.diamondskybox.foreverfixes.mixin.simplecloudswind;
 
-import com.diamondskybox.foreverfixes.CloudWind;
+import com.diamondskybox.foreverfixes.ForeverFixesCommonConfig;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import dev.nonamecrackers2.simpleclouds.common.world.CloudManager;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.Level;
-import org.spongepowered.asm.mixin.Final;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -13,21 +14,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Simple Clouds + Living Wind: the cloud shapes drift along Living Wind. Simple Clouds moves the noise that carves the clouds
- * along a circle of radius 100: each tick the scroll angle grows by the cloud speed and the scroll offset is that point on the
- * circle, so the drift direction turns slowly on its own and cannot be set without the clouds jumping. After Simple Clouds has
- * advanced the angle, this takes the step it added (the speed), moves the offset by that step along the wind instead (the mesh
- * samples noise at position + scroll, so the offset moves against the wind for the shapes to move with it) and sets the angle to
- * the wind heading, which is what {@code calculateWindDirection} (rain slant, storm fog shadow map, high cloud layer, Better
- * Simple Clouds' rain wind) reads back. A server sync or a world load sets the angle to something else; the step is clamped so
- * that moves the clouds by a block at most.
+ * Simple Clouds + Living Wind: the drifting cloud shapes scroll along a fixed heading. Simple Clouds moves the noise that carves
+ * the clouds along a circle of radius 100: each tick the scroll angle grows by the cloud speed and the scroll offset is that point on
+ * the circle, so the drift slowly turns on its own. With the cloud wind on, the scroll angle is the heading the server set from
+ * Living Wind (see {@code CloudWind}, synced by Simple Clouds): its tick increment is kept as the step instead of turning the angle,
+ * and the offset moves that far along the heading (the mesh samples noise at position + scroll, so the offset moves against the
+ * wind for the shapes to move with it). Both sides, identical, so nothing has to be synced but the heading.
  */
 @Mixin(value = CloudManager.class, remap = false)
 public abstract class MixinCloudManagerWindScroll
 {
-	@Shadow(remap = false)
-	@Final
-	protected Level level;
 	@Shadow(remap = false)
 	protected float scrollAngle;
 	@Shadow(remap = false)
@@ -39,31 +35,38 @@ public abstract class MixinCloudManagerWindScroll
 	@Shadow(remap = false)
 	protected float scrollZ;
 
-	/** Simple Clouds' circle radius: a step of angle s moves the offset about 100 s */
+	/** Simple Clouds' circle radius: an angle step s moves its offset about 100 s */
 	@Unique
 	private static final float SCROLL_RADIUS = 100F;
-	/** the largest angle step taken as cloud movement; the cloud speed times 1e-4 is far below this */
 	@Unique
-	private static final float MAX_STEP = 0.01F;
-	@Unique
-	private float foreverfixes$heading = Float.NaN;
+	private float foreverfixes$step = Float.NaN;
+
+	@WrapOperation(method = "tick", remap = false, require = 1,
+			at = @At(value = "FIELD", opcode = Opcodes.PUTFIELD, remap = false,
+					target = "Ldev/nonamecrackers2/simpleclouds/common/world/CloudManager;scrollAngle:F"))
+	private void foreverfixes$keepHeading(CloudManager manager, float angle, Operation<Void> original)
+	{
+		if (ForeverFixesCommonConfig.CLOUD_WIND.get())
+		{
+			this.foreverfixes$step = angle - this.scrollAngle;
+			return;
+		}
+		this.foreverfixes$step = Float.NaN;
+		original.call(manager, angle);
+	}
 
 	@Inject(method = "tick", remap = false, require = 1,
 			at = @At(value = "INVOKE", remap = false,
 					target = "Ldev/nonamecrackers2/simpleclouds/common/world/CloudManager;determineUseVanillaWeather()Z"))
-	private void foreverfixes$scrollWithWind(CallbackInfo ci)
+	private void foreverfixes$scrollAlongHeading(CallbackInfo ci)
 	{
-		final float[] wind = CloudWind.vector(this.level);
-		if (wind == null)
+		if (Float.isNaN(this.foreverfixes$step))
 		{
-			this.foreverfixes$heading = Float.NaN;
 			return;
 		}
-		final float step = Float.isNaN(this.foreverfixes$heading) ? 0F : Mth.clamp(this.scrollAngle - this.foreverfixes$heading, 0F, MAX_STEP);
-		final float distance = step * SCROLL_RADIUS * wind[2];
-		this.scrollX = this.scrollXO - wind[0] * distance;
-		this.scrollZ = this.scrollZO - wind[1] * distance;
-		this.scrollAngle = (float) Mth.atan2(wind[1], wind[0]);
-		this.foreverfixes$heading = this.scrollAngle;
+		final float distance = this.foreverfixes$step * SCROLL_RADIUS;
+		this.scrollX = this.scrollXO - Mth.cos(this.scrollAngle) * distance;
+		this.scrollZ = this.scrollZO - Mth.sin(this.scrollAngle) * distance;
+		this.foreverfixes$step = Float.NaN;
 	}
 }

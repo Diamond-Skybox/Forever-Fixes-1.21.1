@@ -1,27 +1,29 @@
 package com.diamondskybox.foreverfixes;
 
 import com.macatmovie.livingwind.api.WindApi;
+import com.macatmovie.livingwind.server.WindSavedData;
 import com.macatmovie.livingwind.wind.WindSnapshot;
-import dev.nonamecrackers2.simpleclouds.api.common.cloud.region.ScAPICloudRegion;
-import dev.nonamecrackers2.simpleclouds.api.common.event.CloudRegionTickEvent;
+import dev.nonamecrackers2.simpleclouds.api.common.event.CloudRegionNaturallySpawnEvent;
+import dev.nonamecrackers2.simpleclouds.common.cloud.region.CloudRegion;
 import dev.nonamecrackers2.simpleclouds.common.world.CloudManager;
+import dev.nonamecrackers2.simpleclouds.common.world.ServerCloudManager;
+import dev.nonamecrackers2.simpleclouds.common.world.SyncType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
- * Simple Clouds' clouds move with Living Wind. Formations get Living Wind's direction (and, optionally, a speed scaled by its
- * strength) through Simple Clouds' per-tick region event, on both sides; the drifting cloud shapes follow it through
- * {@code MixinCloudManagerWindScroll}. Living Wind's heading is a yaw: 0 blows toward +z, 90 toward -x.
- * <p>
- * The heading is smoothed per level: Living Wind's effective direction wanders by tens of degrees over tens of seconds, and
- * Simple Clouds turns everything that reads its wind direction with it, including its 2D atmospheric cloud layer, which rotates
- * about the camera to face the wind. Clouds here turn toward the wind at about Simple Clouds' own natural rate (its scroll
- * angle advances by the cloud speed times 1e-4 radians a tick), so the sky never visibly swings.
+ * Simple Clouds' clouds move with Living Wind, decided by the server only. Every simpleclouds.windUpdateSeconds the server reads
+ * Living Wind's prevailing (base) direction and strength, and sets them as the cloud wind: each formation's movement direction
+ * (its length carries the speed factor) and Simple Clouds' scroll angle, which is the direction the drifting cloud shapes scroll
+ * (see {@code MixinCloudManagerWindScroll}) and what its rain slant reads. Simple Clouds saves both and syncs both (formations every
+ * 12 s and on change, the scroll angle every 10 s and on change), so the client moves the clouds exactly as the server does between
+ * readings and never reads the live wind; the client and server copies used to drift apart and snap back at each resync. Server
+ * side; new formations take the current direction as they spawn.
  */
 public final class CloudWind
 {
@@ -29,71 +31,78 @@ public final class CloudWind
 	private static final float USUAL_STRENGTH = 0.34F;
 	private static final float MIN_SPEED_FACTOR = 0.5F;
 	private static final float MAX_SPEED_FACTOR = 2.0F;
-	/** radians a tick the cloud heading may turn toward the wind: a quarter turn in about two minutes */
-	private static final float TURN_RATE = 2.0E-4F;
-	/** how fast the speed factor follows the wind strength */
-	private static final float STRENGTH_EASE = 0.01F;
 
-	/** per level: the smoothed heading (radians, atan2(z, x) of the wind vector) and speed factor, advanced once a tick */
-	private static final Map<Level, Smoothed> SMOOTHED = new WeakHashMap<>();
+	/** per level: the cloud wind {x, z, speed factor} of the last reading and when the next one is due */
+	private static final Map<ServerLevel, State> STATES = new WeakHashMap<>();
 
-	private static final class Smoothed
+	private static final class State
 	{
-		float heading = Float.NaN;
-		float factor = 1F;
-		long tick = Long.MIN_VALUE;
+		float[] wind;
+		long nextReading = Long.MIN_VALUE;
 	}
 
 	private CloudWind()
 	{
 	}
 
-	/** {x, z, speed factor} of the (smoothed) wind in this level, or null when Living Wind has no wind here (or the bridge is off) */
-	public static float[] vector(Level level)
+	public static void onLevelTick(LevelTickEvent.Post event)
 	{
-		if (!ForeverFixesCommonConfig.CLOUD_WIND.get())
+		if (!(event.getLevel() instanceof ServerLevel level) || !ForeverFixesCommonConfig.CLOUD_WIND.get()
+				|| !(CloudManager.get(level) instanceof ServerCloudManager manager))
 		{
-			return null;
+			return;
 		}
-		final float[] target;
-		if (level instanceof ServerLevel serverLevel)
+		final State state = STATES.computeIfAbsent(level, k -> new State());
+		final long now = level.getGameTime();
+		if (now < state.nextReading)
 		{
-			final WindSnapshot snapshot = WindApi.get(serverLevel);
-			target = fromHeading(snapshot.directionDegrees(), snapshot.strength());
+			return;
 		}
-		else if (level.isClientSide())
+		state.nextReading = now + ForeverFixesCommonConfig.CLOUD_WIND_UPDATE_SECONDS.get() * 20L;
+		final float[] wind = read(level);
+		if (wind == null)
 		{
-			target = CloudWindClient.vector();
+			return;
 		}
-		else
+		state.wind = wind;
+		manager.setScrollAngle((float) Mth.atan2(wind[1], wind[0]));
+		manager.queueSync(SyncType.MOVEMENT);
+		for (CloudRegion region : manager.getClouds())
 		{
-			target = null;
+			steer(region, wind);
 		}
-		if (target == null)
-		{
-			SMOOTHED.remove(level);
-			return null;
-		}
-		final Smoothed smoothed = SMOOTHED.computeIfAbsent(level, k -> new Smoothed());
-		final float wanted = (float) Mth.atan2(target[1], target[0]);
-		if (Float.isNaN(smoothed.heading))
-		{
-			smoothed.heading = wanted;
-			smoothed.factor = target[2];
-		}
-		else if (smoothed.tick != level.getGameTime())
-		{
-			final float delta = Mth.wrapDegrees((wanted - smoothed.heading) * Mth.RAD_TO_DEG) * Mth.DEG_TO_RAD;
-			smoothed.heading += Mth.clamp(delta, -TURN_RATE, TURN_RATE);
-			smoothed.factor += (target[2] - smoothed.factor) * STRENGTH_EASE;
-		}
-		smoothed.tick = level.getGameTime();
-		return new float[] { Mth.cos(smoothed.heading), Mth.sin(smoothed.heading), smoothed.factor };
+		manager.queueSync(SyncType.CLOUD_FORMATIONS);
 	}
 
-	/** {x, z, speed factor} straight from a Living Wind heading and strength */
-	static float[] fromHeading(float degrees, float strength)
+	/** A formation spawned: it moves with the current cloud wind from the start. */
+	public static void onRegionSpawn(CloudRegionNaturallySpawnEvent event)
 	{
+		if (event.getLevel() instanceof ServerLevel level && ForeverFixesCommonConfig.CLOUD_WIND.get()
+				&& event.getCloudRegion() instanceof CloudRegion region)
+		{
+			final State state = STATES.get(level);
+			if (state != null && state.wind != null)
+			{
+				steer(region, state.wind);
+			}
+		}
+	}
+
+	/** stationary formations (FairSnowClouds) keep still */
+	private static void steer(CloudRegion region, float[] wind)
+	{
+		if (region.getMaxSpeed() > 0F)
+		{
+			region.setMovementDirection(new Vec2(wind[0] * wind[2], wind[1] * wind[2]));
+		}
+	}
+
+	/** {x, z, speed factor} of Living Wind's prevailing wind in this level, or null where it has none */
+	private static float[] read(ServerLevel level)
+	{
+		final WindSnapshot snapshot = WindApi.get(level);
+		final float degrees = WindSavedData.get(level).commandBaseDirection();
+		final float strength = snapshot.strength();
 		if (!Float.isFinite(degrees) || !Float.isFinite(strength))
 		{
 			return null;
@@ -102,26 +111,5 @@ public final class CloudWind
 		final float factor = ForeverFixesCommonConfig.CLOUD_WIND_SPEED.get()
 				? Mth.clamp(strength / USUAL_STRENGTH, MIN_SPEED_FACTOR, MAX_SPEED_FACTOR) : 1F;
 		return new float[] { -Mth.sin(radians), Mth.cos(radians), factor };
-	}
-
-	public static void onRegionTick(CloudRegionTickEvent event)
-	{
-		final float[] wind = vector(event.getLevel());
-		if (wind == null)
-		{
-			return;
-		}
-		final ScAPICloudRegion region = event.getCloudRegion();
-		if (region.getMaxSpeed() <= 0F)
-		{
-			// a stationary cloud (FairSnowClouds) ignores the wind; the event refuses a speed of 0 anyway
-			return;
-		}
-		event.setModifiedMovementDirection(new Vec2(wind[0], wind[1]));
-		final float speed = region.getMaxSpeed() * CloudManager.get(event.getLevel()).getCloudSpeed() * wind[2];
-		if (wind[2] != 1F && speed > 0F)
-		{
-			event.setModifiedMaxSpeed(speed);
-		}
 	}
 }

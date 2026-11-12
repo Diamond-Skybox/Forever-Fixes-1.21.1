@@ -149,6 +149,7 @@
     "scpetrichor.MixinPetrichorWeatherEvents",
     "schoarfrost.MixinHoarfrostSnowEvents",
     "schoarfrost.MixinHoarfrostClientWeatherFair",
+    "schoarfrost.MixinSnowSkyFogDarkensWithStorm",
     "hoarfrost.MixinSnowCoverStepOnLayers",
     "hoarfrost.MixinSnowSkyUngreyKeepsHue",
     "hoarfrost.MixinHoarfrostFogOnlyUnderSnowClouds",

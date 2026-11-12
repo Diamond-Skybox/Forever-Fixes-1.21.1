@@ -117,7 +117,8 @@ public final class ForeverFixes
 		}
 		if (ModList.get().isLoaded("simpleclouds") && ModList.get().isLoaded("livingwind"))
 		{
-			NeoForge.EVENT_BUS.addListener(CloudWind::onRegionTick);
+			NeoForge.EVENT_BUS.addListener(CloudWind::onLevelTick);
+			NeoForge.EVENT_BUS.addListener(CloudWind::onRegionSpawn);
 		}
 		LOGGER.info("Forever Fixes loaded");
 	}

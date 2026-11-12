@@ -278,6 +278,12 @@ public final class ForeverFixesConfig
 					"light flurry from a small cloud closed the view to a pale wall at about 240 blocks, on the LODs too. Flakes still fall.")
 			.define("hoarfrost.fogOnlyUnderSnowClouds", true);
 
+	public static final ModConfigSpec.BooleanValue HOARFROST_FOG_DARKENS_WITH_STORM = B
+			.comment("Hoarfrost + Simple Clouds: Hoarfrost's snow fog colour darkens by the same factor Simple Clouds darkens the world under a",
+					"storm cloud. Hoarfrost lightens the fog colour for its snowy look, so in a blizzard the haze (and the LODs fogged into it)",
+					"glowed pale against a world and sky Simple Clouds had darkened.")
+			.define("hoarfrost.fogDarkensWithStorm", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	private ForeverFixesConfig()

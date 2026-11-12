@@ -436,12 +436,19 @@ public final class ForeverFixesCommonConfig
 			.define("simpleclouds.hoarfrostDrifts", true);
 
 	public static final ModConfigSpec.BooleanValue CLOUD_WIND = B
-			.comment("Simple Clouds + Living Wind: cloud formations move with Living Wind's direction, and the drifting cloud shapes scroll",
-					"along it, so Simple Clouds' rain slant, storm fog and Better Simple Clouds' rain wind follow the same wind.")
+			.comment("Simple Clouds + Living Wind: the server reads Living Wind's prevailing direction every simpleclouds.windUpdateSeconds",
+					"and sets it as the cloud direction: every cloud formation moves that way and the drifting cloud shapes scroll along it",
+					"(Simple Clouds' rain slant and Better Simple Clouds' rain wind follow it too). Simple Clouds syncs both to the clients, so",
+					"server and clients move the clouds the same way between updates; nothing reads the live wind in between.")
 			.define("simpleclouds.windFromLivingWind", true);
 
+	public static final ModConfigSpec.IntValue CLOUD_WIND_UPDATE_SECONDS = B
+			.comment("Seconds between the server's readings of Living Wind's direction for the clouds.")
+			.defineInRange("simpleclouds.windUpdateSeconds", 300, 30, 3600);
+
 	public static final ModConfigSpec.BooleanValue CLOUD_WIND_SPEED = B
-			.comment("Simple Clouds + Living Wind: cloud speed also scales with Living Wind's strength (0.5x in a calm, up to 2x in a gale).")
+			.comment("Simple Clouds + Living Wind: at each reading, formation speed also follows Living Wind's strength (0.5x in a calm, up",
+					"to 2x in a gale).")
 			.define("simpleclouds.cloudSpeedFromWind", true);
 
 	public static final ModConfigSpec SPEC = B.build();
