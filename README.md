@@ -53,6 +53,9 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   changes, and lays them over the world when it moves, only while rain or snow falls on it: parked ships cost nothing.
   With Better Simple Clouds, wet decks keep their puddles and raindrop rings in place on a moving ship, and the dry ground under
   a ship follows it (the 8 nearest ships' column tops and poses go to the wet ground shader).
+  Petrichor's and Hoarfrost's shelter under ships reads the same column tops instead of tracing every ship block by block each
+  tick it moves (a ship nudged by the wind, even one floating on water, never sits still); Hoarfrost's air flow finds the ships'
+  blocks from them too.
 - Better Simple Clouds: wet ground only where it rains: no wet deserts, savannas, badlands or snow under storm clouds, plus a list
   of biomes that always stay dry (`bettersimpleclouds.dryBiomes`).
 - Hoarfrost + Petrichor: no weather work far from their weather. Hoarfrost rebuilt its air flow for the snowflakes (a terrain grid

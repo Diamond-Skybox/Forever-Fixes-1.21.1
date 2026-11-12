@@ -155,6 +155,8 @@
     "hoarfrost.AccessorAirFlowQueues",
     "hoarfrost.MixinSnowSimulationIdleAir",
     "petrichor.MixinColumnsIdleRoofs",
+    "sablepetrichor.MixinPetrichorShipRoofsFromCover",
+    "sablehoarfrost.MixinHoarfrostShipRoofsFromCover",
     "hoarfrostdh.MixinDistantHorizonsFogColor",
     "dhfog.MixinDhFogColorRenderDistance",
     "petrichordh.MixinPetrichorAtmosphereDhDepth",

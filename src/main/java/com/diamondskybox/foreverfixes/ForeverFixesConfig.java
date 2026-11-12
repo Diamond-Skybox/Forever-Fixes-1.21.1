@@ -120,7 +120,8 @@ public final class ForeverFixesConfig
 	public static final ModConfigSpec.BooleanValue SABLE_SHIP_RAIN = B
 			.comment("Sable: rain, its splashes, Better Simple Clouds' downpour and its wet ground stop on ships instead of falling through",
 					"them. They only knew the world's heightmap, which has no Sable ships in it. Each ship keeps the tops of its block columns,",
-					"worked out again only when a block on it changes, and lays them over the world when it moves, only while it is under rain or snow.")
+					"worked out again only when a block on it changes, and lays them over the world when it moves, only while it is under rain or snow.",
+					"Petrichor's and Hoarfrost's shelter under ships comes from the same tops instead of their own trace of every moving ship each tick.")
 			.define("sable.shipsBlockRain", true);
 
 	public static final ModConfigSpec.BooleanValue SABLE_SHIP_WET_GROUND = B
