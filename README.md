@@ -80,6 +80,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   opened from it goes back to Stock Market.
 
 **Gameplay**
+- Sable: Ragdolls 0.8: mobs no longer ragdoll when a player kills them (or hits them with its ragdoll items); players still do
+  (`ragdoll.noMobRagdolls`).
 - Vegan Delight: food dropped by mobs and other entities is no longer stamped "not vegan" (a zombie's potato, a villager's
   crops), so it stacks with the rest; stamps already on items are cleared from players' inventories (`vegandelight.noDropLabels`).
 - ChestDNA: origins (and the origin panel and rarity) only on player gear: armor and worn items, weapons, tools, shields and

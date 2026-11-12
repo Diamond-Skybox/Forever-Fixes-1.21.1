@@ -464,6 +464,11 @@ public final class ForeverFixesCommonConfig
 					"Stamps already on items are cleared from players' inventories. Its labels from its tags and recipe scan stay.")
 			.define("vegandelight.noDropLabels", true);
 
+	public static final ModConfigSpec.BooleanValue RAGDOLL_MOB_RAGDOLLS_OFF = B
+			.comment("Sable: Ragdolls 0.8 and later: no ragdolls for mobs, only for players. It ragdolls every mob a player kills (and mobs hit with its",
+					"ragdoll items); the whitelist inside its jar allows every entity type and it has no setting for it.")
+			.define("ragdoll.noMobRagdolls", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	/** Read from tick code, which can run before the config file is loaded; default to enabled then. */

@@ -59,7 +59,8 @@
     "chromeware.MixinEnchantmentHelperCyberFit",
     "chromewaredoppel.AccessorSandevistanFields",
     "vanilla.MixinGameRulesRegisterLock",
-    "vegandelight.MixinVeganLabelsNoDropStamp"
+    "vegandelight.MixinVeganLabelsNoDropStamp",
+    "ragdollmobs.MixinMobRagdollWhitelistOff"
   ],
   "client": [
     "sableflywheel.MixinSableFlywheelLightStorage",
