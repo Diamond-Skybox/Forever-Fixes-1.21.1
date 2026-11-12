@@ -151,6 +151,7 @@
     "schoarfrost.MixinSnowClientHoldSnowfall",
     "schoarfrost.MixinSimpleCloudsRendererFlakesAfter",
     "hoarfrost.MixinSnowCoverStepOnLayers",
+    "hoarfrost.MixinSnowSkyUngreyKeepsHue",
     "hoarfrostdh.MixinDistantHorizonsFogColor"
   ],
   "injectors": {
