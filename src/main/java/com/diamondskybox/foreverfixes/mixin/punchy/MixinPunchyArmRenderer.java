@@ -23,12 +23,23 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(targets = "punchy.client.render.PunchyArmRenderer", remap = false)
 public abstract class MixinPunchyArmRenderer
 {
+	/**
+	 * Punchy 3.2 measures the arm without drawing it when Minecraft's own hands are wanted (another mod changes the arm): its
+	 * ArmCapture keeps only the skin it was made for and passes every other render type on to the real buffers, so an MCA arm
+	 * drawn there showed as a second arm next to the Minecraft hand Punchy then draws (where MCA's own hand rendering applies).
+	 */
+	private static boolean capturing(MultiBufferSource buffers)
+	{
+		return buffers != null && "punchy.client.render.ArmCapture".equals(buffers.getClass().getName());
+	}
+
 	@WrapOperation(method = { "renderArm", "original$renderArm" }, remap = false, require = 1,
 			at = @At(value = "INVOKE", ordinal = 0, remap = false, target = "Lnet/minecraft/client/model/geom/ModelPart;render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;II)V"))
 	private static void foreverfixes$mcaArm(ModelPart arm, PoseStack pose, VertexConsumer buffer, int light, int overlay, Operation<Void> original,
 			@Local(argsOnly = true) AbstractClientPlayer player, @Local(argsOnly = true) HumanoidArm side, @Local(argsOnly = true) MultiBufferSource buffers)
 	{
-		if (!ForeverFixesConfig.enabled(ForeverFixesConfig.PUNCHY_MCA_ARMS) || !McaArms.draw(player, side == HumanoidArm.RIGHT, arm, false, pose, buffers, light))
+		if (!ForeverFixesConfig.enabled(ForeverFixesConfig.PUNCHY_MCA_ARMS) || capturing(buffers)
+				|| !McaArms.draw(player, side == HumanoidArm.RIGHT, arm, false, pose, buffers, light))
 		{
 			original.call(arm, pose, buffer, light, overlay);
 		}
@@ -39,7 +50,8 @@ public abstract class MixinPunchyArmRenderer
 	private static void foreverfixes$mcaSleeve(ModelPart sleeve, PoseStack pose, VertexConsumer buffer, int light, int overlay, Operation<Void> original,
 			@Local(argsOnly = true) AbstractClientPlayer player, @Local(argsOnly = true) HumanoidArm side, @Local(argsOnly = true) MultiBufferSource buffers)
 	{
-		if (!ForeverFixesConfig.enabled(ForeverFixesConfig.PUNCHY_MCA_ARMS) || !McaArms.draw(player, side == HumanoidArm.RIGHT, sleeve, true, pose, buffers, light))
+		if (!ForeverFixesConfig.enabled(ForeverFixesConfig.PUNCHY_MCA_ARMS) || capturing(buffers)
+				|| !McaArms.draw(player, side == HumanoidArm.RIGHT, sleeve, true, pose, buffers, light))
 		{
 			original.call(sleeve, pose, buffer, light, overlay);
 		}
