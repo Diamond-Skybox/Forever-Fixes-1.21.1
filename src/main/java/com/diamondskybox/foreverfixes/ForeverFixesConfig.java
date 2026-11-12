@@ -288,6 +288,13 @@ public final class ForeverFixesConfig
 					"and LODs fully inside it, glowed against the dark terrain at night and darkened it by day. 0 leaves the fog colour alone.")
 			.defineInRange("weather.fogBrightnessFromLight", 0.8D, 0.0D, 1.5D);
 
+	public static final ModConfigSpec.BooleanValue WEATHER_IDLE_WHEN_CLEAR = B
+			.comment("Hoarfrost + Petrichor: skip their per-tick weather work while there is none of their weather near. Hoarfrost rebuilt its",
+					"air flow for the snowflakes (a terrain grid around you, with a trace of the ships overhead) every tick in any dimension",
+					"with weather, about 1 ms a tick thousands of blocks from snow; Petrichor traced the ships overhead for rain shelter every",
+					"tick with no rain. Hoarfrost's runs while its survey finds snowy land or snow falls, Petrichor's while it rains.")
+			.define("weather.idleWhenClear", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	private ForeverFixesConfig()

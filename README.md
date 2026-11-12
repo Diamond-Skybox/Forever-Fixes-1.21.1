@@ -55,6 +55,10 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   a ship follows it (the 8 nearest ships' column tops and poses go to the wet ground shader).
 - Better Simple Clouds: wet ground only where it rains: no wet deserts, savannas, badlands or snow under storm clouds, plus a list
   of biomes that always stay dry (`bettersimpleclouds.dryBiomes`).
+- Hoarfrost + Petrichor: no weather work far from their weather. Hoarfrost rebuilt its air flow for the snowflakes (a terrain grid
+  around you, with a trace of the ships overhead) every tick in any dimension with weather, about 1 ms a tick thousands of blocks
+  from snow; it now waits for snowy land in its survey or falling snow. Petrichor's trace of the ships overhead for rain shelter
+  waits for rain (`weather.idleWhenClear`).
 - Tall worlds (JJThunder): the far clip plane is raised so mountain tops stay visible.
 - Sodium: terrain more than one render distance above or below the camera no longer disappears.
 - Sable + Flywheel (Create): ships' and the world's Flywheel lighting updates no longer build a Java stream for every
@@ -70,6 +74,9 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   opened from it goes back to Stock Market.
 
 **Gameplay**
+- ChestDNA: origins (and the origin panel and rarity) only on player gear: armor and worn items, weapons, tools, shields and
+  Curios baubles. Blocks and materials from chests, mining and mob drops stack together again; origins already on them are
+  cleared from players' inventories (`chestdna.gearOnly`).
 - No server crash ("ConcurrentModificationException" in DimensionDataStorage.save, then a hang) when mods add saved data from
   world-generation threads during an autosave, e.g. Immersive Petroleum's reservoir regions during a pregen.
 - Skeletons Rising: its "The Family Reunion" advancement check runs on players' ticks only, instead of searching the area
@@ -263,7 +270,7 @@ The mixins compile against jars of the patched mods, which are not part of this 
 - `scalablelux-classes-0.3.0-alpha.0.8.jar`: only the `ca/spottedleaf/starlight/**` classes from ScalableLux.
 - the mod jars of Armor Model API 1.1.0, MCA: female gender physics 0.1.6, Better Inventory 2.0.1, Field Guide 1.22.2,
   Spice of Life: Onion 1.5.7, Spell Atlas 1.88.22, Doggy Talents Next 1.19.1, NTGL 3.2.0, Simulated Coasters 0.1.5 and
-  Hexerei 0.5.0.3.
+  Hexerei 0.5.0.3, ChestDNA 1.03q.
 
 ## License
 

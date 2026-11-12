@@ -451,6 +451,12 @@ public final class ForeverFixesCommonConfig
 					"to 2x in a gale).")
 			.define("simpleclouds.cloudSpeedFromWind", true);
 
+	public static final ModConfigSpec.BooleanValue CHESTDNA_GEAR_ONLY = B
+			.comment("ChestDNA: record an item's origin (and show its origin panel and rarity) only on player gear: armor and worn items,",
+					"weapons and tools, shields and Curios baubles. ChestDNA stamped everything, so sand from a chest, mined sand and dropped",
+					"sand sat in three stacks. Origins already on other items are cleared from players' inventories so those stacks merge.")
+			.define("chestdna.gearOnly", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	/** Read from tick code, which can run before the config file is loaded; default to enabled then. */

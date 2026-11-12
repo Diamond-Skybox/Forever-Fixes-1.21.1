@@ -72,6 +72,10 @@ public final class ForeverFixes
 			NeoForge.EVENT_BUS.addListener(BossChests::onServerTick);
 			NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.TagsUpdatedEvent e) -> BossChests.clearCache());
 		}
+		if (ModList.get().isLoaded("chestdna"))
+		{
+			ChestDnaGear.init();
+		}
 		if (ModList.get().isLoaded("opencomputers"))
 		{
 			NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, LootFixes::onLootTableLoad);
