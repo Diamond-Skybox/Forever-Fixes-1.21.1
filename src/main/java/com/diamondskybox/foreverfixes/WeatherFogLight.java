@@ -51,11 +51,26 @@ public final class WeatherFogLight
 		{
 			return;
 		}
-		final float target = (float) Math.min(1D, light * brightness);
-		final float scale = Mth.lerp(rain, 1F, target / current);
-		final float nr = Math.min(1F, r * scale);
-		final float ng = Math.min(1F, g * scale);
-		final float nb = Math.min(1F, b * scale);
+		final float target = Mth.lerp(rain, current, (float) Math.min(1D, light * brightness));
+		final float nr;
+		final float ng;
+		final float nb;
+		if (target <= current)
+		{
+			// darkening: scale, the hue stays
+			final float scale = target / current;
+			nr = r * scale;
+			ng = g * scale;
+			nb = b * scale;
+		}
+		else
+		{
+			// brightening: add neutral grey; scaling a dark tinted colour up blew its strongest channel out to a saturated blue
+			final float add = target - current;
+			nr = Math.min(1F, r + add);
+			ng = Math.min(1F, g + add);
+			nb = Math.min(1F, b + add);
+		}
 		event.setRed(nr);
 		event.setGreen(ng);
 		event.setBlue(nb);

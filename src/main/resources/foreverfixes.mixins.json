@@ -144,6 +144,7 @@
     "chromewaredoppel.MixinSandevistanAfterimagesDoppel",
     "simpleclouds.AccessorCloudManagerLevel",
     "simpleclouds.AccessorCloudRegionLife",
+    "simpleclouds.MixinWorldEffectsRgbStormTint",
     "simpleclouds.MixinWorldEffectsThunder",
     "simplecloudswind.MixinCloudManagerWindScroll",
     "scpetrichor.MixinServerCloudManagerStrikes",
