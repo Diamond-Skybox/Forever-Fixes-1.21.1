@@ -155,7 +155,8 @@
     "hoarfrost.MixinSnowSkyUngreyKeepsHue",
     "hoarfrost.MixinHoarfrostFogOnlyUnderSnowClouds",
     "hoarfrostdh.MixinDistantHorizonsFogColor",
-    "dhfog.MixinDhFogColorRenderDistance"
+    "dhfog.MixinDhFogColorRenderDistance",
+    "petrichordh.MixinPetrichorAtmosphereDhDepth"
   ],
   "injectors": {
     "defaultRequire": 1

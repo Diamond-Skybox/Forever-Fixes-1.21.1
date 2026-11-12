@@ -89,6 +89,10 @@ public final class ForeverFixes
 			NeoForge.EVENT_BUS.addListener(KeybindKeeper::onClientTick);
 			NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, WeatherFogLight::onFogColor);
 		}
+		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("petrichor") && ModList.get().isLoaded("distanthorizons"))
+		{
+			PetrichorDhDepth.register();
+		}
 		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("mobends"))
 		{
 			BendsRecorder.register();

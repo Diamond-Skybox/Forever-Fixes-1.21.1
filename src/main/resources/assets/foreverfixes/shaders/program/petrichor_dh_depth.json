@@ -1,0 +1,17 @@
+{
+    "vertex": "blit",
+    "fragment": "foreverfixes:petrichor_dh_depth",
+    "attributes": [ "Position" ],
+    "samplers": [
+        { "name": "MainDepth" },
+        { "name": "DhDepth" }
+    ],
+    "uniforms": [
+        { "name": "ProjMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+        { "name": "OutSize", "type": "float", "count": 2, "values": [ 1.0, 1.0 ] },
+        { "name": "DhInvProj", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+        { "name": "McProj", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+        { "name": "DhReverseZ", "type": "float", "count": 1, "values": [ 0.0 ] },
+        { "name": "DhZeroToOne", "type": "float", "count": 1, "values": [ 0.0 ] }
+    ]
+}
