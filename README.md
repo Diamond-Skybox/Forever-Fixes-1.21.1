@@ -62,6 +62,9 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   around you, with a trace of the ships overhead) every tick in any dimension with weather, about 1 ms a tick thousands of blocks
   from snow; it now waits for snowy land in its survey or falling snow. Petrichor's trace of the ships overhead for rain shelter
   waits for rain (`weather.idleWhenClear`).
+- Simple Clouds + Distant Horizons: turning Distant Horizons' rendering off (or a dimension it does not draw) no longer leaves the
+  last cloud and haze image on screen with the old entities and skyline cut out of it; Simple Clouds uses its own pipeline
+  until Distant Horizons draws again.
 - Tall worlds (JJThunder): the far clip plane is raised so mountain tops stay visible.
 - Sodium: terrain more than one render distance above or below the camera no longer disappears.
 - Sable + Flywheel (Create): ships' and the world's Flywheel lighting updates no longer build a Java stream for every

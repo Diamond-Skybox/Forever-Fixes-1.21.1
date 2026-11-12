@@ -160,6 +160,7 @@
     "sablehoarfrost.MixinHoarfrostShipRoofsFromCover",
     "hoarfrostdh.MixinDistantHorizonsFogColor",
     "dhfog.MixinDhFogColorRenderDistance",
+    "simplecloudsdh.MixinDhPipelineOnlyWhileDhRenders",
     "petrichordh.MixinPetrichorAtmosphereDhDepth",
     "petrichorhoarfrost.MixinAtmosphereSnowHaze",
     "petrichorhoarfrost.MixinSnowClientFogYieldsToHaze"
