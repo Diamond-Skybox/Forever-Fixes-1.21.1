@@ -97,7 +97,10 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			// Chromeware 1.2.1: suppressant durations are its own config ([immunosuppressants] *_duration_seconds)
 			"chromeware.MixinSuppressionTiming", Map.entry("chromeware", "1.2.1"),
 			// Chromeware 1.2.1 handles Punchy itself: Punchy's arms give way to vanilla hands while arm hardware shows
-			"punchychromeware.MixinPunchyChromewareImplants", Map.entry("chromeware", "1.2.1"));
+			"punchychromeware.MixinPunchyChromewareImplants", Map.entry("chromeware", "1.2.1"),
+			// Mo' Bends 6.1.1 splits and bends Chromeware's cyber limbs itself (ChromewareCompat, ChromewareLimbLayer)
+			"chromewaremobends.MixinCyberLimbRendererCut", Map.entry("mobends", "6.1.1"),
+			"chromewaremobends.MixinCyberLimbRendererBends", Map.entry("mobends", "6.1.1"));
 
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
