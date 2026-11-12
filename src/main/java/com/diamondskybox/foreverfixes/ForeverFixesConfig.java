@@ -272,6 +272,12 @@ public final class ForeverFixesConfig
 					"closing the Auction House opened from it goes back to Stock Market.")
 			.define("stockmarket.auctionHouseTab", true);
 
+	public static final ModConfigSpec.BooleanValue HOARFROST_FLAKES_AFTER_STORM_FOG = B
+			.comment("Hoarfrost + Simple Clouds: draw Hoarfrost's snowflakes after Simple Clouds' storm fog instead of in the weather pass.",
+					"The storm fog is composited over every pixel whose depth says sky, and flakes write no depth, so under a storm cloud",
+					"the flakes vanished wherever sky was behind them.")
+			.define("hoarfrost.flakesAfterStormFog", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	private ForeverFixesConfig()
