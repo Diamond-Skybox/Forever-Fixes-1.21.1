@@ -21,15 +21,25 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import xsoras.chestdna.api.ChestDNAApi;
 import xsoras.chestdna.api.ChestDNAEvents;
 
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * ChestDNA: an origin only for player gear. ChestDNA stamped where every item came from (loot chest, mined, mob drop, crafted...),
  * so the same block from three sources sat in three stacks. Its stamps all pass its assign event, which here refuses anything that is
  * not gear: an unstackable item that is armor or worn (elytra, Equipable), a weapon or tool (tiered, bow, crossbow, trident, mace,
- * shield, or attack damage or armor in its attribute modifiers), or a Curios bauble. Origins already stamped on other items are
+ * shield, or attack damage or armor in its attribute modifiers), a Curios bauble, or an artifact or relic (Artifacts, Relics) even
+ * when it is not worn. Origins already stamped on other items are
  * cleared from players' inventories, so their stacks merge again.
  */
 public final class ChestDnaGear
 {
+	/** base classes of the Artifacts and Relics items, matched by name so neither mod is needed */
+	private static final Set<String> TREASURE_CLASSES = Set.of("artifacts.item.ArtifactItem",
+			"it.hurts.sskirillss.relics.items.relics.base.RelicItem");
+	private static final Map<Item, Boolean> TREASURE = new ConcurrentHashMap<>();
+
 	private ChestDnaGear()
 	{
 	}
@@ -43,11 +53,19 @@ public final class ChestDnaGear
 
 	public static boolean isGear(ItemStack stack)
 	{
-		if (stack.isEmpty() || stack.getMaxStackSize() > 1)
+		if (stack.isEmpty())
 		{
 			return false;
 		}
 		final Item item = stack.getItem();
+		if (TREASURE.computeIfAbsent(item, ChestDnaGear::isTreasure))
+		{
+			return true;
+		}
+		if (stack.getMaxStackSize() > 1)
+		{
+			return false;
+		}
 		if (item instanceof ArmorItem || item instanceof ElytraItem || item instanceof TieredItem || item instanceof ProjectileWeaponItem
 				|| item instanceof TridentItem || item instanceof MaceItem || item instanceof ShieldItem || Equipable.get(stack) != null)
 		{
@@ -62,6 +80,19 @@ public final class ChestDnaGear
 			}
 		}
 		return ModList.get().isLoaded("curios") && ChestDnaCurios.isCurio(stack);
+	}
+
+	/** an artifact or a relic: its class extends one of the Artifacts or Relics item bases */
+	private static boolean isTreasure(Item item)
+	{
+		for (Class<?> c = item.getClass(); c != null && c != Item.class; c = c.getSuperclass())
+		{
+			if (TREASURE_CLASSES.contains(c.getName()))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private static void onPlayerTick(PlayerTickEvent.Post event)

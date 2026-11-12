@@ -453,7 +453,7 @@ public final class ForeverFixesCommonConfig
 
 	public static final ModConfigSpec.BooleanValue CHESTDNA_GEAR_ONLY = B
 			.comment("ChestDNA: record an item's origin (and show its origin panel and rarity) only on player gear: armor and worn items,",
-					"weapons and tools, shields and Curios baubles. ChestDNA stamped everything, so sand from a chest, mined sand and dropped",
+					"weapons and tools, shields, Curios baubles, and artifacts and relics (Artifacts, Relics) even when not worn. ChestDNA stamped everything, so sand from a chest, mined sand and dropped",
 					"sand sat in three stacks. Origins already on other items are cleared from players' inventories so those stacks merge.")
 			.define("chestdna.gearOnly", true);
 

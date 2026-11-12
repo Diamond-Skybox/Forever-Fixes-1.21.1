@@ -78,7 +78,7 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 
 **Gameplay**
 - ChestDNA: origins (and the origin panel and rarity) only on player gear: armor and worn items, weapons, tools, shields and
-  Curios baubles. Blocks and materials from chests, mining and mob drops stack together again; origins already on them are
+  Curios baubles, and artifacts and relics (Artifacts, Relics) even when not worn. Blocks and materials from chests, mining and mob drops stack together again; origins already on them are
   cleared from players' inventories (`chestdna.gearOnly`).
 - No server crash ("ConcurrentModificationException" in DimensionDataStorage.save, then a hang) when mods add saved data from
   world-generation threads during an autosave, e.g. Immersive Petroleum's reservoir regions during a pregen.
