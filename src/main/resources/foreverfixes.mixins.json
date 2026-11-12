@@ -148,7 +148,8 @@
     "scpetrichor.MixinPetrichorWeatherEvents",
     "schoarfrost.MixinHoarfrostSnowEvents",
     "schoarfrost.MixinHoarfrostClientWeatherFair",
-    "hoarfrost.MixinSnowCoverStepOnLayers"
+    "hoarfrost.MixinSnowCoverStepOnLayers",
+    "hoarfrostdh.MixinDistantHorizonsFogColor"
   ],
   "injectors": {
     "defaultRequire": 1
