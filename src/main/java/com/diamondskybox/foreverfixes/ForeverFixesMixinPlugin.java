@@ -26,7 +26,7 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			Map.entry("sodium", List.of("sodium")),
 			Map.entry("bettercombat", List.of("bettercombat")),
 			Map.entry("travelerstitles", List.of("travelerstitles")),
-			Map.entry("cosmonautics", List.of("dimensional_sable")),
+			Map.entry("cosmonautics", List.of("dimensional_sable", "rocketnautics")),
 			Map.entry("aerowarptics", List.of("aerowarptics", "dimensional_sable")),
 			Map.entry("chronomancy", List.of("chronomancy", "chromeware")),
 			Map.entry("chromewaremobends", List.of("chromeware", "mobends")),
