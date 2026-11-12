@@ -278,6 +278,13 @@ public final class ForeverFixesConfig
 					"light flurry from a small cloud closed the view to a pale wall at about 240 blocks, on the LODs too. Flakes still fall.")
 			.define("hoarfrost.fogOnlyUnderSnowClouds", true);
 
+	public static final ModConfigSpec.BooleanValue SNOW_HAZE = B
+			.comment("Petrichor + Hoarfrost: Petrichor's rain haze (its atmosphere pass: haze that thickens with distance and in low ground,",
+					"drifting showers, the overcast deck) also covers snow, with Hoarfrost's snow visibility, and replaces Hoarfrost's flat",
+					"distance fog while it does. Rain and snow drive the one haze, from the share of land around you where either falls, so",
+					"walking from snow into rain no longer clears the view before the rain haze fades in. Needs Petrichor's atmosphere on.")
+			.define("weather.snowHaze", true);
+
 	public static final ModConfigSpec.DoubleValue WEATHER_FOG_BRIGHTNESS = B
 			.comment("In rain and snow, the fog colour takes its brightness from the light open-sky ground gets (the game's own lightmap, with",
 					"night, Simple Clouds' storm darkening and the brightness setting in it): this times that light, blended in by how hard it",

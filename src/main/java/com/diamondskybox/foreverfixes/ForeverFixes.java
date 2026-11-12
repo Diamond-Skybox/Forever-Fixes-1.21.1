@@ -93,6 +93,10 @@ public final class ForeverFixes
 		{
 			PetrichorDhDepth.register();
 		}
+		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("petrichor") && ModList.get().isLoaded("hoarfrost"))
+		{
+			NeoForge.EVENT_BUS.addListener(SnowHaze::onClientTick);
+		}
 		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("mobends"))
 		{
 			BendsRecorder.register();
