@@ -162,7 +162,7 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   toward the camera, so if blades were first deployed in first person (before any third-person look since launch) the camera-arm
   positions were baked in for the session (the rest positions live in a static per-model snapshot that every later sync re-reads):
   arms pushed back, the flesh bicep inside the body, held items at the elbow. Nothing is resolved, snapshotted or stored during a
-  first-person pass any more. `/ffchrome debug` also prints the pivot state and arm positions.
+  first-person pass any more.
 - Connection timeouts (`network.timeoutSeconds`, default 600): vanilla drops a connection after 30 s without packets and a player
   after 15 s without a keep-alive answer, so a client that stalls for half a minute (shader compile, a big Sable assembly, a long GC)
   is kicked as "Timed out" and has to log back in. Both limits, on the server's side and on the client's, follow the setting; 0
@@ -178,7 +178,7 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   inside one of its render scopes (typically the first-person blade pass, blades deployed before any third-person look) got a
   6 px arm and an empty cyber limb: the forearm pivot sat at the shoulder, the forearm drew over the bicep, the hand and anything
   held ended at the elbow, and a relog didn't help because the cache is static. Chromeware's rules now stand aside while Mo' Bends
-  measures, and `/ffchrome rebuild` throws the player's Mo' Bends model away and measures it again.
+  measures.
 - Chromeware x Mo' Bends Sandevistan copies: the Sandevistan draws the player again through a proxy (the live copy for its post
   effect and the afterimage captures). Mo' Bends animated the proxy as a player of its own, so the copy walked without swinging
   while the real player attacked; the proxy now takes the real player's finished pose of the frame (pack, Player Animation Lib

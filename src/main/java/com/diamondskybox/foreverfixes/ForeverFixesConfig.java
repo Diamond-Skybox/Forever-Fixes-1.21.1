@@ -27,10 +27,6 @@ public final class ForeverFixesConfig
 					"Mo' Bends adds them back only for its villager mutators, never for the player model MCA gives the player.")
 			.define("mobends.mcaPlayerBreasts", true);
 
-	public static final ModConfigSpec.BooleanValue MOBENDS_MCA_DIAGNOSTICS = B
-			.comment("Mo' Bends + MCA: log (once per model) which render path Mo' Bends takes for each MCA model; for the missing-hair hunt.")
-			.define("mobends.mcaDiagnostics", true);
-
 	public static final ModConfigSpec.BooleanValue WAVEY_NO_CROUCH_TILT = B
 			.comment("Wavey Capes + Mo' Bends: leave out Wavey Capes' own crouch tilt for players Mo' Bends animates.",
 					"Mo' Bends' crouching torso already leans and the cape hangs from that torso, so the cape would tilt twice.")

@@ -1,6 +1,5 @@
 package com.diamondskybox.foreverfixes.mixin.mobends;
 
-import com.diamondskybox.foreverfixes.McaHairDiagnostics;
 import com.diamondskybox.foreverfixes.McaPlayerBreasts;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -21,7 +20,6 @@ import java.util.Map;
 /**
  * Mo' Bends' biped mutator: after the main model render and after each overlay model, draw MCA's breast parts for players
  * (see {@link McaPlayerBreasts}); the villager mutators (McaMutatorBase) already do this themselves and are left alone.
- * Also feeds {@link McaHairDiagnostics} from the overlay path.
  */
 @Mixin(targets = "goblinbob.mobends.standard.mutators.BipedMutator", remap = false)
 public abstract class MixinBipedMutator
@@ -54,12 +52,5 @@ public abstract class MixinBipedMutator
 			return;
 		}
 		McaPlayerBreasts.render(this.body, model, poseStack, vertexConsumer, packedLight, packedOverlay, color);
-	}
-
-	@Inject(method = "renderOverlayGeometry", at = @At("HEAD"), remap = false, require = 1)
-	private void foreverfixes$overlayDiagnostics(HumanoidModel<?> model, PoseStack poseStack, VertexConsumer vertexConsumer,
-			int packedLight, int packedOverlay, int color, CallbackInfo ci)
-	{
-		McaHairDiagnostics.overlay(model, overlayGeometry.get(model), model == MoBendsRenderContext.getCurrentVanillaModel());
 	}
 }

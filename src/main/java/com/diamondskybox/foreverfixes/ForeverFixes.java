@@ -107,7 +107,6 @@ public final class ForeverFixes
 			ChromeFirstPersonDeferral.register();
 			BendsConditions.register();
 			ChromeJoints.register();
-			ChromeDebug.register();
 		}
 		if (FMLEnvironment.dist == Dist.CLIENT && ModList.get().isLoaded("sable"))
 		{

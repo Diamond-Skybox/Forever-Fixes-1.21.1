@@ -43,22 +43,6 @@ public final class ShipReseat
 	/** Called right after Cosmonautics' own re-seat attempt (server thread). */
 	public static void afterCosmonauticsReseat(ServerLevel level, ServerPlayer player, UUID vehicleId)
 	{
-		final Entity vehicle = level.getEntity(vehicleId);
-		ForeverFixes.LOGGER.info("Space transition re-seat: {} -> {} in {}: seat {}, riding it {}", player.getGameProfile().getName(),
-				vehicleId, level.dimension().location(), vehicle == null ? "not found" : vehicle.getType().toShortString(),
-				vehicle != null && player.getVehicle() == vehicle);
-		if (vehicle == null)
-		{
-			for (ServerLevel other : level.getServer().getAllLevels())
-			{
-				final Entity found = other.getEntity(vehicleId);
-				if (found != null)
-				{
-					ForeverFixes.LOGGER.info("Space transition re-seat: the seat is in {} at {} {} {} (removed: {})", other.dimension().location(),
-							(int) found.getX(), (int) found.getY(), (int) found.getZ(), found.isRemoved());
-				}
-			}
-		}
 		PENDING.add(new Pending(player.getUUID(), vehicleId));
 	}
 
@@ -81,9 +65,7 @@ public final class ShipReseat
 			final Entity vehicle = player.serverLevel().getEntity(pending.vehicle);
 			if (vehicle != null && vehicle.isAlive() && player.getVehicle() != vehicle)
 			{
-				final boolean seated = player.startRiding(vehicle, true);
-				ForeverFixes.LOGGER.info("Space transition re-seat: {} put back on {} after {} tick(s): {}", player.getGameProfile().getName(),
-						vehicle.getType().toShortString(), pending.ticks, seated);
+				player.startRiding(vehicle, true);
 			}
 			if (vehicle != null && (pending.ticks == 5 || pending.ticks == 20))
 			{
@@ -91,8 +73,6 @@ public final class ShipReseat
 			}
 			if (pending.ticks >= FOLLOW_UP_TICKS)
 			{
-				ForeverFixes.LOGGER.info("Space transition re-seat: {} after {} ticks: seat {}, riding it {}", player.getGameProfile().getName(),
-						pending.ticks, vehicle == null ? "not found" : "present", vehicle != null && player.getVehicle() == vehicle);
 				it.remove();
 			}
 		}
