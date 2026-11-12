@@ -30,6 +30,7 @@ public final class ForeverFixes
 		NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, VillagerTradeFixes::onVillagerTrades);
 		NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, VillagerTradeFixes::onWandererTrades);
 		NeoForge.EVENT_BUS.addListener(EventPriority.LOW, ChestCoins::onLootTableLoad);
+		NeoForge.EVENT_BUS.addListener(SnowBiomes::onTagsUpdated);
 		if (ModList.get().isLoaded("aerowarptics") && ModList.get().isLoaded("dimensional_sable"))
 		{
 			AeroWarpticsBridge.init();

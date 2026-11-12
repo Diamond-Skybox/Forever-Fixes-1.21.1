@@ -377,6 +377,13 @@ public final class ForeverFixesCommonConfig
 			.comment("A held enchanted book carrying any of the holy enchantments above burns a vampire too.")
 			.define("holy.booksCount", true);
 
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> SNOW_INSTEAD_OF_RAIN = B
+			.comment("Biomes (ids, or #tags) whose precipitation is snow wherever vanilla would make it rain. Vanilla, Simple Clouds, Petrichor",
+					"and Hoarfrost all take the biome's answer, so they agree. Default: the frozen oceans, whose 0.0/0.5 temperature with the",
+					"\"frozen\" noise rains over much of the ice. Water freezing is unchanged.")
+			.defineListAllowEmpty("weather.snowInsteadOfRain", List.of("minecraft:deep_frozen_ocean", "minecraft:frozen_ocean"), () -> "",
+					o -> o instanceof String s && ResourceLocation.tryParse(s.startsWith("#") ? s.substring(1) : s) != null);
+
 	public static final ModConfigSpec.BooleanValue CLOUD_WEATHER = B
 			.comment("Simple Clouds + Petrichor / Hoarfrost: when Simple Clouds runs its own weather (DEFAULT mode, or SINGLE mode with a",
 					"storm cloud type), each player's Petrichor rain type and Hoarfrost snow kind come from the cloud over that player",

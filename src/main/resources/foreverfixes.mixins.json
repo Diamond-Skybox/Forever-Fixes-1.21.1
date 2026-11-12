@@ -28,6 +28,7 @@
     "scalablelux.MixinStarLightEngine",
     "traveloptics.MixinTOLootModifiers",
     "vanilla.MixinEnchantRandomlyFunction",
+    "vanilla.MixinBiomePrecipitationSnow",
     "vanilla.MixinMobCategoryCapScale",
     "vanilla.MixinEnchantWithLevelsFunction",
     "vanilla.MixinAbstractContainerMenuSlotListeners",
