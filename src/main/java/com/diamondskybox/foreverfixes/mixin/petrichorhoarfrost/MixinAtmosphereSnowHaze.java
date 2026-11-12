@@ -29,14 +29,6 @@ public abstract class MixinAtmosphereSnowHaze
 		return SnowHaze.visibility(original.call());
 	}
 
-	@WrapOperation(method = "render", remap = false, require = 1,
-			at = @At(value = "FIELD", opcode = Opcodes.GETSTATIC, remap = false,
-					target = "Lcom/pockyl/petrichor/client/ClientWeather;heaviness:F"))
-	private static float foreverfixes$snowHeaviness(Operation<Float> original)
-	{
-		return SnowHaze.heaviness(original.call());
-	}
-
 	@Inject(method = "active", remap = false, require = 1, at = @At("RETURN"))
 	private static void foreverfixes$recordSnowHaze(CallbackInfoReturnable<Boolean> cir)
 	{

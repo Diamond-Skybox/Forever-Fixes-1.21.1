@@ -17,7 +17,9 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
  * rainy; in snowy land it never drew, and walking from snow into rain the view cleared before the rain haze faded back in. Here the
  * haze is driven by the real weather's rain level (Simple Clouds' cloud over the camera, or vanilla) times the share of the land
  * around you where any precipitation falls, surveyed like Petrichor does (25 columns 12 blocks apart) but without the hysteresis
- * and eased 0.02 a tick. Its visibility and heaviness blend Petrichor's rain values with Hoarfrost's snow ones by the snowy share.
+ * and eased 0.02 a tick. Its visibility blends Petrichor's rain visibility with Hoarfrost's snow visibility by the snowy share; the overcast deck keeps
+ * Petrichor's heaviness, which follows the cloud type overhead in snow as in rain (Hoarfrost's own snow cloudiness, 0.05 in plain
+ * snow, left the deck nearly clear and the coarse far cloud field showing through it).
  * Client only; read from the mixins on Petrichor's Atmosphere.
  */
 public final class SnowHaze
@@ -101,12 +103,5 @@ public final class SnowHaze
 		final float snowVisibility = Math.max(1F, snow.visibility);
 		final float rain = Math.max(1F, rainVisibility);
 		return 1F / (share / snowVisibility + (1F - share) / rain);
-	}
-
-	/** Petrichor's rain heaviness (overcast, gloom, rain shafts) blended with Hoarfrost's snow cloudiness */
-	public static float heaviness(float rainHeaviness)
-	{
-		final float share = snowShare();
-		return share <= 0F ? rainHeaviness : Mth.lerp(share, rainHeaviness, ClientWeather.conditions().clouds);
 	}
 }
