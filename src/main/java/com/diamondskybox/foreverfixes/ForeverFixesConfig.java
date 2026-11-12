@@ -272,6 +272,12 @@ public final class ForeverFixesConfig
 					"closing the Auction House opened from it goes back to Stock Market.")
 			.define("stockmarket.auctionHouseTab", true);
 
+	public static final ModConfigSpec.BooleanValue HOARFROST_FOG_ONLY_UNDER_SNOW_CLOUDS = B
+			.comment("Hoarfrost: its snow haze, sky greying and fog colour only come with snow from real weather (a snow cloud overhead or",
+					"vanilla snowfall), scaled by the rain level, not with fair-weather flurries. Hoarfrost fogged for any snow at all, so a",
+					"light flurry from a small cloud closed the view to a pale wall at about 240 blocks, on the LODs too. Flakes still fall.")
+			.define("hoarfrost.fogOnlyUnderSnowClouds", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	private ForeverFixesConfig()
