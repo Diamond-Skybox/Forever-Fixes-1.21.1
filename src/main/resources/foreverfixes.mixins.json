@@ -62,7 +62,8 @@
     "vegandelight.MixinVeganLabelsNoDropStamp",
     "ragdollmobs.MixinMobRagdollWhitelistOff",
     "letitwalk.MixinWalkerFuelEfficiency",
-    "letitwalk.MixinWalkerCoreFuelTank"
+    "letitwalk.MixinWalkerCoreFuelTank",
+    "flan.MixinFlanProjectileOverridesScanOnce"
   ],
   "client": [
     "sableflywheel.MixinSableFlywheelLightStorage",

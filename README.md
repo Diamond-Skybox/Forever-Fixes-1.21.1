@@ -80,6 +80,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   opened from it goes back to Stock Market.
 
 **Gameplay**
+- Flan: projectile impacts no longer stall the server. Its projectile permission lookup built a dummy of every entity type in the
+  pack on every impact (a bouncing NTGL grenade froze the game for seconds); that scan now runs once per data load.
 - Let it Walk!: walkers also burn refined fuels, each going further per bucket than lava (ethanol and methanol 2x, biodiesel 3x,
   diesel, gasoline, LPG 4x, kerosene 5x...; `letitwalk.fuels`). Thrust and jump height don't depend on the fuel.
 - Sable: Ragdolls 0.8: mobs no longer ragdoll when a player kills them (or hits them with its ragdoll items); players still do
