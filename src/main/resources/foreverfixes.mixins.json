@@ -63,7 +63,12 @@
     "ragdollmobs.MixinMobRagdollWhitelistOff",
     "letitwalk.MixinWalkerFuelEfficiency",
     "letitwalk.MixinWalkerCoreFuelTank",
-    "flan.MixinFlanProjectileOverridesScanOnce"
+    "flan.MixinFlanProjectileOverridesScanOnce",
+    "vanilla.AccessorExplosionLevel",
+    "cbcclaims.MixinCbcProjectileClaims",
+    "cbcclaims.MixinCbcExplosionClaims",
+    "cbcclaims.MixinCbcExplosionTransformClaims",
+    "cbcclaims.MixinCbcFluidShellClaims"
   ],
   "client": [
     "sableflywheel.MixinSableFlywheelLightStorage",

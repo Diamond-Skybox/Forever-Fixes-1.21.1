@@ -80,6 +80,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   opened from it goes back to Stock Market.
 
 **Gameplay**
+- Create Big Cannons + Flan: cannon rounds no longer break through, blast or transform blocks in claims whoever fired them can't
+  break in, and lava fluid shells don't start fires in claims (`cbc.claimProtection`). CBC changed those blocks past every claim check.
 - Flan: projectile impacts no longer stall the server. Its projectile permission lookup built a dummy of every entity type in the
   pack on every impact (a bouncing NTGL grenade froze the game for seconds); that scan now runs once per data load.
 - Let it Walk!: walkers also burn refined fuels, each going further per bucket than lava (ethanol and methanol 2x, biodiesel 3x,
