@@ -68,7 +68,11 @@
     "cbcclaims.MixinCbcProjectileClaims",
     "cbcclaims.MixinCbcExplosionClaims",
     "cbcclaims.MixinCbcExplosionTransformClaims",
-    "cbcclaims.MixinCbcFluidShellClaims"
+    "cbcclaims.MixinCbcFluidShellClaims",
+    "cbcatclaims.MixinCbcAtRocketClaims",
+    "sabledestructiveclaims.MixinSdImpactQueueClaims",
+    "sabledestructiveclaims.MixinSdBlockBreakClaims",
+    "sabledestructiveclaims.MixinSdVanishClaims"
   ],
   "client": [
     "sableflywheel.MixinSableFlywheelLightStorage",

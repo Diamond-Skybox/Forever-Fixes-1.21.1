@@ -481,12 +481,11 @@ public final class ForeverFixesCommonConfig
 					"#c:diesel=4", "#c:gasoline=4", "#c:lpg=4", "#c:fuel=4", "#c:kerosene=5", "#c:high_power_biodiesel=5"), () -> "",
 					o -> o instanceof String s && s.lastIndexOf('=') > 0);
 
-	public static final ModConfigSpec.BooleanValue CBC_CLAIM_PROTECTION = B
-			.comment("Create Big Cannons + Flan: cannon rounds don't break, blast or transform blocks in claims whoever fired them can't break in,",
-					"and lava fluid shells don't start fires in claims. CBC changes those blocks directly, past every claim check (only its",
-					"explosions' blast lists reached Flan, and only by the claim's explosion setting). Rounds with no player behind them count as",
-					"nobody. Wilderness is unchanged.")
-			.define("cbc.claimProtection", true);
+	public static final ModConfigSpec.BooleanValue CLAIMS_NO_WEAPON_DAMAGE = B
+			.comment("Claimed land is weapon-safe: inside Flan claims and FTB Chunks claimed chunks, Create Big Cannons rounds, CBC: Advanced",
+					"Technologies rockets and Sable: Destructive crashes don't break, blast, transform or burn blocks, whoever fired or flew.",
+					"Blocks on a Sable ship count as standing where the ship is. Entities still take damage. Wilderness is unchanged.")
+			.define("claims.noWeaponBlockDamage", true);
 
 	public static final ModConfigSpec SPEC = B.build();
 
