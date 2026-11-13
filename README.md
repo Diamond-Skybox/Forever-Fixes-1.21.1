@@ -80,6 +80,8 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   opened from it goes back to Stock Market.
 
 **Gameplay**
+- Let it Walk!: walkers also burn refined fuels, each going further per bucket than lava (ethanol and methanol 2x, biodiesel 3x,
+  diesel, gasoline, LPG 4x, kerosene 5x...; `letitwalk.fuels`). Thrust and jump height don't depend on the fuel.
 - Sable: Ragdolls 0.8: mobs no longer ragdoll when a player kills them (or hits them with its ragdoll items); players still do
   (`ragdoll.noMobRagdolls`).
 - Vegan Delight: food dropped by mobs and other entities is no longer stamped "not vegan" (a zombie's potato, a villager's

@@ -60,7 +60,9 @@
     "chromewaredoppel.AccessorSandevistanFields",
     "vanilla.MixinGameRulesRegisterLock",
     "vegandelight.MixinVeganLabelsNoDropStamp",
-    "ragdollmobs.MixinMobRagdollWhitelistOff"
+    "ragdollmobs.MixinMobRagdollWhitelistOff",
+    "letitwalk.MixinWalkerFuelEfficiency",
+    "letitwalk.MixinWalkerCoreFuelTank"
   ],
   "client": [
     "sableflywheel.MixinSableFlywheelLightStorage",

@@ -469,6 +469,18 @@ public final class ForeverFixesCommonConfig
 					"ragdoll items); the whitelist inside its jar allows every entity type and it has no setting for it.")
 			.define("ragdoll.noMobRagdolls", true);
 
+	public static final ModConfigSpec.BooleanValue LETITWALK_OTHER_FUELS = B
+			.comment("Let it Walk!: walkers burn the fuels in letitwalk.fuels as well as lava, in the Walker Core's tank and the tank behind it.",
+					"Let it Walk takes only lava.")
+			.define("letitwalk.otherFuels", true);
+
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> LETITWALK_FUELS = B
+			.comment("Fuels for Let it Walk! walkers, as \"<fluid id or #fluid tag>=<efficiency>\": the lava-millibuckets one millibucket of the",
+					"fuel pays for (lava is always 1). Efficiency only makes a tank last longer; thrust and jump height stay the same.")
+			.defineListAllowEmpty("letitwalk.fuels", List.of("#c:ethanol=2", "#c:methanol=2", "#c:biodiesel=3", "#c:e5_gasoline=3.5",
+					"#c:diesel=4", "#c:gasoline=4", "#c:lpg=4", "#c:fuel=4", "#c:kerosene=5", "#c:high_power_biodiesel=5"), () -> "",
+					o -> o instanceof String s && s.lastIndexOf('=') > 0);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	/** Read from tick code, which can run before the config file is loaded; default to enabled then. */
