@@ -507,6 +507,10 @@ public final class ForeverFixesCommonConfig
 					"any light level (and makes them lush zombies). Off keeps the mod's behaviour.")
 			.define("zombieVariants.lushCaveDarkness", false);
 
+	public static final ModConfigSpec.BooleanValue DEBUG_PERSISTENCE_TRACE = B
+			.comment("Diagnostic: log why hostile mobs turn permanent (pickups and setPersistenceRequired calls, with stack traces). Leave off.")
+			.define("debug.mobPersistenceTrace", false);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	/** Read from tick code, which can run before the config file is loaded; default to enabled then. */

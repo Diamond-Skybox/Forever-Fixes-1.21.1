@@ -1,5 +1,6 @@
 package com.diamondskybox.foreverfixes.mixin.vanilla;
 
+import com.diamondskybox.foreverfixes.ForeverFixes;
 import com.diamondskybox.foreverfixes.ForeverFixesCommonConfig;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -27,6 +28,11 @@ public abstract class MixinMobJunkPersistence
 	{
 		final boolean before = this.persistenceRequired;
 		original.call(slot, stack);
+		if ((Object) this instanceof Enemy && ForeverFixesCommonConfig.enabled(ForeverFixesCommonConfig.DEBUG_PERSISTENCE_TRACE))
+		{
+			ForeverFixes.LOGGER.info("[persistence-trace] equip {} {} on {}: before={} after={} maxStack={} enabled={}", slot, stack, ((Mob) (Object) this).getType(), before,
+					this.persistenceRequired, stack.getMaxStackSize(), ForeverFixesCommonConfig.enabled(ForeverFixesCommonConfig.NO_PERSISTENCE_FROM_JUNK));
+		}
 		if (!before && (Object) this instanceof Enemy && stack.getMaxStackSize() > 1
 				&& ForeverFixesCommonConfig.enabled(ForeverFixesCommonConfig.NO_PERSISTENCE_FROM_JUNK))
 		{
