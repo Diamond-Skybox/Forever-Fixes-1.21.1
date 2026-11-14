@@ -72,7 +72,8 @@
     "cbcatclaims.MixinCbcAtRocketClaims",
     "sabledestructiveclaims.MixinSdImpactQueueClaims",
     "sabledestructiveclaims.MixinSdBlockBreakClaims",
-    "sabledestructiveclaims.MixinSdVanishClaims"
+    "sabledestructiveclaims.MixinSdVanishClaims",
+    "mealmasterystations.MixinDiegesisMealMastery"
   ],
   "client": [
     "sableflywheel.MixinSableFlywheelLightStorage",

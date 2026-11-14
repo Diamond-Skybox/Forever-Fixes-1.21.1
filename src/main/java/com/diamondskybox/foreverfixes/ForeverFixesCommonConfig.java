@@ -487,6 +487,11 @@ public final class ForeverFixesCommonConfig
 					"Blocks on a Sable ship count as standing where the ship is. Entities still take damage. Wilderness is unchanged.")
 			.define("claims.noWeaponBlockDamage", true);
 
+	public static final ModConfigSpec.BooleanValue MEALMASTERY_STATIONS = B
+			.comment("Meal Mastery counts cooking at Hands On Delight's stations (pot, cutting board, skillet, stove): credit, discoveries and its",
+					"cooking-speed bonus. Their Diegesis stations never send the block click Meal Mastery listens for.")
+			.define("mealmastery.handsOnStations", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	/** Read from tick code, which can run before the config file is loaded; default to enabled then. */

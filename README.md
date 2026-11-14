@@ -84,6 +84,9 @@ applies when the mods it patches are installed; the client-side fixes can be swi
   rounds, CBC: Advanced Technologies rockets and Sable: Destructive crashes don't break, blast, transform or burn blocks, whoever
   fired or flew, so accidents stay off bases and anyone can build a weapons range on their own land. Ship blocks count as standing
   where the ship is. CBC and Sable: Destructive changed those blocks past every claim check.
+- Meal Mastery counts cooking at Hands On Delight's stations (`mealmastery.handsOnStations`): dishes made at the hands-on pot,
+  cutting board, skillet and stove earn mastery and discoveries again, and the mastery cooking-speed bonus works while you're at
+  the station. Those stations run on Diegesis, which never sends the block click Meal Mastery waits for, so none of it counted.
 - Flan: projectile impacts no longer stall the server. Its projectile permission lookup built a dummy of every entity type in the
   pack on every impact (a bouncing NTGL grenade froze the game for seconds); that scan now runs once per data load.
 - Let it Walk!: walkers also burn refined fuels, each going further per bucket than lava (ethanol and methanol 2x, biodiesel 3x,
