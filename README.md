@@ -87,6 +87,12 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Meal Mastery counts cooking at Hands On Delight's stations (`mealmastery.handsOnStations`): dishes made at the hands-on pot,
   cutting board, skillet and stove earn mastery and discoveries again, and the mastery cooking-speed bonus works while you're at
   the station. Those stations run on Diegesis, which never sends the block click Meal Mastery waits for, so none of it counted.
+- Simulated Coasters: its every-tick check of every Sable ship for coaster carts skips chunk sections that can't hold a coaster
+  bearing (`simulatedcoasters.paletteScan`); it read every block of every ship each tick, about 7% of the server thread.
+- Hostile mobs only become permanent for picking up gear, not rotten flesh or food (`spawning.noPersistenceFromJunk`), so mobs
+  that keep dying in one place no longer pile up past the mob cap.
+- Zombie Variants: optional darkness rule for zombies in lush caves (`zombieVariants.lushCaveDarkness`, off by default); the mod
+  lets them spawn there at any light level.
 - Engineer's Tool Upgrades: no more "35 entries failed to load!" in chat on joining a world
   (`immersiveengineering.manualWaitForTemplates`). It indexed the Immersive Engineering manual before the server had sent the
   multiblock structures; it now waits for them.
