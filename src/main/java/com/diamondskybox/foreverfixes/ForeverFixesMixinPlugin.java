@@ -81,6 +81,7 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			Map.entry("genderarmor", List.of("mcabp", "armor_model_api")),
 			Map.entry("traveloptics", List.of("traveloptics")),
 			Map.entry("mealmasterystations", List.of("mealmastery", "diegesis")),
+			Map.entry("engtoolupmanual", List.of("engtoolup", "immersiveengineering")),
 			Map.entry("databank", List.of("databank")),
 			Map.entry("scalablelux", List.of("scalablelux")),
 			Map.entry("astralenchdesc", List.of("astralsorcery", "enchdesc")),

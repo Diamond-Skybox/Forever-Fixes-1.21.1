@@ -296,6 +296,12 @@ public final class ForeverFixesConfig
 					"tick with no rain. Hoarfrost's runs while its survey finds snowy land or snow falls, Petrichor's while it rains.")
 			.define("weather.idleWhenClear", true);
 
+	public static final ModConfigSpec.BooleanValue IE_MANUAL_WAIT_FOR_TEMPLATES = B
+			.comment("Engineer's Tool Upgrades indexes the Immersive Engineering manual on the first client tick in a world, before the server's",
+					"multiblock structures arrive, so 35 entries fail and \"entries failed to load!\" lands in chat on every join. Its first",
+					"attempt waits until the structures are in.")
+			.define("immersiveengineering.manualWaitForTemplates", true);
+
 	public static final ModConfigSpec SPEC = B.build();
 
 	private ForeverFixesConfig()

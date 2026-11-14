@@ -87,6 +87,9 @@ applies when the mods it patches are installed; the client-side fixes can be swi
 - Meal Mastery counts cooking at Hands On Delight's stations (`mealmastery.handsOnStations`): dishes made at the hands-on pot,
   cutting board, skillet and stove earn mastery and discoveries again, and the mastery cooking-speed bonus works while you're at
   the station. Those stations run on Diegesis, which never sends the block click Meal Mastery waits for, so none of it counted.
+- Engineer's Tool Upgrades: no more "35 entries failed to load!" in chat on joining a world
+  (`immersiveengineering.manualWaitForTemplates`). It indexed the Immersive Engineering manual before the server had sent the
+  multiblock structures; it now waits for them.
 - Flan: projectile impacts no longer stall the server. Its projectile permission lookup built a dummy of every entity type in the
   pack on every impact (a bouncing NTGL grenade froze the game for seconds); that scan now runs once per data load.
 - Let it Walk!: walkers also burn refined fuels, each going further per bucket than lava (ethanol and methanol 2x, biodiesel 3x,

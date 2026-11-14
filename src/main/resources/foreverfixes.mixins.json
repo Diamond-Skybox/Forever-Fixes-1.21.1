@@ -76,6 +76,7 @@
     "mealmasterystations.MixinDiegesisMealMastery"
   ],
   "client": [
+    "engtoolupmanual.MixinEngToolUpManualWait",
     "sableflywheel.MixinSableFlywheelLightStorage",
     "mobends.MixinArmorModelApiCompat",
     "mobends.MixinBipedMutator",
