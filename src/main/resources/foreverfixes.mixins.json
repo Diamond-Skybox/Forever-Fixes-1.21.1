@@ -28,8 +28,6 @@
     "scalablelux.MixinStarLightEngine",
     "traveloptics.MixinTOLootModifiers",
     "vanilla.MixinEnchantRandomlyFunction",
-    "vanilla.MixinMobJunkPersistence",
-    "vanilla.MixinMobPersistenceTrace",
     "simulatedcoasters.MixinCoasterCartPlotScanPalette",
     "zombievariants.MixinLushCaveZombieDarkness",
     "vanilla.MixinBiomePrecipitationSnow",

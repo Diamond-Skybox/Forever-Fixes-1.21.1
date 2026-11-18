@@ -497,19 +497,10 @@ public final class ForeverFixesCommonConfig
 					"has no coaster bearing (same result; ships without carts no longer cost a full block scan each tick).")
 			.define("simulatedcoasters.paletteScan", true);
 
-	public static final ModConfigSpec.BooleanValue NO_PERSISTENCE_FROM_JUNK = B
-			.comment("Hostile mobs only become permanent (never despawn) for picking up gear (unstackable items: armor, tools, weapons), not for",
-					"rotten flesh, food or other stackable items, so mobs that keep dying in one spot don't pile up past the mob cap.")
-			.define("spawning.noPersistenceFromJunk", true);
-
 	public static final ModConfigSpec.BooleanValue LUSH_CAVE_ZOMBIE_DARKNESS = B
 			.comment("Zombie Variants: zombies in lush caves need darkness to spawn, like everywhere else. Zombie Variants lets them spawn there at",
 					"any light level (and makes them lush zombies). Off keeps the mod's behaviour.")
 			.define("zombieVariants.lushCaveDarkness", false);
-
-	public static final ModConfigSpec.BooleanValue DEBUG_PERSISTENCE_TRACE = B
-			.comment("Diagnostic: log why hostile mobs turn permanent (pickups and setPersistenceRequired calls, with stack traces). Leave off.")
-			.define("debug.mobPersistenceTrace", false);
 
 	public static final ModConfigSpec SPEC = B.build();
 
