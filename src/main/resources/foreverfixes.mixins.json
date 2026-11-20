@@ -172,6 +172,7 @@
     "hoarfrost.MixinHoarfrostFogOnlyUnderSnowClouds",
     "hoarfrost.AccessorAirFlowQueues",
     "hoarfrost.MixinSnowSimulationIdleAir",
+    "livingwind.MixinWindShelterSkyColumns",
     "petrichor.MixinColumnsIdleRoofs",
     "sablepetrichor.MixinPetrichorShipRoofsFromCover",
     "sablehoarfrost.MixinHoarfrostShipRoofsFromCover",

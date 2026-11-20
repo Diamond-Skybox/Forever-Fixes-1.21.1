@@ -57,6 +57,7 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			Map.entry("sablebscrain", List.of("sable", "bettersimpleclouds", "simpleclouds")),
 			Map.entry("simpleclouds", List.of("simpleclouds")),
 			Map.entry("simplecloudswind", List.of("simpleclouds", "livingwind")),
+			Map.entry("livingwind", List.of("livingwind")),
 			Map.entry("scpetrichor", List.of("simpleclouds", "petrichor")),
 			Map.entry("schoarfrost", List.of("simpleclouds", "hoarfrost")),
 			Map.entry("hoarfrost", List.of("hoarfrost")),

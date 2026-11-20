@@ -238,6 +238,13 @@ public final class ForeverFixesConfig
 					"all of them for the rest of the session; animators not drawn for animatorIdleSeconds are skipped until drawn again.")
 			.define("ntgl.tickOnlyDrawnAnimators", true);
 
+	public static final ModConfigSpec.BooleanValue LIVINGWIND_SKY_COLUMN_CACHE = B
+			.comment("Living Wind: answer its sky check (shelter survey, caves, particle wind) from a per-column cache.",
+					"Where vanilla says no sky, Living Wind climbed each column block by block up to the heightmap top for every probe and",
+					"every particle it pushes; under a floating island far overhead that read the whole gap up to the island each time.",
+					"Each column's highest sky-blocking block is found once, scanning down from the top, and kept for a second. Same answers.")
+			.define("livingwind.skyColumnCache", true);
+
 	public static final ModConfigSpec.DoubleValue NTGL_IDLE_SECONDS = B
 			.comment("Seconds without being drawn after which a weapon animator stops ticking.")
 			.defineInRange("ntgl.animatorIdleSeconds", 5D, 1D, 600D);
