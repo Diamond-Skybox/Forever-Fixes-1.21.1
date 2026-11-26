@@ -503,6 +503,13 @@ public final class ForeverFixesCommonConfig
 					"any light level (and makes them lush zombies). Off keeps the mod's behaviour.")
 			.define("zombieVariants.lushCaveDarkness", false);
 
+	public static final ModConfigSpec.IntValue VERTICAL_TICK_RANGE = B
+			.comment("Mobs more than this many blocks above or below every player within simulation distance (horizontally) are not ticked:",
+					"no AI, movement, ageing or breeding until a player comes within range. Chunks tick as whole columns, so in a tall",
+					"world mobs on islands far overhead ran for anyone below. With no player near horizontally (chunk loaders) mobs tick",
+					"as usual; bosses, ridden and player-leashed mobs always tick; despawning is unchanged. 0 = off.")
+			.defineInRange("entities.verticalTickRange", 200, 0, 4096);
+
 	public static final ModConfigSpec.ConfigValue<List<? extends String>> SAVED_DATA_WITHOUT_COPY = B
 			.comment("Saved data written without NeoForge's server-thread deep copy (class names). Only for classes that build every tag new",
 					"on each save and keep none of them: a class that hands out a tag it changes later would save a half-changed file.")

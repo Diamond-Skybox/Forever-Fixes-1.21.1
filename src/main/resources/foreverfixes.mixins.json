@@ -51,6 +51,7 @@
     "technonw.MixinBankCardPaymentService",
     "vanilla.MixinDimensionDataStorage",
     "vanilla.MixinSavedDataFreshTagNoCopy",
+    "vanilla.MixinServerLevelVerticalTickRange",
     "skeletonsrising.MixinTheFamilyReunionDemandsProcedure",
     "skeletonsrising.MixinSoulTerrorOnEntityTickUpdateProcedure",
     "createnuclear.MixinRadiationCapability",
