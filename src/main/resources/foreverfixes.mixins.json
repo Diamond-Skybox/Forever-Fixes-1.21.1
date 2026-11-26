@@ -154,7 +154,6 @@
     "chromewaremobends.MixinLimbRenderContextNeutralCapture",
     "chromewaremca.MixinChromewareSkinPiecesMca",
     "chromewaremca.MixinGorillaArmSkinMca",
-    "punchychromeware.MixinPunchyChromewareImplants",
     "chromewaremca.MixinLimbRenderContextMcaLayers",
     "chromewaremca.MixinPlayerRendererMcaScaleFirstPerson",
     "mobends.AccessorEntityDataParts",

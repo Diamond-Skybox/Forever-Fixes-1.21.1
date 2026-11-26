@@ -1,6 +1,5 @@
 package com.diamondskybox.foreverfixes.invbridge;
 
-import dev.kubas.spellatlas.ClientConfig;
 import dev.kubas.spellatlas.client.AtlasScreen;
 import dev.kubas.spellatlas.client.InventoryPanel;
 import net.minecraft.client.Minecraft;
@@ -9,7 +8,7 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 
 import java.lang.reflect.Method;
 
-/** Spell Atlas: its inventory button, and its inventory panel (drawn and clicked against a stand-in inventory screen). */
+/** Spell Atlas: an inventory button for its atlas, and its inventory panel (drawn and clicked against a stand-in inventory screen). */
 final class SpellAtlasBridge
 {
 	private static Method render;
@@ -19,9 +18,10 @@ final class SpellAtlasBridge
 	{
 	}
 
+	/** Spell Atlas 2.0 has no inventory button of its own (nor a setting for one), only its keybind: the gutter button stays. */
 	static boolean buttonEnabled()
 	{
-		return ClientConfig.INVENTORY_BUTTON.get();
+		return true;
 	}
 
 	static void open()

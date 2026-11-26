@@ -32,7 +32,6 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			Map.entry("chromewaremobends", List.of("chromeware", "mobends")),
 			Map.entry("chromewaregender", List.of("chromeware", "mcabp")),
 			Map.entry("chromewaremca", List.of("chromeware", "mca")),
-			Map.entry("punchychromeware", List.of("punchy", "chromeware")),
 			Map.entry("chromewaredoppel", List.of("chromeware", "darkdoppelganger")),
 			Map.entry("chromeware", List.of("chromeware")),
 			Map.entry("tombstone", List.of("tombstone")),
@@ -107,11 +106,11 @@ public final class ForeverFixesMixinPlugin implements IMixinConfigPlugin
 			"databank.MixinPostShaderInstance", Map.entry("databank", "1.3.2.1"),
 			// Chromeware 1.2.1: suppressant durations are its own config ([immunosuppressants] *_duration_seconds)
 			"chromeware.MixinSuppressionTiming", Map.entry("chromeware", "1.2.1"),
-			// Chromeware 1.2.1 handles Punchy itself: Punchy's arms give way to vanilla hands while arm hardware shows
-			"punchychromeware.MixinPunchyChromewareImplants", Map.entry("chromeware", "1.2.1"),
 			// Mo' Bends 6.1.1 splits and bends Chromeware's cyber limbs itself (ChromewareCompat, ChromewareLimbLayer)
 			"chromewaremobends.MixinCyberLimbRendererCut", Map.entry("mobends", "6.1.1"),
-			"chromewaremobends.MixinCyberLimbRendererBends", Map.entry("mobends", "6.1.1"));
+			"chromewaremobends.MixinCyberLimbRendererBends", Map.entry("mobends", "6.1.1"),
+			// Simulated Coasters 0.1.6 skips sections whose palette has no bearing itself (CoasterCartPlotScan.skipSection)
+			"simulatedcoasters.MixinCoasterCartPlotScanPalette", Map.entry("simulatedcoasters", "0.1.6"));
 
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName)

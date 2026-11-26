@@ -1,6 +1,7 @@
 package com.diamondskybox.foreverfixes;
 
 import com.chromeware.cyberware.CyberwareCapacity;
+import com.chromeware.cyberware.CyberwareItems;
 import com.chromeware.cyberware.CyberwareStats;
 import net.minecraft.world.item.ItemStack;
 import com.chromeware.cyberware.PlayerData;
@@ -24,7 +25,8 @@ public final class ChromewareHook
 			{
 				// SandevistanImplant.active() only means "installed with a torso"; running = active ticks left in its state
 				case "ACTIVE" -> SandevistanImplant.active(player) && player.getData(PlayerData.SANDEVISTAN_STATE.get()).activeTicks() > 0;
-				case "INSTALLED" -> SandevistanImplant.get(player).installed();
+				// Chromeware 1.3.0: the Sandevistan is one of several operating-system sockets
+				case "INSTALLED" -> SandevistanImplant.has(player, CyberwareItems.SANDEVISTAN);
 				default -> false;
 			};
 		}

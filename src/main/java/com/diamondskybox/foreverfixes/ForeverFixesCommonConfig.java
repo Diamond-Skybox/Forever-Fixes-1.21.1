@@ -494,7 +494,8 @@ public final class ForeverFixesCommonConfig
 
 	public static final ModConfigSpec.BooleanValue COASTER_PALETTE_SCAN = B
 			.comment("Simulated Coasters: its every-physics-tick scan of every Sable ship for coaster carts skips chunk sections whose block palette",
-					"has no coaster bearing (same result; ships without carts no longer cost a full block scan each tick).")
+					"has no coaster bearing (same result; ships without carts no longer cost a full block scan each tick). Simulated Coasters 0.1.6",
+					"and newer do this themselves; the patch is then left out.")
 			.define("simulatedcoasters.paletteScan", true);
 
 	public static final ModConfigSpec.BooleanValue LUSH_CAVE_ZOMBIE_DARKNESS = B
