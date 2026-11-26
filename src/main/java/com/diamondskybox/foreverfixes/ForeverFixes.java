@@ -22,6 +22,7 @@ public final class ForeverFixes
 
 	public ForeverFixes(IEventBus modBus, ModContainer container)
 	{
+		modBus.addListener(ZombieVariantPlacements::onRegister);
 		container.registerConfig(ModConfig.Type.CLIENT, ForeverFixesConfig.SPEC);
 		container.registerConfig(ModConfig.Type.COMMON, ForeverFixesCommonConfig.SPEC);
 		NeoForge.EVENT_BUS.addListener(WildMagic::onDamage);

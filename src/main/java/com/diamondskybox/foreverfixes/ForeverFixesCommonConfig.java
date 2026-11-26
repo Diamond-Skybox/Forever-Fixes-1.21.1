@@ -503,6 +503,12 @@ public final class ForeverFixesCommonConfig
 					"any light level (and makes them lush zombies). Off keeps the mod's behaviour.")
 			.define("zombieVariants.lushCaveDarkness", false);
 
+	public static final ModConfigSpec.BooleanValue ZOMBIE_VARIANTS_GROUNDED = B
+			.comment("Zombie Variants: its zombies get the vanilla zombie's spawn placement (on the ground, monster spawn rules). It registers",
+					"none, so their reinforcements could appear in mid-air, in any light, up to 40 blocks away: in big caverns they fell to their",
+					"deaths. Read at startup.")
+			.define("zombieVariants.groundedSpawns", true);
+
 	public static final ModConfigSpec.IntValue VERTICAL_TICK_RANGE = B
 			.comment("Mobs more than this many blocks above or below every player within simulation distance (horizontally) are not ticked:",
 					"no AI, movement, ageing or breeding until a player comes within range. Chunks tick as whole columns, so in a tall",
