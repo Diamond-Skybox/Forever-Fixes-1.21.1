@@ -245,6 +245,12 @@ public final class ForeverFixesConfig
 					"Each column's highest sky-blocking block is found once, scanning down from the top, and kept for a second. Same answers.")
 			.define("livingwind.skyColumnCache", true);
 
+	public static final ModConfigSpec.BooleanValue ASTRAL_TOME_PAN_MARGIN = B
+			.comment("Astral Sorcery: the tome's research, perk and lumen maps can be panned one node step past each edge.",
+					"Its pan limit came up about three quarters of a tier short of the far edge, so the right-most tier reached",
+					"(Resonance, once reached) could not be centred and zoomed into.")
+			.define("astralsorcery.tomePanMargin", true);
+
 	public static final ModConfigSpec.DoubleValue NTGL_IDLE_SECONDS = B
 			.comment("Seconds without being drawn after which a weapon animator stops ticking.")
 			.defineInRange("ntgl.animatorIdleSeconds", 5D, 1D, 600D);
