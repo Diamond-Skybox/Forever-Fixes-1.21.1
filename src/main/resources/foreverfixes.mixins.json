@@ -146,6 +146,7 @@
     "chromeware.MixinPlayerRendererMcaImplantArm",
     "chromeware.MixinItemInHandRendererImplantSpread",
     "chromeware.MixinCyberwareMenuClientButton",
+    "chromeware.MixinCyberwareScreenCapacityMax",
     "chromewaregender.MixinGenderLayerChromeTorso",
     "chromeware.MixinHumanoidArmorLayerCyberFit",
     "chromewaremobends.MixinTier1ArmorCyberFit",

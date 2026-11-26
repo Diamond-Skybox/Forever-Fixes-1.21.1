@@ -52,6 +52,16 @@ public final class CreateAddonAdvancements
 		return namespaces().contains(id.getNamespace()) && !ForeverFixesCommonConfig.CHROME_ADDON_EXCLUDED.get().contains(id.getNamespace());
 	}
 
+	/** Most capacity these advancements can add (0 when they are off). */
+	public static int maxBonus()
+	{
+		if (!ForeverFixesCommonConfig.SPEC.isLoaded())
+		{
+			return 360;
+		}
+		return ForeverFixesCommonConfig.CHROME_ADDON_ADVANCEMENT_POINTS.get() <= 0 ? 0 : ForeverFixesCommonConfig.CHROME_ADDON_ADVANCEMENT_CAP.get();
+	}
+
 	/** Extra capacity from this player's completed Create-addon advancements. */
 	public static int bonus(ServerPlayer player)
 	{
