@@ -513,7 +513,7 @@ public final class ForeverFixesCommonConfig
 	public static final ModConfigSpec.ConfigValue<List<? extends String>> SAVED_DATA_WITHOUT_COPY = B
 			.comment("Saved data written without NeoForge's server-thread deep copy (class names). Only for classes that build every tag new",
 					"on each save and keep none of them: a class that hands out a tag it changes later would save a half-changed file.")
-			.defineListAllowEmpty("saving.savedDataWithoutCopy", List.of("net.conczin.mca.server.world.data.FamilyTree"), () -> "", o -> o instanceof String);
+			.defineListAllowEmpty("saving.savedDataWithoutCopy", List.of("net.conczin.mca.server.world.data.FamilyTree", "blusunrize.immersiveengineering.common.IESaveData"), () -> "", o -> o instanceof String);
 
 	public static final ModConfigSpec SPEC = B.build();
 
