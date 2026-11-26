@@ -50,6 +50,7 @@
     "vanilla.MixinServerPlayerTeleport",
     "technonw.MixinBankCardPaymentService",
     "vanilla.MixinDimensionDataStorage",
+    "vanilla.MixinSavedDataFreshTagNoCopy",
     "skeletonsrising.MixinTheFamilyReunionDemandsProcedure",
     "skeletonsrising.MixinSoulTerrorOnEntityTickUpdateProcedure",
     "createnuclear.MixinRadiationCapability",

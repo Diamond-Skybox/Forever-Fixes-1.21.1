@@ -503,7 +503,31 @@ public final class ForeverFixesCommonConfig
 					"any light level (and makes them lush zombies). Off keeps the mod's behaviour.")
 			.define("zombieVariants.lushCaveDarkness", false);
 
+	public static final ModConfigSpec.ConfigValue<List<? extends String>> SAVED_DATA_WITHOUT_COPY = B
+			.comment("Saved data written without NeoForge's server-thread deep copy (class names). Only for classes that build every tag new",
+					"on each save and keep none of them: a class that hands out a tag it changes later would save a half-changed file.")
+			.defineListAllowEmpty("saving.savedDataWithoutCopy", List.of("net.conczin.mca.server.world.data.FamilyTree"), () -> "", o -> o instanceof String);
+
 	public static final ModConfigSpec SPEC = B.build();
+
+	private static java.util.Set<String> noCopyNames;
+	private static List<? extends String> noCopySource;
+
+	/** Whether saving.savedDataWithoutCopy lists this saved-data class (re-read when the config changes). */
+	public static boolean savedDataWithoutCopy(Class<?> type)
+	{
+		if (!SPEC.isLoaded())
+		{
+			return false;
+		}
+		final List<? extends String> names = SAVED_DATA_WITHOUT_COPY.get();
+		if (names != noCopySource)
+		{
+			noCopyNames = java.util.Set.copyOf(names);
+			noCopySource = names;
+		}
+		return noCopyNames.contains(type.getName());
+	}
 
 	/** Read from tick code, which can run before the config file is loaded; default to enabled then. */
 	public static boolean enabled(ModConfigSpec.BooleanValue value)
