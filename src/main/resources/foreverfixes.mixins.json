@@ -52,6 +52,7 @@
     "vanilla.MixinDimensionDataStorage",
     "vanilla.MixinSavedDataFreshTagNoCopy",
     "vanilla.MixinServerLevelVerticalTickRange",
+    "galosphere.MixinNearestBlockSensorPaths",
     "skeletonsrising.MixinTheFamilyReunionDemandsProcedure",
     "skeletonsrising.MixinSoulTerrorOnEntityTickUpdateProcedure",
     "createnuclear.MixinRadiationCapability",

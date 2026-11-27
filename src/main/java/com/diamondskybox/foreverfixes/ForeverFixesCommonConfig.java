@@ -509,6 +509,11 @@ public final class ForeverFixesCommonConfig
 					"deaths. Read at startup.")
 			.define("zombieVariants.groundedSpawns", true);
 
+	public static final ModConfigSpec.BooleanValue GALOSPHERE_SENSOR_PATHS = B
+			.comment("Galosphere: a sparkle's cluster sensor no longer computes paths it throws away (it kept only the first reachable",
+					"cluster, yet pathed to every one around it once a second; about a third of the server thread in a crystal cave).")
+			.define("galosphere.skipWastedSensorPaths", true);
+
 	public static final ModConfigSpec.IntValue VERTICAL_TICK_RANGE = B
 			.comment("Mobs more than this many blocks above or below every player within simulation distance (horizontally) are not ticked:",
 					"no AI, movement, ageing or breeding until a player comes within range. Chunks tick as whole columns, so in a tall",
